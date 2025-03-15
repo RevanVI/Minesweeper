@@ -1,4 +1,6 @@
 extends Node2D
+class_name GameManager
+
 
 enum GameState {
 	START = 0,
@@ -18,10 +20,13 @@ enum GameState {
 
 var mark_count: int = 10
 var battle_time: int = 0
+var turn_count: int = 0
 var game_state: GameState
 
-signal mark_count_changed(mark_count)
+signal mark_count_changed(mark_count: int)
 signal game_state_changed(game_state: GameState)
+signal turn_changed(turn_count: int)
+signal battle_time_changed(battle_time: int)
 
 func _ready():
 	map.size = map_size
@@ -57,13 +62,13 @@ func on_cell_marked(value: bool) -> void:
 
 
 func on_cell_opened(tile_type) -> void:
+	turn_count += 1
+	turn_changed.emit(turn_count)
 	if tile_type == map.mine_tile:
 		print("game over")
-		$"../RestartTimer".start()
 		change_game_state(GameState.GAME_OVER)
 	elif map.get_closed_cells() == mines_count:
 		print("win")
-		$"../RestartTimer".start()
 		change_game_state(GameState.GAME_OVER)
 
 
@@ -73,11 +78,11 @@ func restart() -> void:
 	mark_count = mines_count
 	mark_count_changed.emit(mark_count)
 	battle_timer.stop()
+	battle_time = 0
+	battle_time_changed.emit(battle_time)
+	turn_count = 0
+	turn_changed.emit(turn_count)
 	change_game_state(GameState.START)
-
-
-func _on_restart_timer_timeout() -> void:
-	restart()
 
 
 func change_game_state(new_state: GameState) -> void:
@@ -88,3 +93,4 @@ func change_game_state(new_state: GameState) -> void:
 
 func _on_battle_timer_timeout() -> void:
 	battle_time += 1
+	battle_time_changed.emit(battle_time)
