@@ -1,9 +1,12 @@
 extends Control
 
-
 @onready var time_label: Label = $Panel/TimeLabel
 @onready var turn_label: Label = $Panel/TurnLabel
 @onready var mark_label: Label = $Panel/MarkLabel
+@onready var undo_label: Label = $Panel/UndoLabel
+
+@onready var undo_button: Button = $Panel/UndoButton
+
 
 var game_manager: GameManager
 
@@ -13,10 +16,11 @@ func _ready() -> void:
 	game_manager.battle_time_changed.connect(update_time)
 	game_manager.mark_count_changed.connect(update_mark)
 	game_manager.turn_changed.connect(update_turn)
+	game_manager.undo_count_changed.connect(update_undo_count)
 	
 	update_time(game_manager.battle_time)
 	update_mark(game_manager.mark_count)
-	update_turn(game_manager.turn_count)
+	update_undo_count(game_manager.undo_count)
 
 
 func update_time(time: int) -> void:
@@ -31,5 +35,17 @@ func update_turn(turn_count: int) -> void:
 	turn_label.text = "Turn: " + str(turn_count)
 
 
+func update_undo_count(undo_count: int) -> void:
+	undo_label.text = "Undo left: " + str(undo_count)
+	if undo_count <= 0:
+		undo_button.disabled = true
+	else:
+		undo_button.disabled = false
+
+
 func _on_button_pressed() -> void:
 	game_manager.restart()
+
+
+func _on_undo_button_pressed() -> void:
+	game_manager.undo()

@@ -1,10 +1,19 @@
-[gd_scene load_steps=6 format=4 uid="uid://ccosysrpa6d3f"]
+[gd_scene load_steps=10 format=4 uid="uid://ccosysrpa6d3f"]
 
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game.gd" id="1_3whhm"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="1_7o4uc"]
 [ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="1_571c6"]
 [ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="2_3whhm"]
 [ext_resource type="Script" uid="uid://cyjfintjqebld" path="res://scripts/gui/battle.gd" id="5_85huv"]
+[ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/TurnQueue.gd" id="5_xgl0c"]
+[ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="7_qa7br"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
+frequency = 0.252
+fractal_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qa7br"]
+noise = SubResource("FastNoiseLite_xgl0c")
 
 [node name="MinesweepPrototype" type="Node2D"]
 
@@ -30,6 +39,10 @@ script = ExtResource("2_3whhm")
 
 [node name="GameManager" type="Node2D" parent="." groups=["GameManager"]]
 script = ExtResource("1_3whhm")
+
+[node name="TurnQueue" type="Node" parent="GameManager"]
+script = ExtResource("5_xgl0c")
+metadata/_custom_type_script = "uid://b8ri86hixsvvn"
 
 [node name="BattleTimer" type="Timer" parent="."]
 
@@ -85,5 +98,44 @@ offset_right = 107.96
 offset_bottom = 245.0
 text = "Restart"
 
+[node name="UndoLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 36.96
+offset_top = 364.0
+offset_right = 117.96
+offset_bottom = 387.0
+text = "Undo left: "
+
+[node name="UndoButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 36.96
+offset_top = 433.0
+offset_right = 110.96
+offset_bottom = 472.0
+text = "Undo"
+
+[node name="Control2" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_right = 0.645
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="UndoTex" type="TextureRect" parent="CanvasLayer/Control2"]
+visible = false
+modulate = Color(0.596078, 0.784314, 0.717647, 0.423529)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1.95996
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_qa7br")
+stretch_mode = 1
+script = ExtResource("7_qa7br")
+
+[connection signal="undo_ended" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="stop_anim"]
+[connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
 [connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button" to="CanvasLayer/Control" method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/UndoButton" to="CanvasLayer/Control" method="_on_undo_button_pressed"]

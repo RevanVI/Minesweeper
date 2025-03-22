@@ -1,5 +1,4 @@
 extends Node2D
-
 class_name MapGenerator
 
 var map_size: Vector2i = Vector2i(10, 10)
@@ -23,15 +22,17 @@ func spawn_mines(start_pos: Vector2i) -> void:
 	excluded_tiles.append(start_pos)
 	
 	var all_empty_tiles = map.board.get_used_cells_by_id(0, map.empty_tiles[0])
+	
 	var i = 0
 	while i < mines_count:
 		var random_pos = all_empty_tiles.pick_random()
+		all_empty_tiles.erase(random_pos)
 		if random_pos in excluded_tiles:
-			all_empty_tiles.erase(random_pos)
 			continue
 		if is_tile_mine_valid(random_pos):
 			spawn_mine_at_pos(random_pos)
 			i += 1
+		
 
 
 func is_tile_mine_valid(pos) -> bool:

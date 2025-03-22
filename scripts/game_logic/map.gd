@@ -1,5 +1,4 @@
 extends Node2D
-
 class_name Map
 
 @export var cell_tile: Vector2i
@@ -15,6 +14,7 @@ var _directions: Array[Vector2i] = []
 
 
 signal cell_opened(board_tile_type)
+signal cell_closed(pos)
 signal cell_marked(value: bool)
 
 
@@ -59,41 +59,63 @@ func get_neighbour_cells(pos: Vector2i, filter: Array[Vector2i] = []) -> Array[V
 	return neighbours
 
 
-func open_cell(pos: Vector2i) -> void:
-	print("Map: open cell: " + str(pos))
-	if cells.get_cell_atlas_coords(pos) == cell_tile:
-		cells.erase_cell(pos)
-		var board_tile_type = board.get_cell_atlas_coords(pos)
-		if board_tile_type == empty_tiles[0]:
-			reveal_empty_neighbours(pos)
-		cell_opened.emit(board_tile_type)
-
-
 func open_cell_at_global_position(global_pos: Vector2) -> void:
 	var tile_pos = cells.local_to_map(cells.to_local(global_pos))
 	if cells.get_cell_source_id(tile_pos) != -1:
-		open_cell(tile_pos)
+		var command = OpenCellsCommand.new(self, tile_pos)
+		#TODO some other way to send commands
+		get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
 
 
-func reveal_empty_neighbours(pos: Vector2i) -> void:
+func open_cell(pos: Vector2i) -> Array[Vector2i]:
+	print("Map: open cell: " + str(pos))
+	
+	var opened_cells: Array[Vector2i] = []
+	if cells.get_cell_atlas_coords(pos) == cell_tile:
+		cells.erase_cell(pos)
+		opened_cells.append(pos)
+		var board_tile_type = board.get_cell_atlas_coords(pos)
+		if board_tile_type == empty_tiles[0]:
+			var res = reveal_empty_neighbours(pos)
+			opened_cells.append_array(res)
+		print("Map: cells opened: " + str(opened_cells))
+		cell_opened.emit(board_tile_type)
+	
+	return opened_cells
+
+
+func close_cell(pos: Vector2i) -> void:
+	print("Map: close cell: " + str(pos))
+	if cells.get_cell_source_id(pos) == -1 && board.get_cell_source_id(pos) != -1:
+		cells.set_cell(pos, 0, cell_tile)
+		cell_closed.emit(pos)
+
+
+func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
+	var opened_cells: Array[Vector2i] = []
 	var stack: Array[Vector2i] = []
 	stack.append_array(get_neighbour_cells(pos, [cell_tile]))
 	
 	while stack.is_empty() == false:
 		var cur_cell = stack.pop_back()
 		if cells.get_cell_source_id(cur_cell) == -1:
-			continue	
+			continue
 		cells.erase_cell(cur_cell)
+		opened_cells.append(cur_cell)
 		if board.get_cell_atlas_coords(cur_cell) == empty_tiles[0]:
 			var neighbour_cells = get_neighbour_cells(cur_cell, [cell_tile])
 			stack.append_array(neighbour_cells)
+	
+	return opened_cells
 
 
 func mark_cell(pos: Vector2i) -> void:
 	if cells.get_cell_atlas_coords(pos) == cell_tile:
+		print("Cell marked: " + str(pos))
 		cells.set_cell(pos, 0, mark_tile)
 		cell_marked.emit(true)
 	elif cells.get_cell_atlas_coords(pos) == mark_tile:
+		print("Cell unmarked: " + str(pos))
 		cells.set_cell(pos, 0, cell_tile)
 		cell_marked.emit(false)
 
@@ -101,7 +123,8 @@ func mark_cell(pos: Vector2i) -> void:
 func mark_cell_global_position(global_pos: Vector2) -> void:
 	var tile_pos = cells.local_to_map(cells.to_local(global_pos))
 	if cells.get_cell_source_id(tile_pos) != -1:
-		mark_cell(tile_pos)
+		var command: MarkCellCommand = MarkCellCommand.new(self, tile_pos)
+		get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
 
 
 func get_cells_total() -> int:
