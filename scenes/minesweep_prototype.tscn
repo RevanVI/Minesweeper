@@ -1,11 +1,11 @@
 [gd_scene load_steps=10 format=4 uid="uid://ccosysrpa6d3f"]
 
-[ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game.gd" id="1_3whhm"]
+[ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="1_3whhm"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="1_7o4uc"]
 [ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="1_571c6"]
 [ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="2_3whhm"]
 [ext_resource type="Script" uid="uid://cyjfintjqebld" path="res://scripts/gui/battle.gd" id="5_85huv"]
-[ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/TurnQueue.gd" id="5_xgl0c"]
+[ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="5_xgl0c"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="7_qa7br"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]

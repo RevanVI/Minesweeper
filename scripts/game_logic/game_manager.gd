@@ -1,5 +1,12 @@
-extends Node2D
 class_name GameManager
+extends Node2D
+
+
+signal mark_count_changed(mark_count: int)
+signal undo_count_changed(undo_count: int)
+signal game_state_changed(game_state: GameState)
+signal turn_changed(turn_count: int)
+signal battle_time_changed(battle_time: int)
 
 
 enum GameState {
@@ -10,13 +17,9 @@ enum GameState {
 }
 
 
-@onready var map: Map = $"../Map"
-@onready var map_generator: MapGenerator = $"../MapGenerator"
-@onready var battle_timer: Timer = $"../BattleTimer"
-@onready var turn_queue: TurnQueue = $TurnQueue
-
 @export var map_size: Vector2i = Vector2i(10, 10)
 @export var mines_count: int = 10
+
 
 var mark_count: int = 10
 var undo_count: int = 3
@@ -24,19 +27,18 @@ var battle_time: int = 0
 var game_state: GameState
 
 
-signal mark_count_changed(mark_count: int)
-signal undo_count_changed(undo_count: int)
-signal game_state_changed(game_state: GameState)
-signal turn_changed(turn_count: int)
-signal battle_time_changed(battle_time: int)
+@onready var map: Map = $"../Map"
+@onready var map_generator: MapGenerator = $"../MapGenerator"
+@onready var battle_timer: Timer = $"../BattleTimer"
+@onready var turn_queue: TurnQueue = $TurnQueue
 
 
 func _ready():
-	turn_queue.turn_changed.connect(on_turn_end)
+	turn_queue.turn_changed.connect(_on_turn_end)
 	
 	map.size = map_size
-	map.cell_marked.connect(on_cell_marked)
-	map.cell_opened.connect(on_cell_opened)
+	map.cell_marked.connect(_on_cell_marked)
+	map.cell_opened.connect(_on_cell_opened)
 	restart()
 
 
@@ -45,7 +47,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("LeftMouseButton"):
-		#if all cells are closed then generate map
 		if map.get_cells_total() == map.get_closed_cells():
 			map_generator.map_size = map_size
 			map_generator.mines_count = mines_count
@@ -59,29 +60,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		turn_queue.add_command(command)
 	elif event.is_action_pressed("RightMouseButton"):
 		map.mark_cell_global_position(event.global_position)
-
-
-func on_cell_marked(value: bool) -> void:
-	if value:
-		mark_count -= 1
-	else:
-		mark_count += 1
-	mark_count_changed.emit(mark_count)
-
-
-func on_cell_opened(tile_type) -> void:
-	if tile_type == map.mine_tile:
-		print("Game lost")
-		change_game_state(GameState.GAME_OVER)
-		var command = GameOverCommand.new()
-		command.undo_callback = Callable(self, "revert_game_over")
-		turn_queue.add_command(command)
-	else:
-		check_board_cleared()
-
-
-func on_turn_end(turn: int) -> void:
-	turn_changed.emit(turn)
 
 
 func restart() -> void:
@@ -120,6 +98,29 @@ func _on_battle_timer_timeout() -> void:
 	battle_time += 1
 	battle_time_changed.emit(battle_time)
 
+
+func _on_cell_marked(value: bool) -> void:
+	if value:
+		mark_count -= 1
+	else:
+		mark_count += 1
+	mark_count_changed.emit(mark_count)
+
+
+func _on_cell_opened(tile_type) -> void:
+	if tile_type == map.mine_tile:
+		print("Game lost")
+		change_game_state(GameState.GAME_OVER)
+		var command = GameOverCommand.new()
+		command.undo_callback = Callable(self, "revert_game_over")
+		turn_queue.add_command(command)
+	else:
+		check_board_cleared()
+
+
+func _on_turn_end(turn: int) -> void:
+	turn_changed.emit(turn)
+	
 
 func undo() -> void:
 	if undo_count > 0:

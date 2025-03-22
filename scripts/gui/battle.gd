@@ -1,14 +1,15 @@
 extends Control
 
+
+var game_manager: GameManager
+
+
 @onready var time_label: Label = $Panel/TimeLabel
 @onready var turn_label: Label = $Panel/TurnLabel
 @onready var mark_label: Label = $Panel/MarkLabel
 @onready var undo_label: Label = $Panel/UndoLabel
 
 @onready var undo_button: Button = $Panel/UndoButton
-
-
-var game_manager: GameManager
 
 
 func _ready() -> void:

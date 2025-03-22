@@ -1,15 +1,16 @@
-extends Node
 class_name TurnQueue
+extends Node
 
-var turn_queue: Array[TurnData]
-var current_turn: int
-var turn_commands: Array[Command]
-
-var is_turn_processing: bool = false
 
 signal turn_changed(current_turn: int)
 signal undo_started()
 signal undo_ended()
+
+
+var turn_queue: Array[TurnData]
+var current_turn: int
+var turn_commands: Array[Command]
+var is_turn_processing: bool = false
 
 
 func _init() -> void:
@@ -20,7 +21,7 @@ func _init() -> void:
 func add_command(command: Command) -> void:
 	print("Add command started")
 	is_turn_processing = true
-	command.execute()
+	command._execute()
 	turn_commands.append(command)
 	
 	if command is EndTurnCommand:
@@ -43,8 +44,6 @@ func reset() -> void:
 
 
 func undo(count: int) -> void:
-	#revert all commands since last EndTurnCommand
-	#this can be done any time
 	is_turn_processing = true
 	var TURN_PAUSE = 0.2
 	undo_started.emit()
@@ -54,7 +53,7 @@ func undo(count: int) -> void:
 	while turn_commands.size() > 0 || count > 0:
 		print('Turn commands undo')
 		for i in range(turn_commands.size() - 1, -1, -1):
-			turn_commands[i].undo()
+			turn_commands[i]._undo()
 			await get_tree().create_timer(TURN_PAUSE).timeout
 		turn_commands.clear()
 		

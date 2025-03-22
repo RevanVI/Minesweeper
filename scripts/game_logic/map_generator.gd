@@ -1,5 +1,6 @@
-extends Node2D
 class_name MapGenerator
+extends Node2D
+
 
 var map_size: Vector2i = Vector2i(10, 10)
 var mines_count: int = 10
@@ -9,7 +10,7 @@ var map: Map
 func generate_map(map_ref: Map, start_pos: Vector2i) -> void:
 	map = map_ref
 	if map.is_cell_valid_board(start_pos) == false:
-		return	
+		return
 	map.size = map_size
 	map.reset_board()
 	map.reset_cells()
@@ -17,7 +18,6 @@ func generate_map(map_ref: Map, start_pos: Vector2i) -> void:
 
 
 func spawn_mines(start_pos: Vector2i) -> void:
-	#mines should not be spawned at start pos or nearby
 	var excluded_tiles = map.get_neighbour_cells(start_pos)
 	excluded_tiles.append(start_pos)
 	
@@ -32,11 +32,9 @@ func spawn_mines(start_pos: Vector2i) -> void:
 		if is_tile_mine_valid(random_pos):
 			spawn_mine_at_pos(random_pos)
 			i += 1
-		
 
 
 func is_tile_mine_valid(pos) -> bool:
-	#the most basic mine checks
 	var tile_data = map.board.get_cell_atlas_coords(pos)
 	if tile_data == map.mine_tile:
 		return false
@@ -46,8 +44,7 @@ func is_tile_mine_valid(pos) -> bool:
 
 func spawn_mine_at_pos(pos) -> void:
 	map.board.set_cell(pos, 0, map.mine_tile)
-	#basic mine spawn (no checks performed)
-	for x in range(-1,2):
+	for x in range(-1, 2):
 		for y in range(-1, 2):
 			if x == 0 && y == 0:
 				continue

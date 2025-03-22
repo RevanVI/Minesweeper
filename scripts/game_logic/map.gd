@@ -1,21 +1,24 @@
-extends Node2D
 class_name Map
+extends Node2D
+
+
+signal cell_opened(board_tile_type)
+signal cell_closed(pos)
+signal cell_marked(value: bool)
+
 
 @export var cell_tile: Vector2i
 @export var mark_tile: Vector2i
 @export var mine_tile: Vector2i
 @export var empty_tiles: Array[Vector2i]
 
-@onready var board: TileMapLayer = $Board
-@onready var cells: TileMapLayer = $Cells
 
 var size: Vector2i = Vector2i(0, 0)
 var _directions: Array[Vector2i] = []
 
 
-signal cell_opened(board_tile_type)
-signal cell_closed(pos)
-signal cell_marked(value: bool)
+@onready var board: TileMapLayer = $Board
+@onready var cells: TileMapLayer = $Cells
 
 
 func _ready() -> void:

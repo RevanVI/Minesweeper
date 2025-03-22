@@ -1,5 +1,6 @@
-extends RefCounted
 class_name TurnData
+extends RefCounted
+
 
 var turn_number: int
 var commands: Array[Command]
