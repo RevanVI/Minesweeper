@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://ccosysrpa6d3f"]
+[gd_scene load_steps=16 format=4 uid="uid://ccosysrpa6d3f"]
 
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="1_3whhm"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="1_7o4uc"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="5_xgl0c"]
 [ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="6_e5u5o"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="7_qa7br"]
+[ext_resource type="Script" uid="uid://bdeo4vni1gdc" path="res://scripts/gui/end_game.gd" id="11_7tfgl"]
 
 [sub_resource type="Resource" id="Resource_e5u5o"]
 script = ExtResource("5_b7mkg")
@@ -153,8 +154,119 @@ texture = SubResource("NoiseTexture2D_qa7br")
 stretch_mode = 1
 script = ExtResource("7_qa7br")
 
+[node name="GameLoop" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_right = 0.642
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("11_7tfgl")
+
+[node name="WinPanel" type="Panel" parent="CanvasLayer/GameLoop"]
+visible = false
+modulate = Color(0.0627451, 0.729412, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/GameLoop/WinPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.5
+offset_top = -30.0
+offset_right = 63.5
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Level completed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="next_level_btn" type="Button" parent="CanvasLayer/GameLoop/WinPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = 84.5
+offset_right = 42.5
+offset_bottom = 115.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Next level"
+
+[node name="LoosePanel" type="Panel" parent="CanvasLayer/GameLoop"]
+visible = false
+modulate = Color(0.721583, 0, 0.142064, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/GameLoop/LoosePanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = -63.5
+offset_top = -28.0
+offset_right = 63.5
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Level failed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="restart_btn" type="Button" parent="CanvasLayer/GameLoop/LoosePanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.5
+anchor_right = 0.4
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = 84.5
+offset_right = 42.5
+offset_bottom = 115.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "restart"
+
+[node name="undo_btn" type="Button" parent="CanvasLayer/GameLoop/LoosePanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.5
+anchor_right = 0.6
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = 84.5
+offset_right = 42.5
+offset_bottom = 115.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "undo"
+
 [connection signal="undo_ended" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="stop_anim"]
 [connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
 [connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button" to="CanvasLayer/Control" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/UndoButton" to="CanvasLayer/Control" method="_on_undo_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameLoop/WinPanel/next_level_btn" to="CanvasLayer/GameLoop" method="_on_next_level_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/restart_btn" to="CanvasLayer/GameLoop" method="_on_restart_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/undo_btn" to="CanvasLayer/GameLoop" method="_on_undo_btn_pressed"]

@@ -7,6 +7,8 @@ signal undo_count_changed(undo_count: int)
 signal game_state_changed(game_state: GameState)
 signal turn_changed(turn_count: int)
 signal battle_time_changed(battle_time: int)
+signal level_completed()
+signal level_lost(undo_count: int)
 
 
 enum GameState {
@@ -63,12 +65,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		map.mark_cell_global_position(event.global_position)
 
 
-func start_level(level: int) -> void:
-	current_level = level
+func start_level() -> void:
 	map.reset_board()
 	map.reset_cells()
 	turn_queue.reset()
-	level = min(level, levels.size() - 1)
+	var level = min(current_level, levels.size() - 1)
 	enemies_count = levels[level].get_enemy_count()
 	mark_count = enemies_count
 	mark_count_changed.emit(mark_count)
@@ -88,7 +89,7 @@ func restart() -> void:
 	undo_count_changed.emit(undo_count)	
 	turn_queue.reset()
 	current_level = 0
-	start_level(current_level)
+	start_level()
 
 
 func change_game_state(new_state: GameState) -> void:
@@ -114,7 +115,8 @@ func check_board_cleared() -> void:
 			return
 	
 	print("Level " + str(current_level) + " completed")
-	call_deferred("start_level", current_level + 1)
+	level_completed.emit()
+	current_level += 1
 
 
 func _on_battle_timer_timeout() -> void:
@@ -132,14 +134,15 @@ func _on_cell_marked(value: bool) -> void:
 
 func _on_cell_opened(cell_type: Map.CellType, opened_obj: Node = null) -> void:
 	if cell_type == Map.CellType.ENEMY:
-		var command = EnemyEnteredCommand.new(opened_obj as Enemy)
-		turn_queue.add_command(command)
-		
+		#var command = EnemyEnteredCommand.new(opened_obj as Enemy)
+		#turn_queue.add_command(command)
+		hp = -1
 		if hp <= 0:
 			change_game_state(GameState.GAME_OVER)
-			command = GameOverCommand.new()
+			var command = GameOverCommand.new()
 			command.undo_callback = Callable(self, "revert_game_over")
 			turn_queue.add_command(command)
+			level_lost.emit()
 	else:
 		check_board_cleared()
 
