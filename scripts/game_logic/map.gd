@@ -2,20 +2,27 @@ class_name Map
 extends Node2D
 
 
-signal cell_opened(board_tile_type)
+signal cell_opened(cell_type: CellType, open_obj: Node)
 signal cell_closed(pos)
 signal cell_marked(value: bool)
 
 
+enum CellType {
+	EMPTY = 0,
+	ENEMY = 1,
+}
+
+
+const ENEMY_COLLECTION_ID = 1
+
+
 @export var cell_tile: Vector2i
 @export var mark_tile: Vector2i
-@export var mine_tile: Vector2i
 @export var empty_tiles: Array[Vector2i]
-
 
 var size: Vector2i = Vector2i(0, 0)
 var _directions: Array[Vector2i] = []
-
+var _enemies: Dictionary[Vector2i, Enemy] = {}
 
 @onready var board: TileMapLayer = $Board
 @onready var cells: TileMapLayer = $Cells
@@ -35,6 +42,7 @@ func reset_board() -> void:
 	for x in range(size.x):
 		for y in range(size.y):
 			board.set_cell(Vector2i(x,y), 0, empty_tiles[0])
+	_enemies.clear()
 
 
 func build_directions() -> void:
@@ -62,12 +70,14 @@ func get_neighbour_cells(pos: Vector2i, filter: Array[Vector2i] = []) -> Array[V
 	return neighbours
 
 
-func open_cell_at_global_position(global_pos: Vector2) -> void:
+func open_cell_at_global_position(global_pos: Vector2) -> bool:
 	var tile_pos = cells.local_to_map(cells.to_local(global_pos))
 	if cells.get_cell_source_id(tile_pos) != -1:
 		var command = OpenCellsCommand.new(self, tile_pos)
 		#TODO some other way to send commands
 		get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
+		return true
+	return false
 
 
 func open_cell(pos: Vector2i) -> Array[Vector2i]:
@@ -77,13 +87,16 @@ func open_cell(pos: Vector2i) -> Array[Vector2i]:
 	if cells.get_cell_atlas_coords(pos) == cell_tile:
 		cells.erase_cell(pos)
 		opened_cells.append(pos)
-		var board_tile_type = board.get_cell_atlas_coords(pos)
-		if board_tile_type == empty_tiles[0]:
-			var res = reveal_empty_neighbours(pos)
-			opened_cells.append_array(res)
-		print("Map: cells opened: " + str(opened_cells))
-		cell_opened.emit(board_tile_type)
-	
+		#print("Map: cells opened: " + str(opened_cells))
+		var cell_type = get_cell_type(pos)
+		if cell_type == CellType.ENEMY:
+			cell_opened.emit(cell_type, _enemies[pos])
+		else:
+			var tile_atlas_coords = board.get_cell_atlas_coords(pos)
+			if tile_atlas_coords == empty_tiles[0]:
+				var res = reveal_empty_neighbours(pos)
+				opened_cells.append_array(res)
+			cell_opened.emit(cell_type)
 	return opened_cells
 
 
@@ -134,9 +147,19 @@ func get_cells_total() -> int:
 	return size.x * size.y
 
 
-func get_closed_cells() -> int:
+func get_closed_cells_count() -> int:
 	var closed_cells_count = cells.get_used_cells().size()
 	return closed_cells_count
+
+
+func get_closed_cells() -> Array[Vector2i]:
+	var closed_cells = cells.get_used_cells()
+	return closed_cells
+
+
+func get_enemis_cells() -> Array[Vector2i]:
+	var enemies_cells = _enemies.keys()
+	return enemies_cells
 
 
 func get_cell_pos(global_pos: Vector2) -> Vector2i:
@@ -147,11 +170,28 @@ func get_cell_pos(global_pos: Vector2) -> Vector2i:
 		return Vector2i(-1, -1)
 
 
-func is_cell_valid_board(cell_pos: Vector2i) -> bool:
+func is_pos_on_board(cell_pos: Vector2i) -> bool:
 	if cell_pos.x < 0 || cell_pos.x >= size.x || \
 			cell_pos.y < 0 || cell_pos.y >= size.y:
 		return false
 	var cell_type = board.get_cell_atlas_coords(cell_pos)
-	if cell_type in empty_tiles or cell_type == mine_tile:
+	if cell_type in empty_tiles or cell_pos in _enemies:
 		return true
 	return false
+
+
+func is_cell_empty(cell_pos: Vector2i) -> bool:
+	var source_id = board.get_cell_source_id(cell_pos)
+	var enemy_on_cell = source_id == ENEMY_COLLECTION_ID \
+			&& board.get_cell_alternative_tile(cell_pos) >= 1
+	
+	return not enemy_on_cell
+
+
+func get_cell_type(cell_pos: Vector2i) -> CellType:
+	var tile_atlas_coords = board.get_cell_atlas_coords(cell_pos)
+	var tile_source_id = board.get_cell_source_id(cell_pos)
+	if tile_source_id == 0 && tile_atlas_coords in empty_tiles:
+		return CellType.EMPTY
+	else:
+		return CellType.ENEMY
