@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://ccosysrpa6d3f"]
+[gd_scene load_steps=20 format=4 uid="uid://ccosysrpa6d3f"]
 
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="1_3whhm"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="1_7o4uc"]
@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="6_e5u5o"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="7_qa7br"]
 [ext_resource type="Script" uid="uid://bdeo4vni1gdc" path="res://scripts/gui/end_game.gd" id="11_7tfgl"]
+[ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="12_64nls"]
+[ext_resource type="Script" uid="uid://pv3c0svgtldo" path="res://scripts/game_logic/character.gd" id="12_bgk73"]
 
 [sub_resource type="Resource" id="Resource_e5u5o"]
 script = ExtResource("5_b7mkg")
@@ -34,6 +36,16 @@ fractal_type = 3
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qa7br"]
 noise = SubResource("FastNoiseLite_xgl0c")
+
+[sub_resource type="Gradient" id="Gradient_hj7kk"]
+offsets = PackedFloat32Array(0.56338, 0.741784, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.52809, 0.52809, 0.52809, 0.52809, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s0lrd"]
+gradient = SubResource("Gradient_hj7kk")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
 
 [node name="MinesweepPrototype" type="Node2D"]
 
@@ -64,6 +76,10 @@ levels = Array[ExtResource("5_b7mkg")]([SubResource("Resource_e5u5o"), SubResour
 script = ExtResource("5_xgl0c")
 metadata/_custom_type_script = "uid://b8ri86hixsvvn"
 
+[node name="Character" type="Node2D" parent="." groups=["Character"]]
+script = ExtResource("12_bgk73")
+metadata/_custom_type_script = "uid://pv3c0svgtldo"
+
 [node name="BattleTimer" type="Timer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -75,6 +91,8 @@ anchor_right = 1.001
 anchor_bottom = 1.0
 offset_right = -0.1521
 script = ExtResource("5_85huv")
+hp_color = Color(0, 0.654112, 0.156891, 1)
+hp_color_low = Color(0.605145, 0, 0.0256904, 1)
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -134,6 +152,14 @@ offset_right = 110.96
 offset_bottom = 472.0
 text = "Undo"
 
+[node name="HpLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 19.96
+offset_top = 142.0
+offset_right = 59.96
+offset_bottom = 165.0
+text = "HP: "
+
 [node name="Control2" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchor_right = 0.645
@@ -153,6 +179,19 @@ grow_vertical = 2
 texture = SubResource("NoiseTexture2D_qa7br")
 stretch_mode = 1
 script = ExtResource("7_qa7br")
+
+[node name="DamageTex" type="TextureRect" parent="CanvasLayer/Control2"]
+visible = false
+self_modulate = Color(0.847059, 0.231373, 0.168627, 0.419608)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1.95996
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_s0lrd")
+script = ExtResource("12_64nls")
 
 [node name="GameLoop" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -264,6 +303,7 @@ text = "undo"
 
 [connection signal="undo_ended" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="stop_anim"]
 [connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
+[connection signal="damaged" from="Character" to="CanvasLayer/Control2/DamageTex" method="_on_character_damaged"]
 [connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button" to="CanvasLayer/Control" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/UndoButton" to="CanvasLayer/Control" method="_on_undo_button_pressed"]

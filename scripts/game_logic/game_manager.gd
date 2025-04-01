@@ -29,13 +29,13 @@ var mark_count: int = 10
 var undo_count: int = 3
 var battle_time: int = 0
 var game_state: GameState
-var hp: int = 5
 
 
 @onready var map: Map = $"../Map"
 @onready var map_generator: MapGenerator = $"../MapGenerator"
 @onready var battle_timer: Timer = $"../BattleTimer"
 @onready var turn_queue: TurnQueue = $TurnQueue
+@onready var character: Character = $"../Character"
 
 
 func _ready():
@@ -43,6 +43,7 @@ func _ready():
 	map.size = map_size
 	map.cell_marked.connect(_on_cell_marked)
 	map.cell_opened.connect(_on_cell_opened)
+	character.died.connect(_on_character_died)
 	restart()
 
 
@@ -134,15 +135,8 @@ func _on_cell_marked(value: bool) -> void:
 
 func _on_cell_opened(cell_type: Map.CellType, opened_obj: Node = null) -> void:
 	if cell_type == Map.CellType.ENEMY:
-		#var command = EnemyEnteredCommand.new(opened_obj as Enemy)
-		#turn_queue.add_command(command)
-		hp = -1
-		if hp <= 0:
-			change_game_state(GameState.GAME_OVER)
-			var command = GameOverCommand.new()
-			command.undo_callback = Callable(self, "revert_game_over")
-			turn_queue.add_command(command)
-			level_lost.emit()
+		var command = EnemyEnteredCommand.new(character, opened_obj as Enemy)
+		turn_queue.add_command(command)
 	else:
 		check_board_cleared()
 
@@ -151,8 +145,16 @@ func _on_turn_end(turn: int) -> void:
 	turn_changed.emit(turn)
 
 
+func _on_character_died():
+	change_game_state(GameState.GAME_OVER)
+	var command = GameOverCommand.new()
+	command.undo_callback = Callable(self, "revert_game_over")
+	turn_queue.add_command(command)
+	level_lost.emit()
+
+
 func undo() -> void:
-	if undo_count > 0:
+	if undo_count > 0 && turn_queue.is_undo_possible():
 		undo_count -= 1
 		undo_count_changed.emit(undo_count)
 		turn_queue.undo(1)

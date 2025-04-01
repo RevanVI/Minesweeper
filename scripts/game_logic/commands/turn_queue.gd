@@ -66,3 +66,9 @@ func undo(count: int) -> void:
 	turn_queue.resize(current_turn)
 	is_turn_processing = false
 	undo_ended.emit()
+
+
+func is_undo_possible() -> bool:
+	if turn_queue.size() > 0 || turn_commands.size() > 0:
+		return true
+	return false
