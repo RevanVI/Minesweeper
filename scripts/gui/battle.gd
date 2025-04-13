@@ -15,6 +15,7 @@ var low_hp_limit: float = 0.5
 @onready var undo_label: Label = $Panel/UndoLabel
 @onready var undo_button: Button = $Panel/UndoButton
 @onready var hp_label: Label = $Panel/HpLabel
+@onready var pause_button: Button = $Panel/PauseButton
 
 
 func _ready() -> void:
@@ -58,8 +59,20 @@ func update_undo_count(undo_count: int) -> void:
 
 
 func _on_button_pressed() -> void:
-	game_manager.restart()
+	game_manager.restart_game()
 
 
 func _on_undo_button_pressed() -> void:
 	game_manager.undo()
+
+
+func _on_pause_button_pressed() -> void:
+	game_manager.pause()
+
+
+func _on_game_manager_paused() -> void:
+	undo_button.disabled = true
+
+
+func _on_game_manager_unpaused() -> void:
+	undo_button.disabled = false

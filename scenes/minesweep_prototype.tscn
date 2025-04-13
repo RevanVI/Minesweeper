@@ -20,6 +20,8 @@ title = "level 1"
 enemies = Dictionary[PackedScene, int]({
 ExtResource("5_x2wux"): 10
 })
+map_x = Vector2i(10, 10)
+map_y = Vector2i(10, 10)
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_7tfgl"]
@@ -28,6 +30,8 @@ title = "Level 2"
 enemies = Dictionary[PackedScene, int]({
 ExtResource("6_e5u5o"): 10
 })
+map_x = Vector2i(7, 10)
+map_y = Vector2i(7, 10)
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
@@ -159,6 +163,14 @@ offset_top = 142.0
 offset_right = 59.96
 offset_bottom = 165.0
 text = "HP: "
+
+[node name="PauseButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 37.96
+offset_top = 501.0
+offset_right = 111.96
+offset_bottom = 540.0
+text = "Pause"
 
 [node name="Control2" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -301,12 +313,15 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "undo"
 
+[connection signal="paused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_paused"]
+[connection signal="unpaused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_unpaused"]
 [connection signal="undo_ended" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="stop_anim"]
 [connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
 [connection signal="damaged" from="Character" to="CanvasLayer/Control2/DamageTex" method="_on_character_damaged"]
 [connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button" to="CanvasLayer/Control" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/UndoButton" to="CanvasLayer/Control" method="_on_undo_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/PauseButton" to="CanvasLayer/Control" method="_on_pause_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/WinPanel/next_level_btn" to="CanvasLayer/GameLoop" method="_on_next_level_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/restart_btn" to="CanvasLayer/GameLoop" method="_on_restart_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/undo_btn" to="CanvasLayer/GameLoop" method="_on_undo_btn_pressed"]

@@ -12,15 +12,24 @@ func set_enemies_info(data: Dictionary[PackedScene, int]) -> void:
 	enemies_info = data
 
 
-func generate_map(map_ref: Map, start_pos: Vector2i) -> void:
+func set_map_data(map_x_limits: Vector2i, map_y_limits: Vector2i) -> void:
+	var x = randi_range(map_x_limits[0], map_x_limits[1])
+	var y = randi_range(map_y_limits[0], map_y_limits[1])
+	map_size = Vector2i(x, y)
+
+
+func generate_empty_map(map_ref: Map) -> void:
 	map = map_ref
-	if map.is_pos_on_board(start_pos) == false:
-		return
 	map.size = map_size
 	map.reset_board()
 	map.reset_cells()
+
+
+func fill_map(map_ref: Map, start_pos: Vector2i) -> void:
+	map = map_ref
+	if map.is_pos_on_board(start_pos) == false:
+		return
 	
-	#build scene collection of enemies
 	_enemy_id.clear()
 	var enemy_scene_collection = map.board.tile_set\
 		.get_source(map.ENEMY_COLLECTION_ID) \

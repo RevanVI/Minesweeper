@@ -30,13 +30,13 @@ func _on_level_lost() -> void:
 
 
 func _on_next_level_btn_pressed() -> void:
-	game_manager.call_deferred("start_level")
+	game_manager.call_deferred("start_next_level")
 	win_panel.visible = false
 	win_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func _on_restart_btn_pressed() -> void:
-	game_manager.call_deferred("restart")
+	game_manager.call_deferred("restart_game")
 	loose_panel.visible = false
 	loose_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 

@@ -33,12 +33,14 @@ func _ready() -> void:
 
 
 func reset_cells() -> void:
+	cells.clear()
 	for x in range(size.x):
 		for y in range(size.y):
 			cells.set_cell(Vector2i(x,y), 0, cell_tile)
 
 
 func reset_board() -> void:
+	board.clear()
 	for x in range(size.x):
 		for y in range(size.y):
 			board.set_cell(Vector2i(x,y), 0, empty_tiles[0])
@@ -195,3 +197,19 @@ func get_cell_type(cell_pos: Vector2i) -> CellType:
 		return CellType.EMPTY
 	else:
 		return CellType.ENEMY
+
+
+func start_hide() -> void:
+	var final_color = modulate
+	final_color.a = 0
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", final_color, 0.2)
+	tween.play()
+
+
+func start_show() -> void:
+	var final_color = modulate
+	final_color.a = 1
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", final_color, 0.2)
+	tween.play()
