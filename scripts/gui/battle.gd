@@ -9,6 +9,7 @@ var game_manager: GameManager
 var low_hp_limit: float = 0.5
 
 
+@onready var level_label: Label = $Panel/LevelLabel
 @onready var time_label: Label = $Panel/TimeLabel
 @onready var turn_label: Label = $Panel/TurnLabel
 @onready var mark_label: Label = $Panel/MarkLabel
@@ -16,6 +17,7 @@ var low_hp_limit: float = 0.5
 @onready var undo_button: Button = $Panel/UndoButton
 @onready var hp_label: Label = $Panel/HpLabel
 @onready var pause_button: Button = $Panel/PauseButton
+@onready var restart_button: Button = $Panel/RestartButton
 
 
 func _ready() -> void:
@@ -25,6 +27,11 @@ func _ready() -> void:
 	game_manager.turn_changed.connect(update_turn)
 	game_manager.undo_count_changed.connect(update_undo_count)
 	game_manager.character.hp_changed.connect(update_hp)
+	game_manager.level_changed.connect(update_level)
+	game_manager.level_completed.connect(_on_level_end)
+	game_manager.level_lost.connect(_on_level_end)
+	game_manager.game_state_changed.connect(_on_game_state_changed)
+	
 	
 	update_time(game_manager.battle_time)
 	update_mark(game_manager.mark_count)
@@ -58,6 +65,10 @@ func update_undo_count(undo_count: int) -> void:
 		undo_button.disabled = false
 
 
+func update_level(level: String) -> void:
+	level_label.text = level
+
+
 func _on_button_pressed() -> void:
 	game_manager.restart_game()
 
@@ -76,3 +87,16 @@ func _on_game_manager_paused() -> void:
 
 func _on_game_manager_unpaused() -> void:
 	undo_button.disabled = false
+
+
+func _on_level_end() -> void:
+	undo_button.disabled = true
+	pause_button.disabled = true
+	restart_button.disabled = true
+
+
+func _on_game_state_changed(game_state: GameManager.GameState) -> void:
+	if game_state == GameManager.GameState.START:
+		undo_button.disabled = false
+		pause_button.disabled = false
+		restart_button.disabled = false

@@ -34,6 +34,7 @@ func _ready() -> void:
 
 func reset_cells() -> void:
 	cells.clear()
+	assert(size.x != 0 && size.y != 0)
 	for x in range(size.x):
 		for y in range(size.y):
 			cells.set_cell(Vector2i(x,y), 0, cell_tile)
@@ -41,6 +42,7 @@ func reset_cells() -> void:
 
 func reset_board() -> void:
 	board.clear()
+	assert(size.x != 0 && size.y != 0)
 	for x in range(size.x):
 		for y in range(size.y):
 			board.set_cell(Vector2i(x,y), 0, empty_tiles[0])
@@ -74,7 +76,8 @@ func get_neighbour_cells(pos: Vector2i, filter: Array[Vector2i] = []) -> Array[V
 
 func open_cell_at_global_position(global_pos: Vector2) -> bool:
 	var tile_pos = cells.local_to_map(cells.to_local(global_pos))
-	if cells.get_cell_source_id(tile_pos) != -1:
+	if cells.get_cell_source_id(tile_pos) != -1 \
+		&& is_cell_marked(tile_pos) == false:
 		var command = OpenCellsCommand.new(self, tile_pos)
 		#TODO some other way to send commands
 		get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
@@ -143,6 +146,13 @@ func mark_cell_global_position(global_pos: Vector2) -> void:
 	if cells.get_cell_source_id(tile_pos) != -1:
 		var command: MarkCellCommand = MarkCellCommand.new(self, tile_pos)
 		get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
+
+
+func is_cell_marked(pos: Vector2i) -> bool:
+	if cells.get_cell_atlas_coords(pos) == mark_tile:
+		return true
+	else:
+		return false
 
 
 func get_cells_total() -> int:

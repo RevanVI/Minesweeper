@@ -5,6 +5,7 @@
 
 [node name="Bomb" type="Node2D"]
 script = ExtResource("1_rnll6")
+damage = Vector2i(1, 4)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.210738, 0.215611, 1, 1)

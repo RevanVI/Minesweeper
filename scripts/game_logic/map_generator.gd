@@ -12,10 +12,8 @@ func set_enemies_info(data: Dictionary[PackedScene, int]) -> void:
 	enemies_info = data
 
 
-func set_map_data(map_x_limits: Vector2i, map_y_limits: Vector2i) -> void:
-	var x = randi_range(map_x_limits[0], map_x_limits[1])
-	var y = randi_range(map_y_limits[0], map_y_limits[1])
-	map_size = Vector2i(x, y)
+func set_map_data(map_x: int, map_y: int) -> void:
+	map_size = Vector2i(map_x, map_y)
 
 
 func generate_empty_map(map_ref: Map) -> void:
