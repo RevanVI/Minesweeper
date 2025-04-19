@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=3 uid="uid://c5tedcgde6in8"]
+
+[ext_resource type="Script" uid="uid://w6oait6484k3" path="res://scripts/gui/transition.gd" id="1_k88mq"]
+
+[sub_resource type="Animation" id="Animation_k88mq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j5yq2"]
+resource_name = "transition_fade"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k88mq"]
+_data = {
+&"RESET": SubResource("Animation_k88mq"),
+&"transition_fade": SubResource("Animation_j5yq2")
+}
+
+[node name="Transition" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_k88mq")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.376705, 0.571529, 0.404009, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ColorRect"]
+libraries = {
+&"": SubResource("AnimationLibrary_k88mq")
+}

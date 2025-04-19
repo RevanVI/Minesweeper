@@ -1,0 +1,343 @@
+[gd_scene load_steps=21 format=4 uid="uid://ccosysrpa6d3f"]
+
+[ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="1_3whhm"]
+[ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="1_7o4uc"]
+[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="1_571c6"]
+[ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="2_3whhm"]
+[ext_resource type="Script" uid="uid://cyjfintjqebld" path="res://scripts/gui/battle.gd" id="5_85huv"]
+[ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="5_b7mkg"]
+[ext_resource type="PackedScene" uid="uid://mxcgjh4wuoq2" path="res://scenes/enemies/bomb.tscn" id="5_x2wux"]
+[ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="5_xgl0c"]
+[ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="6_e5u5o"]
+[ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="7_qa7br"]
+[ext_resource type="Script" uid="uid://bdeo4vni1gdc" path="res://scripts/gui/end_game.gd" id="11_7tfgl"]
+[ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="12_64nls"]
+[ext_resource type="Script" uid="uid://pv3c0svgtldo" path="res://scripts/game_logic/character.gd" id="12_bgk73"]
+
+[sub_resource type="Resource" id="Resource_e5u5o"]
+script = ExtResource("5_b7mkg")
+title = "Stage 1-"
+level_range = Vector2i(0, 4)
+enemies = Dictionary[PackedScene, Vector2i]({
+ExtResource("5_x2wux"): Vector2i(3, 3)
+})
+map_x = Vector2i(5, 5)
+map_y = Vector2i(5, 5)
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
+[sub_resource type="Resource" id="Resource_7tfgl"]
+script = ExtResource("5_b7mkg")
+title = "Stage 2-"
+level_range = Vector2i(5, 9)
+enemies = Dictionary[PackedScene, Vector2i]({
+ExtResource("6_e5u5o"): Vector2i(1, 2),
+ExtResource("5_x2wux"): Vector2i(5, 7)
+})
+map_x = Vector2i(5, 7)
+map_y = Vector2i(5, 7)
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
+[sub_resource type="Resource" id="Resource_64nls"]
+script = ExtResource("5_b7mkg")
+title = "Stage 3-"
+level_range = Vector2i(10, 20)
+enemies = Dictionary[PackedScene, Vector2i]({})
+map_x = Vector2i(7, 10)
+map_y = Vector2i(7, 10)
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
+frequency = 0.252
+fractal_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qa7br"]
+noise = SubResource("FastNoiseLite_xgl0c")
+
+[sub_resource type="Gradient" id="Gradient_hj7kk"]
+offsets = PackedFloat32Array(0.56338, 0.741784, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.52809, 0.52809, 0.52809, 0.52809, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s0lrd"]
+gradient = SubResource("Gradient_hj7kk")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[node name="MinesweepPrototype" type="Node2D"]
+
+[node name="Map" type="Node2D" parent="."]
+script = ExtResource("1_7o4uc")
+cell_tile = Vector2i(0, 1)
+mark_tile = Vector2i(1, 1)
+empty_tiles = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0)])
+
+[node name="Board" type="TileMapLayer" parent="Map"]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAFAAkAAAAAAAAAAAAEAAkAAAAAAAAAAAADAAkAAAAAAAAAAAACAAkAAAAAAAAAAAABAAkAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAGAAEAAAAAAAAAAAAHAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAADAAgAAAAAAAAAAAACAAgAAAAAAAAAAAABAAgAAAAAAAAAAAABAAYAAAAAAAAAAAABAAUAAAAAAAAAAAABAAQAAAAAAAAAAAACAAMAAAAAAAAAAAACAAIAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAcAAAAAAAAAAAACAAUAAAAAAAAAAAACAAQAAAAAAAAAAAACAAcAAAAAAAAAAAACAAYAAAAAAAAAAAADAAQAAAAAAAAAAAADAAMAAAAAAAAAAAADAAIAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAIAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAEAAAAAAAAAAAA=")
+tile_set = ExtResource("1_571c6")
+
+[node name="Cells" type="TileMapLayer" parent="Map"]
+tile_set = ExtResource("1_571c6")
+
+[node name="MapGenerator" type="Node2D" parent="."]
+script = ExtResource("2_3whhm")
+
+[node name="GameManager" type="Node2D" parent="." groups=["GameManager"]]
+script = ExtResource("1_3whhm")
+levels = Array[ExtResource("5_b7mkg")]([SubResource("Resource_e5u5o"), SubResource("Resource_7tfgl"), SubResource("Resource_64nls")])
+
+[node name="TurnQueue" type="Node" parent="GameManager"]
+script = ExtResource("5_xgl0c")
+metadata/_custom_type_script = "uid://b8ri86hixsvvn"
+
+[node name="Character" type="Node2D" parent="." groups=["Character"]]
+script = ExtResource("12_bgk73")
+metadata/_custom_type_script = "uid://pv3c0svgtldo"
+
+[node name="BattleTimer" type="Timer" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = 0.645
+anchor_right = 1.001
+anchor_bottom = 1.0
+offset_right = -0.1521
+script = ExtResource("5_85huv")
+hp_color = Color(0, 0.654112, 0.156891, 1)
+hp_color_low = Color(0.605145, 0, 0.0256904, 1)
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0400391
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+offset_left = 17.96
+offset_top = 17.0
+offset_right = 106.96
+offset_bottom = 49.0
+text = "Level  "
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 16.96
+offset_top = 58.0
+offset_right = 105.96
+offset_bottom = 90.0
+text = "Time: "
+
+[node name="TurnLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 98.0
+offset_right = 69.0
+offset_bottom = 133.0
+text = "Turn: "
+
+[node name="MarkLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 16.96
+offset_top = 140.0
+offset_right = 73.96
+offset_bottom = 163.0
+text = "Marks: "
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 266.96
+offset_top = 550.0
+offset_right = 350.96
+offset_bottom = 581.0
+text = "Restart"
+
+[node name="UndoLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 35.96
+offset_top = 406.0
+offset_right = 116.96
+offset_bottom = 429.0
+text = "Undo left: "
+
+[node name="UndoButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 35.96
+offset_top = 475.0
+offset_right = 109.96
+offset_bottom = 514.0
+text = "Undo"
+
+[node name="HpLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 18.96
+offset_top = 184.0
+offset_right = 58.96
+offset_bottom = 207.0
+text = "HP: "
+
+[node name="PauseButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 36.96
+offset_top = 543.0
+offset_right = 110.96
+offset_bottom = 582.0
+text = "Pause"
+
+[node name="Control2" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_right = 0.645
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="UndoTex" type="TextureRect" parent="CanvasLayer/Control2"]
+visible = false
+modulate = Color(0.596078, 0.784314, 0.717647, 0.423529)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1.95996
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_qa7br")
+stretch_mode = 1
+script = ExtResource("7_qa7br")
+
+[node name="DamageTex" type="TextureRect" parent="CanvasLayer/Control2"]
+visible = false
+self_modulate = Color(0.847059, 0.231373, 0.168627, 0.419608)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1.95996
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_s0lrd")
+script = ExtResource("12_64nls")
+
+[node name="GameLoop" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_right = 0.642
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("11_7tfgl")
+
+[node name="WinPanel" type="Panel" parent="CanvasLayer/GameLoop"]
+visible = false
+modulate = Color(0.0627451, 0.729412, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/GameLoop/WinPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.5
+offset_top = -30.0
+offset_right = 63.5
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Level completed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="next_level_btn" type="Button" parent="CanvasLayer/GameLoop/WinPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = 84.5
+offset_right = 42.5
+offset_bottom = 115.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Next level"
+
+[node name="LoosePanel" type="Panel" parent="CanvasLayer/GameLoop"]
+visible = false
+modulate = Color(0.721583, 0, 0.142064, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/GameLoop/LoosePanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = -63.5
+offset_top = -28.0
+offset_right = 63.5
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Level failed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="restart_btn" type="Button" parent="CanvasLayer/GameLoop/LoosePanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.5
+anchor_right = 0.4
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = 84.5
+offset_right = 42.5
+offset_bottom = 115.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "restart"
+
+[node name="undo_btn" type="Button" parent="CanvasLayer/GameLoop/LoosePanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.5
+anchor_right = 0.6
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = 84.5
+offset_right = 42.5
+offset_bottom = 115.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "undo"
+
+[connection signal="paused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_paused"]
+[connection signal="unpaused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_unpaused"]
+[connection signal="undo_ended" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="stop_anim"]
+[connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
+[connection signal="damaged" from="Character" to="CanvasLayer/Control2/DamageTex" method="_on_character_damaged"]
+[connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/RestartButton" to="CanvasLayer/Control" method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/UndoButton" to="CanvasLayer/Control" method="_on_undo_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/PauseButton" to="CanvasLayer/Control" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameLoop/WinPanel/next_level_btn" to="CanvasLayer/GameLoop" method="_on_next_level_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/restart_btn" to="CanvasLayer/GameLoop" method="_on_restart_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/undo_btn" to="CanvasLayer/GameLoop" method="_on_undo_btn_pressed"]
