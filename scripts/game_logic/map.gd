@@ -20,9 +20,13 @@ const ENEMY_COLLECTION_ID = 1
 @export var mark_tile: Vector2i
 @export var empty_tiles: Array[Vector2i]
 
+
 var size: Vector2i = Vector2i(0, 0)
 var _directions: Array[Vector2i] = []
 var _enemies: Dictionary[Vector2i, Enemy] = {}
+var _hidden_cell_value: int = 10
+var _active_modificators: Array[Modificator] = []
+
 
 @onready var board: TileMapLayer = $Board
 @onready var cells: TileMapLayer = $Cells
@@ -47,6 +51,13 @@ func reset_board() -> void:
 		for y in range(size.y):
 			board.set_cell(Vector2i(x,y), 0, empty_tiles[0])
 	_enemies.clear()
+
+
+func apply_modificators(modificators: Array[Modificator]) -> void:
+	for i in modificators:
+		if Modificator.TYPE.MAP in i.types:
+			_active_modificators.append(i)
+			i.apply(self)
 
 
 func build_directions() -> void:

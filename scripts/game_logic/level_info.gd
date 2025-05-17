@@ -7,6 +7,7 @@ extends Resource
 @export var enemies: Dictionary[PackedScene, Vector2i]
 @export var map_x: Vector2i = Vector2i(10, 10)
 @export var map_y: Vector2i = Vector2i(10, 10)
+@export var modificators: Array[Modificator]
 
 
 var _title: String

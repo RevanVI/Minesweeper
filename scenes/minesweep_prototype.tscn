@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://ccosysrpa6d3f"]
+[gd_scene load_steps=22 format=4 uid="uid://ccosysrpa6d3f"]
 
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="1_3whhm"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="1_7o4uc"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://mxcgjh4wuoq2" path="res://scenes/enemies/bomb.tscn" id="5_x2wux"]
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="5_xgl0c"]
 [ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="6_e5u5o"]
+[ext_resource type="Script" uid="uid://crcilb5dcl8ui" path="res://scripts/game_logic/modificators/modificator_base.gd" id="7_hj7kk"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="7_qa7br"]
 [ext_resource type="Script" uid="uid://bdeo4vni1gdc" path="res://scripts/gui/end_game.gd" id="11_7tfgl"]
 [ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="12_64nls"]
@@ -23,6 +24,7 @@ ExtResource("5_x2wux"): Vector2i(3, 3)
 })
 map_x = Vector2i(5, 5)
 map_y = Vector2i(5, 5)
+modificators = Array[ExtResource("7_hj7kk")]([])
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_7tfgl"]
@@ -35,6 +37,7 @@ ExtResource("5_x2wux"): Vector2i(5, 7)
 })
 map_x = Vector2i(5, 7)
 map_y = Vector2i(5, 7)
+modificators = Array[ExtResource("7_hj7kk")]([])
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_64nls"]
@@ -44,6 +47,7 @@ level_range = Vector2i(10, 20)
 enemies = Dictionary[PackedScene, Vector2i]({})
 map_x = Vector2i(7, 10)
 map_y = Vector2i(7, 10)
+modificators = Array[ExtResource("7_hj7kk")]([])
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
@@ -118,6 +122,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LevelLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
 offset_left = 17.96
 offset_top = 17.0
 offset_right = 106.96

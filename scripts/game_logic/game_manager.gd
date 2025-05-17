@@ -101,6 +101,8 @@ func prepare_level() -> void:
 	map_generator.set_map_data(level_template._map_x, level_template._map_y)
 	map_generator.generate_empty_map(map)
 	
+	map.apply_modificators(level_template.modificators)
+	
 	turn_queue.reset()
 	mark_count = enemies_count
 	mark_count_changed.emit(mark_count)
