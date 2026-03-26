@@ -1,15 +1,14 @@
 class_name LevelInfo
 extends Resource
 
-
 @export var title: String
 @export var level_range: Vector2i
 @export var enemies: Dictionary[PackedScene, Vector2i]
 @export var map_x: Vector2i = Vector2i(10, 10)
 @export var map_y: Vector2i = Vector2i(10, 10)
 
-var _enemies: Dictionary[PackedScene, int]
 var map_size: Vector2i
+var _enemies: Dictionary[PackedScene, int]
 
 
 func get_enemy_count() -> int:
@@ -30,7 +29,7 @@ func generate_level(index: int) -> void:
 	var x: int = randi_range(map_x[0], map_x[1])
 	var y: int = randi_range(map_y[0], map_y[1])
 	map_size = Vector2i(x, y)
-	
+
 	_enemies.clear()
 	for enemy in enemies:
 		var count = randi_range(enemies[enemy][0], enemies[enemy][1])

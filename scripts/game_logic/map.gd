@@ -1,39 +1,17 @@
 class_name Map
 extends Node2D
 
-
-class MapTileData:
-	var playable: bool
-	var opened: bool
-	var marked: bool
-	var enemies_count: int
-	var type: CellType
-	var effects: Array[int]
-
-	func _init(i_playable: bool = true, i_opened: bool = false, i_marked: bool = false, i_enemis_count: int = 0, 
-				i_type: CellType = CellType.EMPTY, i_effects: Array[int] = []) -> void:
-		playable = i_playable
-		opened = i_opened
-		marked = i_marked
-		enemies_count = i_enemis_count
-		type = i_type
-		effects = i_effects
-
-
 signal cell_opened(cell_type: CellType, open_obj: Node)
 signal cell_closed(pos)
 signal cell_marked(value: bool)
 
-
 enum CellType {
 	EMPTY = 0,
 	ENEMY = 1,
-	LOOT = 2, 
+	LOOT = 2,
 }
 
-
 const ENEMY_COLLECTION_ID = 1
-
 
 @export var cell_tile: Vector2i
 @export var mark_tile: Vector2i
@@ -41,10 +19,9 @@ const ENEMY_COLLECTION_ID = 1
 
 var size: Vector2i = Vector2i(0, 0)
 var _directions: Array[Vector2i] = []
-var _enemies: Dictionary[PackedScene, int] = {}
-var _enemies_on_map: Dictionary[Vector2i, Enemy] = {}
+var _enemies: Dictionary[PackedScene, int] = { }
+var _enemies_on_map: Dictionary[Vector2i, Enemy] = { }
 var _map_data: Array[Array]
-
 
 @onready var board: TileMapLayer = $Board
 @onready var cells: TileMapLayer = $Cells
@@ -60,8 +37,8 @@ func update_visual_map() -> void:
 	for x in range(size.x):
 		for y in range(size.y):
 			var tile_data: MapTileData = _map_data[x][y]
-			var pos: Vector2i = Vector2i(x ,y)
-			
+			var pos: Vector2i = Vector2i(x, y)
+
 			if not tile_data.opened:
 				cells.set_cell(pos, 0, cell_tile)
 			if tile_data.marked:
@@ -78,7 +55,7 @@ func reset_cells() -> void:
 			if _map_data[x][y].playable:
 				_map_data[x][y].opened = false
 				_map_data[x][y].marked = false
-				cells.set_cell(Vector2i(x,y), 0, cell_tile)
+				cells.set_cell(Vector2i(x, y), 0, cell_tile)
 
 
 func reset_board() -> void:
@@ -89,16 +66,8 @@ func reset_board() -> void:
 			if _map_data[x][y].playable:
 				_map_data[x][y].enemies_count = 0
 				_map_data[x][y].type = CellType.EMPTY
-				board.set_cell(Vector2i(x,y), 0, empty_tiles[0])
+				board.set_cell(Vector2i(x, y), 0, empty_tiles[0])
 	_enemies_on_map.clear()
-
-
-func _build_directions() -> void:
-	_directions.clear()
-	for x in range (-1, 2):
-		for y in range (-1, 2):
-			if x != 0 || y != 0:
-				_directions.append(Vector2i(x, y))
 
 
 func get_neighbour_cells(pos: Vector2i, filter_cell: Array[Vector2i] = []) -> Array[Vector2i]:
@@ -106,19 +75,19 @@ func get_neighbour_cells(pos: Vector2i, filter_cell: Array[Vector2i] = []) -> Ar
 	var neighbours: Array[Vector2i] = []
 	for dir in _directions:
 		var new_pos = pos + dir
-		
+
 		#outside map borders
 		if new_pos.x < 0 || new_pos.x >= size.x || \
-			new_pos.y < 0 || new_pos.y >= size.y:
+		new_pos.y < 0 || new_pos.y >= size.y:
 			continue
-		
+
 		if _map_data[new_pos.x][new_pos.y].playable == false:
 			continue
-		
+
 		var cell_type = cells.get_cell_atlas_coords(new_pos)
 		if filter_cell.is_empty() == true || cell_type in filter_cell:
 			neighbours.append(new_pos)
-	
+
 	return neighbours
 
 
@@ -127,7 +96,7 @@ func open_cell_at_global_position(global_pos: Vector2) -> bool:
 	if is_pos_valid(coords) == false:
 		return false
 	if _map_data[coords.x][coords.y].opened == false and \
-		_map_data[coords.x][coords.y].marked == false:
+	_map_data[coords.x][coords.y].marked == false:
 		var command = OpenCellsCommand.new(self, coords)
 		# TODO: some other way to send commands
 		get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
@@ -137,7 +106,7 @@ func open_cell_at_global_position(global_pos: Vector2) -> bool:
 
 func open_cell(pos: Vector2i) -> Array[Vector2i]:
 	print("Map: open cell: " + str(pos))
-	
+
 	var opened_cells: Array[Vector2i] = []
 	var cell_data: MapTileData = _map_data[pos.x][pos.y]
 	if cell_data.opened == false:
@@ -169,7 +138,7 @@ func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
 	var opened_cells: Array[Vector2i] = []
 	var stack: Array[Vector2i] = []
 	stack.append_array(get_neighbour_cells(pos, [cell_tile]))
-	
+
 	while stack.is_empty() == false:
 		var cur_cell = stack.pop_back()
 		var cell_data: MapTileData = _map_data[cur_cell.x][cur_cell.y]
@@ -179,7 +148,7 @@ func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
 		if cell_data.enemies_count == 0:
 			var neighbour_cells = get_neighbour_cells(cur_cell, [cell_tile])
 			stack.append_array(neighbour_cells)
-	
+
 	return opened_cells
 
 
@@ -201,7 +170,7 @@ func mark_cell_global_position(global_pos: Vector2) -> void:
 	var coords = cells.local_to_map(cells.to_local(global_pos))
 	if is_pos_valid(coords) == false:
 		return
-	
+
 	var command: MarkCellCommand = MarkCellCommand.new(self, coords)
 	get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
 
@@ -209,7 +178,7 @@ func mark_cell_global_position(global_pos: Vector2) -> void:
 func is_cell_marked(pos: Vector2i) -> bool:
 	if is_pos_valid(pos) == false:
 		return false
-	
+
 	var cell_data: MapTileData = _map_data[pos.x][pos.y]
 	return cell_data.marked
 
@@ -251,7 +220,7 @@ func get_cell_pos(global_pos: Vector2) -> Vector2i:
 
 func is_pos_valid(cell_pos: Vector2i) -> bool:
 	if cell_pos.x < 0 || cell_pos.x >= size.x || \
-			cell_pos.y < 0 || cell_pos.y >= size.y:
+	cell_pos.y < 0 || cell_pos.y >= size.y:
 		return false
 	var cell_data: MapTileData = _map_data[cell_pos.x][cell_pos.y]
 	return cell_data.playable
@@ -300,13 +269,12 @@ func get_empty_cells() -> Array[Vector2i]:
 
 func create_enemy_collection(enemies: Array[PackedScene]) -> void:
 	_enemies.clear()
-	var enemy_scene_collection = board.tile_set\
-		.get_source(ENEMY_COLLECTION_ID) \
-		as TileSetScenesCollectionSource 
+	var enemy_scene_collection = board.tile_set \
+	.get_source(ENEMY_COLLECTION_ID) \
+	as TileSetScenesCollectionSource
 	for enemy_scene in enemies:
 		var new_id = enemy_scene_collection.create_scene_tile(enemy_scene)
 		_enemies[enemy_scene] = new_id
-
 
 
 func add_enemy(pos: Vector2i, enemy_scene: PackedScene) -> void:
@@ -314,24 +282,57 @@ func add_enemy(pos: Vector2i, enemy_scene: PackedScene) -> void:
 	var enemy_collection_id = _enemies[enemy_scene]
 	_map_data[pos.x][pos.y].type = CellType.ENEMY
 
-	# TODO: should it be here? 
+	# TODO: should it be here?
 	board.set_cell(pos, ENEMY_COLLECTION_ID, Vector2i(0, 0), enemy_collection_id)
-	
+
 	# tilemap updates at the end of the frame
 	# this means that _ready() on spawned scene will be called only then
 	# we need to store ref to spawned scene so force tilemap update with update_internals()
 	# TODO: can be heavy on perf. check on big map, make it better and frame independent?
 	board.update_internals()
-	
+
 	var last_ind = board.get_child_count()
 	var child_scene = board.get_children()[last_ind - 1] as Enemy
 	_enemies_on_map[pos] = child_scene
-	
+
 	var neighbours: Array[Vector2i] = get_neighbour_cells(pos)
 	for neighbour in neighbours:
 		var data = _map_data[neighbour.x][neighbour.y]
 		if data.type == CellType.EMPTY:
 			data.enemies_count += 1
 
-			# TODO: should it be here? 
+			# TODO: should it be here?
 			board.set_cell(neighbour, 0, empty_tiles[data.enemies_count])
+
+
+func _build_directions() -> void:
+	_directions.clear()
+	for x in range(-1, 2):
+		for y in range(-1, 2):
+			if x != 0 || y != 0:
+				_directions.append(Vector2i(x, y))
+
+
+class MapTileData:
+	var playable: bool
+	var opened: bool
+	var marked: bool
+	var enemies_count: int
+	var type: CellType
+	var effects: Array[int]
+
+
+	func _init(
+			i_playable: bool = true,
+			i_opened: bool = false,
+			i_marked: bool = false,
+			i_enemis_count: int = 0,
+			i_type: CellType = CellType.EMPTY,
+			i_effects: Array[int] = [],
+	) -> void:
+		playable = i_playable
+		opened = i_opened
+		marked = i_marked
+		enemies_count = i_enemis_count
+		type = i_type
+		effects = i_effects
