@@ -41,7 +41,6 @@ metadata/_custom_type_script = "uid://diqmvisuttd5h"
 script = ExtResource("5_b7mkg")
 title = "Stage 3-"
 level_range = Vector2i(10, 20)
-enemies = Dictionary[PackedScene, Vector2i]({})
 map_x = Vector2i(7, 10)
 map_y = Vector2i(7, 10)
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
@@ -118,6 +117,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LevelLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
 offset_left = 17.96
 offset_top = 17.0
 offset_right = 106.96
