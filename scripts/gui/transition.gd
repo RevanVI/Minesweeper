@@ -24,3 +24,7 @@ func play_transition_out() -> void:
 	animation_player.play_backwards('transition_fade')
 	await animation_player.animation_finished
 	fade_out_completed.emit()
+
+
+func transition_to_scene(scene_path: String) -> void:
+	print("Transition to scene " + scene_path)

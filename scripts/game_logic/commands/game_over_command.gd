@@ -4,9 +4,9 @@ extends Command
 
 var undo_callback: Callable
 
-func _execute() -> void:
+func execute() -> void:
 	print("Game lost")
 
 
-func _undo() -> void:
+func undo() -> void:
 	undo_callback.call()

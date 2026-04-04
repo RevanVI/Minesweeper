@@ -6,9 +6,9 @@ func _init() -> void:
 	pass
 
 
-func _execute() -> void:
+func execute() -> void:
 	pass
 
 
-func _undo() -> void:
+func undo() -> void:
 	pass

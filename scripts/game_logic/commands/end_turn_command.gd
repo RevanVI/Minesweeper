@@ -2,5 +2,5 @@ class_name EndTurnCommand
 extends Command
 
 
-func _execute() -> void:
+func execute() -> void:
 	print("Turn ended")
