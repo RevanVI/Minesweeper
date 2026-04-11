@@ -1,18 +1,14 @@
 class_name LevelInfo
 extends Resource
 
-
 @export var title: String
 @export var level_range: Vector2i
 @export var enemies: Dictionary[PackedScene, Vector2i]
 @export var map_x: Vector2i = Vector2i(10, 10)
 @export var map_y: Vector2i = Vector2i(10, 10)
 
-
-var _title: String
+var map_size: Vector2i
 var _enemies: Dictionary[PackedScene, int]
-var _map_x: int
-var _map_y: int
 
 
 func get_enemy_count() -> int:
@@ -22,12 +18,18 @@ func get_enemy_count() -> int:
 	return count
 
 
+func get_enemies_data() -> Dictionary[PackedScene, int]:
+	return _enemies
+
+
 func generate_level(index: int) -> void:
 	print("LevelInfo: Generate level")
-	_title = title + str(index)
-	_map_x = randi_range(map_x[0], map_x[1])
-	_map_y = randi_range(map_y[0], map_y[1])
-	
+	title = title + str(index)
+	# TODO: make random generator with seed input?
+	var x: int = randi_range(map_x[0], map_x[1])
+	var y: int = randi_range(map_y[0], map_y[1])
+	map_size = Vector2i(x, y)
+
 	_enemies.clear()
 	for enemy in enemies:
 		var count = randi_range(enemies[enemy][0], enemies[enemy][1])

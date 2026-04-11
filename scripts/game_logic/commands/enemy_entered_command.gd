@@ -12,10 +12,10 @@ func _init(character: Character, enemy: Enemy) -> void:
 	_enemy = enemy
 
 
-func _execute() -> void:
+func execute() -> void:
 	_damage = _enemy.get_damage()
 	_character.take_damage(_damage)
 
 
-func _undo() -> void:
+func undo() -> void:
 	_character.restore_hp(_damage)

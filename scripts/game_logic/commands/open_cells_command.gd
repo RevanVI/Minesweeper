@@ -12,11 +12,11 @@ func _init(map_ref: Map, position: Vector2i) -> void:
 	cell_positions = [position]
 
 
-func _execute() -> void:
+func execute() -> void:
 	var opened_cells = map.open_cell(cell_positions[0])
 	cell_positions = opened_cells
 
 
-func _undo() -> void:
+func undo() -> void:
 	for pos in cell_positions:
 		map.close_cell(pos)

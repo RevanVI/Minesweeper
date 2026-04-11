@@ -12,9 +12,9 @@ func _init(map_ref: Map, pos: Vector2i) -> void:
 	mark_pos = pos
 
 
-func _execute() -> void:
+func execute() -> void:
 	map.mark_cell(mark_pos)
 
 
-func _undo() -> void:
+func undo() -> void:
 	map.mark_cell(mark_pos)
