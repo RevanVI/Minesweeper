@@ -32,4 +32,4 @@ func restart_mode() -> void:
 
 
 func exit_to_menu() -> void:
-	pass
+	get_tree().change_scene_to_file("res://scenes/gui/main_menu.tscn")

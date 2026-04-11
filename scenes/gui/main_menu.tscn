@@ -1,0 +1,109 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgutcnb5l6thb"]
+
+[ext_resource type="Script" uid="uid://b7xrmrool0crq" path="res://scripts/gui/main_menu.gd" id="1_xbu81"]
+
+[sub_resource type="Gradient" id="Gradient_sv288"]
+offsets = PackedFloat32Array(0, 0.650794, 0.996032)
+colors = PackedColorArray(0.428247, 0.672288, 0.805234, 1, 0.52381, 0.52381, 0.52381, 1, 0.230215, 0.367706, 0.215855, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xbu81"]
+gradient = SubResource("Gradient_sv288")
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xbu81")
+
+[node name="image" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.199982
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_xbu81")
+
+[node name="panel" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.4
+anchor_bottom = 1.0
+offset_right = 0.199982
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.427451, 0.666667, 0.8, 1)
+
+[node name="Label" type="Label" parent="panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 145.0
+offset_top = 37.0
+offset_right = -131.0
+offset_bottom = 60.0
+grow_horizontal = 2
+text = "Minesweeper prototype"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainModeBtn" type="Button" parent="panel"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 115.0
+offset_right = 121.0
+offset_bottom = 150.0
+disabled = true
+text = "Main mode"
+
+[node name="EndlessModeBtn" type="Button" parent="panel"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 165.0
+offset_right = 139.0
+offset_bottom = 200.0
+text = "Endless mode"
+
+[node name="ClassicModeBtn" type="Button" parent="panel"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 216.0
+offset_right = 139.0
+offset_bottom = 251.0
+text = "Classic mode"
+
+[node name="BFMModeBtn" type="Button" parent="panel"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 267.0
+offset_right = 152.0
+offset_bottom = 302.0
+disabled = true
+text = "BFM mode"
+
+[node name="SettingsBtn" type="Button" parent="panel"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 322.0
+offset_right = 153.0
+offset_bottom = 357.0
+disabled = true
+text = "Settings"
+
+[node name="ExitBtn" type="Button" parent="panel"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 376.0
+offset_right = 152.0
+offset_bottom = 411.0
+text = "Exit
+"
+
+[connection signal="pressed" from="panel/EndlessModeBtn" to="." method="_on_endless_mode_btn_pressed"]
+[connection signal="pressed" from="panel/ClassicModeBtn" to="." method="_on_classic_mode_btn_pressed"]
+[connection signal="pressed" from="panel/ExitBtn" to="." method="_on_exit_btn_pressed"]
