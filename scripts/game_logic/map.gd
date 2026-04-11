@@ -31,6 +31,13 @@ func _ready() -> void:
 	_build_directions()
 
 
+func reset_map() -> void:
+	cells.clear()
+	board.clear()
+	_enemies = {}
+	_enemies_on_map = {}
+
+
 func update_visual_map() -> void:
 	cells.clear()
 	board.clear()

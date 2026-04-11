@@ -17,6 +17,7 @@ func set_map_data(map_x: int, map_y: int) -> void:
 
 func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int]) -> void:
 	map = map_ref
+	map.reset_map()
 	map_size = size
 	map.size = map_size
 	enemies_info = enemies_data
@@ -32,7 +33,7 @@ func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[P
 	map.update_visual_map()
 
 
-func fill_map(map_ref: Map, start_pos: Vector2i) -> void:
+func populate_map(map_ref: Map, start_pos: Vector2i) -> void:
 	map = map_ref
 	if map.is_pos_valid(start_pos) == false:
 		return

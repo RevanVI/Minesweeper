@@ -5,6 +5,7 @@ extends Control
 @export var hp_color_low: Color
 
 
+var game_mode_manager: GameModeManager
 var game_manager: GameManager
 var low_hp_limit: float = 0.5
 
@@ -22,21 +23,26 @@ var low_hp_limit: float = 0.5
 
 func _ready() -> void:
 	game_manager = get_tree().get_first_node_in_group("GameManager")
+	game_mode_manager = get_tree().get_first_node_in_group("GameModeManager")
+	game_mode_manager.init_done.connect(setup_game_mode)
+
 	game_manager.battle_time_changed.connect(update_time)
 	game_manager.mark_count_changed.connect(update_mark)
 	game_manager.turn_changed.connect(update_turn)
 	game_manager.undo_count_changed.connect(update_undo_count)
-	game_manager.character.hp_changed.connect(update_hp)
 	game_manager.level_changed.connect(update_level)
 	game_manager.level_completed.connect(_on_level_end)
 	game_manager.level_lost.connect(_on_level_end)
 	game_manager.game_state_changed.connect(_on_game_state_changed)
 	
-	
 	update_time(game_manager.battle_time)
 	update_mark(game_manager.mark_count)
-	update_undo_count(game_manager.undo_count)
-	update_hp(game_manager.character._hp, game_manager.character._max_hp)
+	
+
+func setup_game_mode() -> void:
+	game_mode_manager.character.hp_changed.connect(update_hp)
+	update_undo_count(game_mode_manager.character.get_undo_count())
+	update_hp(game_mode_manager.character._hp, game_mode_manager.character._max_hp)
 
 
 func update_time(time: int) -> void:
@@ -70,7 +76,7 @@ func update_level(level: String) -> void:
 
 
 func _on_button_pressed() -> void:
-	game_manager.restart_game()
+	game_mode_manager.restart_mode()
 
 
 func _on_undo_button_pressed() -> void:

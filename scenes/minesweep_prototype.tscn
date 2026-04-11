@@ -1,48 +1,28 @@
-[gd_scene load_steps=21 format=4 uid="uid://ccosysrpa6d3f"]
+[gd_scene load_steps=18 format=4 uid="uid://ccosysrpa6d3f"]
 
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="1_3whhm"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="1_7o4uc"]
 [ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="1_571c6"]
+[ext_resource type="Script" uid="uid://b6ge135t4j6uf" path="res://scripts/game_logic/game_modes/endless_game_mode_manager.gd" id="1_hj7kk"]
 [ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="2_3whhm"]
 [ext_resource type="Script" uid="uid://cyjfintjqebld" path="res://scripts/gui/battle.gd" id="5_85huv"]
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="5_b7mkg"]
 [ext_resource type="PackedScene" uid="uid://mxcgjh4wuoq2" path="res://scenes/enemies/bomb.tscn" id="5_x2wux"]
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="5_xgl0c"]
-[ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="6_e5u5o"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="7_qa7br"]
 [ext_resource type="Script" uid="uid://bdeo4vni1gdc" path="res://scripts/gui/end_game.gd" id="11_7tfgl"]
 [ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="12_64nls"]
-[ext_resource type="Script" uid="uid://pv3c0svgtldo" path="res://scripts/game_logic/character.gd" id="12_bgk73"]
 
 [sub_resource type="Resource" id="Resource_e5u5o"]
 script = ExtResource("5_b7mkg")
-title = "Stage 1-"
+base_title = "Stage "
+title = "Stage 1"
 level_range = Vector2i(0, 4)
 enemies = Dictionary[PackedScene, Vector2i]({
 ExtResource("5_x2wux"): Vector2i(3, 3)
 })
 map_x = Vector2i(5, 5)
 map_y = Vector2i(5, 5)
-metadata/_custom_type_script = "uid://diqmvisuttd5h"
-
-[sub_resource type="Resource" id="Resource_7tfgl"]
-script = ExtResource("5_b7mkg")
-title = "Stage 2-"
-level_range = Vector2i(5, 9)
-enemies = Dictionary[PackedScene, Vector2i]({
-ExtResource("6_e5u5o"): Vector2i(1, 2),
-ExtResource("5_x2wux"): Vector2i(5, 7)
-})
-map_x = Vector2i(5, 7)
-map_y = Vector2i(5, 7)
-metadata/_custom_type_script = "uid://diqmvisuttd5h"
-
-[sub_resource type="Resource" id="Resource_64nls"]
-script = ExtResource("5_b7mkg")
-title = "Stage 3-"
-level_range = Vector2i(10, 20)
-map_x = Vector2i(7, 10)
-map_y = Vector2i(7, 10)
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
@@ -62,7 +42,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 1)
 
-[node name="MinesweepPrototype" type="Node2D"]
+[node name="EndlessGameModeManager" type="Node2D" groups=["GameModeManager"]]
+script = ExtResource("1_hj7kk")
+level_info = SubResource("Resource_e5u5o")
 
 [node name="Map" type="Node2D" parent="."]
 script = ExtResource("1_7o4uc")
@@ -80,19 +62,14 @@ tile_set = ExtResource("1_571c6")
 [node name="MapGenerator" type="Node2D" parent="."]
 script = ExtResource("2_3whhm")
 
+[node name="BattleTimer" type="Timer" parent="."]
+
 [node name="GameManager" type="Node2D" parent="." groups=["GameManager"]]
 script = ExtResource("1_3whhm")
-levels = Array[ExtResource("5_b7mkg")]([SubResource("Resource_e5u5o"), SubResource("Resource_7tfgl"), SubResource("Resource_64nls")])
 
 [node name="TurnQueue" type="Node" parent="GameManager"]
 script = ExtResource("5_xgl0c")
 metadata/_custom_type_script = "uid://b8ri86hixsvvn"
-
-[node name="Character" type="Node2D" parent="." groups=["Character"]]
-script = ExtResource("12_bgk73")
-metadata/_custom_type_script = "uid://pv3c0svgtldo"
-
-[node name="BattleTimer" type="Timer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -329,12 +306,11 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "undo"
 
+[connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
 [connection signal="paused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_paused"]
 [connection signal="unpaused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_unpaused"]
 [connection signal="undo_ended" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="stop_anim"]
 [connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
-[connection signal="damaged" from="Character" to="CanvasLayer/Control2/DamageTex" method="_on_character_damaged"]
-[connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/RestartButton" to="CanvasLayer/Control" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/UndoButton" to="CanvasLayer/Control" method="_on_undo_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/PauseButton" to="CanvasLayer/Control" method="_on_pause_button_pressed"]
