@@ -4,6 +4,7 @@ extends Node2D
 
 signal mark_count_changed(mark_count: int)
 signal undo_count_changed(undo_count: int)
+signal undo_status_changed(available: bool)
 signal game_state_changed(game_state: GameState)
 signal turn_changed(turn_count: int)
 signal battle_time_changed(battle_time: int)
@@ -30,6 +31,7 @@ var battle_time: int = 0
 var game_state: GameState
 var _prev_game_state: GameState
 var _game_state_changing: bool = false
+var _modifier_list: ModifiersList
 
 
 @onready var map: Map = $"../Map"
@@ -73,7 +75,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func prepare_level(level_info: LevelInfo) -> void:
 	level_changed.emit(level_info.title)
 	turn_queue.reset()
-	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data())
+	map.set_modifiers(_modifier_list)
+	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data(), _modifier_list)
 	enemies_count = level_info.get_enemy_count()
 	mark_count = enemies_count
 	mark_count_changed.emit(mark_count)
@@ -86,6 +89,14 @@ func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 	battle_timer.stop()
 	battle_time = 0
 	battle_time_changed.emit(battle_time)
+
+	# TODO collect modifiers from all sources
+	_modifier_list = ModifiersList.new()
+	_modifier_list.add_modifiers(level_info.modifiers)
+
+	if _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.UNDO_BLOCKED):
+		undo_status_changed.emit(false)
+
 	undo_count_changed.emit(_character.get_undo_count())
 	prepare_level(level_info)
 	change_game_state(GameState.START)
@@ -199,3 +210,10 @@ func undo() -> void:
 		undo_count_changed.emit(undo_count)
 		_character.set_undo_count(undo_count)
 		turn_queue.undo(1)
+
+
+func get_undo_status() -> bool:
+	if _character.get_undo_count() <= 0 or \
+		_modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.UNDO_BLOCKED):
+		return false
+	return true

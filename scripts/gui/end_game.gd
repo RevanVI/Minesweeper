@@ -25,10 +25,7 @@ func _on_level_lost() -> void:
 	loose_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	if game_mode_manager.is_undo_supported() == false:
 		return
-	if game_mode_manager.character.get_undo_count() > 0:
-		undo_btn.disabled = false
-	else:
-		undo_btn.disabled = true
+	undo_btn.disabled = !game_manager.get_undo_status()
 
 
 func _on_next_level_btn_pressed() -> void:

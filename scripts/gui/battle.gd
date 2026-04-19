@@ -30,6 +30,7 @@ func _ready() -> void:
 	game_manager.mark_count_changed.connect(update_mark)
 	game_manager.turn_changed.connect(update_turn)
 	game_manager.undo_count_changed.connect(update_undo_count)
+	game_manager.undo_status_changed.connect(update_undo_status)
 	game_manager.level_changed.connect(update_level)
 	game_manager.level_completed.connect(_on_level_end)
 	game_manager.level_lost.connect(_on_level_end)
@@ -65,10 +66,11 @@ func update_hp(hp: int, max_hp: int) -> void:
 
 func update_undo_count(undo_count: int) -> void:
 	undo_label.text = "Undo left: " + str(undo_count)
-	if undo_count <= 0:
-		undo_button.disabled = true
-	else:
-		undo_button.disabled = false
+	undo_button.disabled = !game_manager.get_undo_status()
+
+
+func update_undo_status(available: bool) -> void:
+	undo_button.disabled = !available
 
 
 func update_level(level: String) -> void:
@@ -92,7 +94,7 @@ func _on_game_manager_paused() -> void:
 
 
 func _on_game_manager_unpaused() -> void:
-	undo_button.disabled = false
+	undo_button.disabled = !game_manager.get_undo_status()
 
 
 func _on_level_end() -> void:
@@ -103,6 +105,6 @@ func _on_level_end() -> void:
 
 func _on_game_state_changed(game_state: GameManager.GameState) -> void:
 	if game_state == GameManager.GameState.START:
-		undo_button.disabled = false
+		undo_button.disabled = !game_manager.get_undo_status()
 		pause_button.disabled = false
 		restart_button.disabled = false
