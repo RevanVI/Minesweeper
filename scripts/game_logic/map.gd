@@ -16,12 +16,14 @@ const ENEMY_COLLECTION_ID = 1
 @export var cell_tile: Vector2i
 @export var mark_tile: Vector2i
 @export var empty_tiles: Array[Vector2i]
+@export var hidden_tile: Vector2i
 
 var size: Vector2i = Vector2i(0, 0)
 var _directions: Array[Vector2i] = []
 var _enemies: Dictionary[PackedScene, int] = { }
 var _enemies_on_map: Dictionary[Vector2i, Enemy] = { }
 var _map_data: Array[Array]
+var _modifier_list: ModifiersList
 
 @onready var board: TileMapLayer = $Board
 @onready var cells: TileMapLayer = $Cells
@@ -34,8 +36,8 @@ func _ready() -> void:
 func reset_map() -> void:
 	cells.clear()
 	board.clear()
-	_enemies = {}
-	_enemies_on_map = {}
+	_enemies = { }
+	_enemies_on_map = { }
 
 
 func update_visual_map() -> void:
@@ -51,7 +53,11 @@ func update_visual_map() -> void:
 			if tile_data.marked:
 				cells.set_cell(pos, 0, mark_tile)
 			if tile_data.playable:
-				board.set_cell(pos, 0, empty_tiles[0])
+				var hide_modifier: ModifierHiddenCells = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
+				if hide_modifier and tile_data.enemies_count in hide_modifier.hidden_values:
+					board.set_cell(pos, 0, hidden_tile)
+				else:
+					board.set_cell(pos, 0, empty_tiles[tile_data.enemies_count])
 
 
 func reset_cells() -> void:
@@ -309,7 +315,15 @@ func add_enemy(pos: Vector2i, enemy_scene: PackedScene) -> void:
 			data.enemies_count += 1
 
 			# TODO: should it be here?
-			board.set_cell(neighbour, 0, empty_tiles[data.enemies_count])
+			var hide_modifier: ModifierHiddenCells = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
+			if hide_modifier and data.enemies_count in hide_modifier.hidden_values:
+				board.set_cell(neighbour, 0, hidden_tile)
+			else:
+				board.set_cell(neighbour, 0, empty_tiles[data.enemies_count])
+
+
+func set_modifiers(modifiers: ModifiersList) -> void:
+	_modifier_list = modifiers
 
 
 func _build_directions() -> void:

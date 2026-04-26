@@ -5,6 +5,7 @@ var map_size: Vector2i = Vector2i(10, 10)
 var map: Map
 # enemy scene: enemies count
 var enemies_info: Dictionary[PackedScene, int] = { }
+var _modifier_list: ModifiersList
 
 
 func set_enemies_info(data: Dictionary[PackedScene, int]) -> void:
@@ -15,12 +16,13 @@ func set_map_data(map_x: int, map_y: int) -> void:
 	map_size = Vector2i(map_x, map_y)
 
 
-func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int]) -> void:
+func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList) -> void:
 	map = map_ref
 	map.reset_map()
 	map_size = size
 	map.size = map_size
 	enemies_info = enemies_data
+	_modifier_list = modifiers
 
 	var map_data: Array[Array] = []
 	for x in range(map_size.x):
