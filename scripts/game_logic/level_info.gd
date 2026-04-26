@@ -1,6 +1,7 @@
 class_name LevelInfo
 extends Resource
 
+@export var base_title: String
 @export var title: String
 @export var level_range: Vector2i
 @export var enemies: Dictionary[PackedScene, Vector2i]
@@ -24,7 +25,7 @@ func get_enemies_data() -> Dictionary[PackedScene, int]:
 
 func generate_level(index: int) -> void:
 	print("LevelInfo: Generate level")
-	title = title + str(index)
+	title = base_title + str(index)
 	# TODO: make random generator with seed input?
 	var x: int = randi_range(map_x[0], map_x[1])
 	var y: int = randi_range(map_y[0], map_y[1])

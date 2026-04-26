@@ -1,11 +1,11 @@
 extends Control
 
+
 var game_mode_manager: GameModeManager
 var game_manager: GameManager
 
 @onready var win_panel: Panel = $WinPanel
 @onready var loose_panel: Panel = $LoosePanel
-@onready var undo_btn: Button = $LoosePanel/undo_btn
 
 
 func _ready() -> void:
@@ -25,10 +25,6 @@ func _on_level_lost() -> void:
 	loose_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	if game_mode_manager.is_undo_supported() == false:
 		return
-	if game_mode_manager.character.get_undo_count() > 0:
-		undo_btn.disabled = false
-	else:
-		undo_btn.disabled = true
 
 
 func _on_next_level_btn_pressed() -> void:

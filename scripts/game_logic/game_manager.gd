@@ -23,13 +23,9 @@ enum GameState {
 	PAUSE = 5,
 }
 
-@export var levels: Array[LevelInfo]
 
-
-var current_level: int = 0
 var enemies_count: int = 0
-var mark_count: int = 10 
-var undo_count: int = 3
+var mark_count: int = 10
 var battle_time: int = 0
 var game_state: GameState
 var _prev_game_state: GameState
@@ -40,7 +36,7 @@ var _game_state_changing: bool = false
 @onready var map_generator: MapGenerator = $"../MapGenerator"
 @onready var battle_timer: Timer = $"../BattleTimer"
 @onready var turn_queue: TurnQueue = $TurnQueue
-@onready var character: Character = $"../Character"
+var _character: Character
 
 
 func _ready():
@@ -48,8 +44,6 @@ func _ready():
 	turn_queue.turn_changed.connect(_on_turn_end)
 	map.cell_marked.connect(_on_cell_marked)
 	map.cell_opened.connect(_on_cell_opened)
-	character.died.connect(_on_character_died)
-	restart_game()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -64,7 +58,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if game_state == GameState.START:
 			print("GameManager: first turn")
 			var cell_pos = map.get_cell_pos(event.global_position)
-			map_generator.fill_map(map, cell_pos)
+			map_generator.populate_map(map, cell_pos)
 			change_game_state(GameState.BATTLE)
 			battle_timer.start()
 		
@@ -76,51 +70,25 @@ func _unhandled_input(event: InputEvent) -> void:
 			map.mark_cell_global_position(event.global_position)
 
 
-func start_next_level() -> void:
-	current_level += 1
-	var callback = Callable(self, "prepare_level")
-	Transition.play_transition_in(callback)
-	await Transition.fade_out_completed
-	change_game_state(GameState.START)
-
-
-func prepare_level() -> void:
-	var level_template : LevelInfo = null
-	for i in levels.size():
-		var levels_range = levels[i].level_range
-		if current_level >= levels_range[0] && current_level <= levels_range[1]:
-			level_template = levels[i]
-			break
-	if level_template == null:
-		level_template = levels[-1]
-	
-	level_template.generate_level(current_level)
-	level_changed.emit(level_template.title)
-	enemies_count = level_template.get_enemy_count()
-	map_generator.generate_empty_map(map, level_template.map_size, level_template.get_enemies_data())
-	
+func prepare_level(level_info: LevelInfo) -> void:
+	level_changed.emit(level_info.title)
 	turn_queue.reset()
+	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data())
+	enemies_count = level_info.get_enemy_count()
 	mark_count = enemies_count
 	mark_count_changed.emit(mark_count)
 
 
-func restart_game() -> void:
-	print("Restart game")
-	var callback = Callable(self, "prepare_game")
-	Transition.play_transition_in(callback)
-	await Transition.fade_out_completed
-	change_game_state(GameState.START)
-
-
-func prepare_game() -> void:
+func prepare_battle(level_info: LevelInfo, character: Character) -> void:
+	_character = character
+	if _character.is_connected("died", _on_character_died) == false:
+		_character.died.connect(_on_character_died)
 	battle_timer.stop()
 	battle_time = 0
 	battle_time_changed.emit(battle_time)
-	undo_count = 3
-	undo_count_changed.emit(undo_count)
-	character.reset()
-	current_level = 0
-	prepare_level()
+	undo_count_changed.emit(_character.get_undo_count())
+	prepare_level(level_info)
+	change_game_state(GameState.START)
 
 
 func change_game_state(new_state: GameState) -> void:
@@ -177,7 +145,7 @@ func check_board_cleared() -> void:
 		if i not in enemies_cells:
 			return
 	
-	print("GameManager: Level " + str(current_level) + " completed")
+	print("GameManager: Level completed")
 	change_game_state(GameState.GAME_WIN)
 	level_completed.emit()
 
@@ -197,7 +165,7 @@ func _on_cell_marked(value: bool) -> void:
 
 func _on_cell_opened(cell_type: Map.CellType, opened_obj: Node = null) -> void:
 	if cell_type == Map.CellType.ENEMY:
-		var command = EnemyEnteredCommand.new(character, opened_obj as Enemy)
+		var command = EnemyEnteredCommand.new(_character, opened_obj as Enemy)
 		turn_queue.add_command(command)
 	else:
 		check_board_cleared()
@@ -223,9 +191,11 @@ func pause() -> void:
 
 
 func undo() -> void:
+	var undo_count = _character.get_undo_count()
 	if (game_state == GameState.BATTLE \
 		|| game_state == GameState.GAME_OVER) \
 		&& undo_count > 0 && turn_queue.is_undo_possible():
 		undo_count -= 1
 		undo_count_changed.emit(undo_count)
+		_character.set_undo_count(undo_count)
 		turn_queue.undo(1)
