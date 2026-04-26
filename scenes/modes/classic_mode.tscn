@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=4 uid="uid://c2ojfj15jwr4"]
+[gd_scene load_steps=20 format=4 uid="uid://c2ojfj15jwr4"]
 
 [ext_resource type="Script" uid="uid://daheqlmjupwww" path="res://scripts/game_logic/game_modes/classic_game_mode_manager.gd" id="1_xmsgg"]
 [ext_resource type="PackedScene" uid="uid://mxcgjh4wuoq2" path="res://scenes/enemies/bomb.tscn" id="2_p4m7m"]
+[ext_resource type="Script" uid="uid://d24yha5t4vm1g" path="res://scripts/game_logic/modifiers/modifier_base.gd" id="3_p4m7m"]
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="3_qgemu"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="4_8ivtb"]
 [ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="5_b5xbl"]
@@ -12,6 +13,7 @@
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="10_kfal4"]
 [ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="11_ejyf8"]
 [ext_resource type="Script" uid="uid://c0b0dy1yg1am8" path="res://scripts/gui/end_game_classic.gd" id="12_lgmfj"]
+[ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="14_qgemu"]
 
 [sub_resource type="Resource" id="Resource_ygwmg"]
 script = ExtResource("3_qgemu")
@@ -43,6 +45,16 @@ fill_to = Vector2(1, 1)
 script = ExtResource("1_xmsgg")
 level_info = SubResource("Resource_ygwmg")
 
+[node name="CameraController" type="Camera2D" parent="."]
+limit_left = -886
+limit_top = -904
+limit_right = 1614
+limit_bottom = 896
+script = ExtResource("14_qgemu")
+zoom_limits = Vector2(0.75, 2)
+speed = 200.0
+metadata/_custom_type_script = "uid://cqh3xxrgi3ncc"
+
 [node name="Map" type="Node2D" parent="."]
 script = ExtResource("4_8ivtb")
 cell_tile = Vector2i(0, 1)
@@ -72,8 +84,8 @@ metadata/_custom_type_script = "uid://b8ri86hixsvvn"
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchor_left = 0.645
-anchor_right = 1.001
+anchor_left = 0.65
+anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -0.1521
 script = ExtResource("9_lgmfj")

@@ -38,6 +38,7 @@ var _modifier_list: ModifiersList
 @onready var map_generator: MapGenerator = $"../MapGenerator"
 @onready var battle_timer: Timer = $"../BattleTimer"
 @onready var turn_queue: TurnQueue = $TurnQueue
+@onready var camera_controller: CameraController = $"../CameraController"
 var _character: Character
 
 
@@ -57,19 +58,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("LeftMouseButton"):
+		var global_pos: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
 		if game_state == GameState.START:
 			print("GameManager: first turn")
-			var cell_pos = map.get_cell_pos(event.global_position)
+			var cell_pos = map.get_cell_pos(global_pos)
 			map_generator.populate_map(map, cell_pos)
 			change_game_state(GameState.BATTLE)
 			battle_timer.start()
 		
-		if map.open_cell_at_global_position(event.global_position):
+		if map.open_cell_at_global_position(global_pos):
 			var command = EndTurnCommand.new()
 			turn_queue.add_command(command)
 	elif event.is_action_pressed("RightMouseButton"):
 		if game_state == GameState.BATTLE:
-			map.mark_cell_global_position(event.global_position)
+			var global_pos: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+			map.mark_cell_global_position(global_pos)
 
 
 func prepare_level(level_info: LevelInfo) -> void:
@@ -77,6 +80,8 @@ func prepare_level(level_info: LevelInfo) -> void:
 	turn_queue.reset()
 	map.set_modifiers(_modifier_list)
 	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data(), _modifier_list)
+	camera_controller.pos_limits = map.get_limits()
+	camera_controller.calc_start_position()
 	enemies_count = level_info.get_enemy_count()
 	mark_count = enemies_count
 	mark_count_changed.emit(mark_count)

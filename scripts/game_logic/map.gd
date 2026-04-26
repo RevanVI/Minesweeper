@@ -334,6 +334,18 @@ func _build_directions() -> void:
 				_directions.append(Vector2i(x, y))
 
 
+func get_limits() -> Rect2:
+	var tile_limits: Rect2i = board.get_used_rect()
+	
+	var start_pos: Vector2 = board.map_to_local(tile_limits.position)
+	start_pos = to_global(start_pos) - Vector2(board.tile_set.tile_size)
+	var end_pos: Vector2 = board.map_to_local(tile_limits.end)
+	end_pos = to_global(end_pos)
+	var limit_size: Vector2 = Vector2(end_pos - start_pos)
+	var global_limits: Rect2 = Rect2(start_pos, limit_size)
+	return global_limits
+
+
 class MapTileData:
 	var playable: bool
 	var opened: bool
