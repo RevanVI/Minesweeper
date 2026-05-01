@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="2_4bswj"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="2_h52y7"]
 [ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="2_oh383"]
-[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="3_h52y7"]
+[ext_resource type="Resource" uid="uid://g6am2v5ifsx1" path="res://resources/generators/map_generator_base.tres" id="2_rtwxe"]
+[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://resources/tilesets/minesweeper_starter.tres" id="3_h52y7"]
 [ext_resource type="Script" uid="uid://d24yha5t4vm1g" path="res://scripts/game_logic/modifiers/modifier_base.gd" id="3_rtwxe"]
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="4_2fx62"]
-[ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="4_img2u"]
 
 [sub_resource type="Resource" id="Resource_rjwph"]
 script = ExtResource("4_2fx62")
@@ -16,17 +16,18 @@ ExtResource("2_oh383"): Vector2i(25, 25)
 })
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
-[node name="MapGeneratorTest" type="Node2D" node_paths=PackedStringArray("map", "map_generator", "camera_controller", "map_size_x_edit", "map_size_y_edit", "enemies_count_edit", "maps_count_edit", "errors_count_label")]
+[node name="MapGeneratorTest" type="Node2D" node_paths=PackedStringArray("map", "camera_controller", "map_size_x_edit", "map_size_y_edit", "enemies_count_edit", "maps_count_edit", "errors_count_label", "generator_options")]
 script = ExtResource("1_n3fcj")
-map = NodePath("Map")
-map_generator = NodePath("MapGenerator")
+map_generator = ExtResource("2_rtwxe")
 level_info = SubResource("Resource_rjwph")
+map = NodePath("Map")
 camera_controller = NodePath("CameraController")
 map_size_x_edit = NodePath("CanvasLayer/Control/Panel/MapSizeXLineEdit")
 map_size_y_edit = NodePath("CanvasLayer/Control/Panel/MapSizeYLineEdit")
 enemies_count_edit = NodePath("CanvasLayer/Control/Panel/EnemiesCountLineEdit")
 maps_count_edit = NodePath("CanvasLayer/Control/Panel/MapsCountLineEdit")
 errors_count_label = NodePath("CanvasLayer/Control/Panel/ErrorCountLabel")
+generator_options = NodePath("CanvasLayer/Control/Panel/GeneratorOptionButton")
 
 [node name="CameraController" type="Camera2D" parent="."]
 limit_left = -2000
@@ -51,9 +52,6 @@ tile_set = ExtResource("3_h52y7")
 [node name="Cells" type="TileMapLayer" parent="Map"]
 tile_set = ExtResource("3_h52y7")
 
-[node name="MapGenerator" type="Node2D" parent="."]
-script = ExtResource("4_img2u")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
@@ -73,76 +71,83 @@ offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="GeneratorOptionButton" type="OptionButton" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 28.200012
+offset_top = 22.0
+offset_right = 60.200012
+offset_bottom = 42.0
+
 [node name="MapSizeXLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 17.960022
-offset_top = 17.0
-offset_right = 106.96002
-offset_bottom = 49.0
+offset_left = 25.200012
+offset_top = 82.0
+offset_right = 114.20001
+offset_bottom = 114.0
 text = "Map size X:"
 
 [node name="MapSizeXLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 217.20001
-offset_top = 11.0
-offset_right = 285.7625
-offset_bottom = 42.0
+offset_left = 224.44
+offset_top = 76.0
+offset_right = 293.0025
+offset_bottom = 107.0
 text = "10"
 
 [node name="MapSizeYLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 19.200012
-offset_top = 58.0
-offset_right = 108.20001
-offset_bottom = 90.0
+offset_left = 26.440002
+offset_top = 123.0
+offset_right = 115.44
+offset_bottom = 155.0
 text = "Map size Y:"
 
 [node name="MapSizeYLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 217.20001
-offset_top = 54.0
-offset_right = 285.7625
-offset_bottom = 85.0
+offset_left = 224.44
+offset_top = 119.0
+offset_right = 293.0025
+offset_bottom = 150.0
 text = "10"
 
 [node name="EnemiesCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 18.19999
-offset_top = 96.0
-offset_right = 107.19999
-offset_bottom = 128.0
+offset_left = 25.43998
+offset_top = 161.0
+offset_right = 148.43997
+offset_bottom = 193.0
 text = "Enemies count: "
 
 [node name="EnemiesCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 216.20001
-offset_top = 93.0
-offset_right = 284.7625
-offset_bottom = 124.0
+offset_left = 223.44
+offset_top = 158.0
+offset_right = 292.0025
+offset_bottom = 189.0
 text = "20"
 
 [node name="MapsCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 19.23999
-offset_top = 151.0
-offset_right = 70.23999
-offset_bottom = 186.0
+offset_left = 26.47998
+offset_top = 216.0
+offset_right = 125.47998
+offset_bottom = 251.0
 text = "Maps count: "
 
 [node name="MapsCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 212.20001
-offset_top = 148.0
-offset_right = 280.7625
-offset_bottom = 179.0
+offset_left = 219.44
+offset_top = 213.0
+offset_right = 288.0025
+offset_bottom = 244.0
 text = "5"
 
 [node name="ErrorCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 23.19999
-offset_top = 206.0
-offset_right = 80.19999
-offset_bottom = 229.0
+offset_left = 30.43998
+offset_top = 271.0
+offset_right = 180.43997
+offset_bottom = 294.0
 text = "Failed maps count: "
 
 [node name="GenerateButton" type="Button" parent="CanvasLayer/Control/Panel"]
@@ -161,5 +166,6 @@ offset_right = 234.20001
 offset_bottom = 589.0
 text = "Generate range of maps"
 
+[connection signal="item_selected" from="CanvasLayer/Control/Panel/GeneratorOptionButton" to="." method="_on_generator_option_button_item_selected"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/GenerateButton" to="." method="_on_generate_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/GenerateRangeButton" to="CanvasLayer/Control" method="_on_button_pressed"]

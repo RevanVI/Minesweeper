@@ -5,8 +5,8 @@
 [ext_resource type="Script" uid="uid://d24yha5t4vm1g" path="res://scripts/game_logic/modifiers/modifier_base.gd" id="3_p4m7m"]
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="3_qgemu"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="4_8ivtb"]
-[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="5_b5xbl"]
-[ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="6_dwcyu"]
+[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://resources/tilesets/minesweeper_starter.tres" id="5_b5xbl"]
+[ext_resource type="Resource" uid="uid://g6am2v5ifsx1" path="res://resources/generators/map_generator_base.tres" id="5_qgemu"]
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="7_dhm3e"]
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="8_0nf2j"]
 [ext_resource type="Script" uid="uid://erghs5cplvbn" path="res://scripts/gui/battle_classic.gd" id="9_lgmfj"]
@@ -24,19 +24,19 @@ ExtResource("2_p4m7m"): Vector2i(5, 5)
 })
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qgemu"]
 frequency = 0.252
 fractal_type = 3
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qa7br"]
-noise = SubResource("FastNoiseLite_xgl0c")
+noise = SubResource("FastNoiseLite_qgemu")
 
-[sub_resource type="Gradient" id="Gradient_hj7kk"]
+[sub_resource type="Gradient" id="Gradient_8ivtb"]
 offsets = PackedFloat32Array(0.56338, 0.741784, 1)
 colors = PackedColorArray(0, 0, 0, 0, 0.52809, 0.52809, 0.52809, 0.52809, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_s0lrd"]
-gradient = SubResource("Gradient_hj7kk")
+gradient = SubResource("Gradient_8ivtb")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 1)
@@ -44,6 +44,7 @@ fill_to = Vector2(1, 1)
 [node name="ClassicGameModeManager" type="Node2D" groups=["GameModeManager"]]
 script = ExtResource("1_xmsgg")
 level_info = SubResource("Resource_ygwmg")
+map_generator = ExtResource("5_qgemu")
 
 [node name="CameraController" type="Camera2D" parent="."]
 limit_left = -886
@@ -67,9 +68,6 @@ tile_set = ExtResource("5_b5xbl")
 
 [node name="Cells" type="TileMapLayer" parent="Map"]
 tile_set = ExtResource("5_b5xbl")
-
-[node name="MapGenerator" type="Node2D" parent="."]
-script = ExtResource("6_dwcyu")
 
 [node name="BattleTimer" type="Timer" parent="."]
 

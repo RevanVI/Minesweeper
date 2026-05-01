@@ -6,11 +6,11 @@
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="3_vgc74"]
 [ext_resource type="Script" uid="uid://bctw4kxi4vc55" path="res://scripts/game_logic/modifiers/modifier_hidden_cells.gd" id="4_flrxs"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="4_hunvx"]
-[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="5_flrxs"]
+[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://resources/tilesets/minesweeper_starter.tres" id="5_flrxs"]
 [ext_resource type="Script" uid="uid://cs1vbc21bgmff" path="res://scripts/game_logic/modifiers/modifier_undo_blocked.gd" id="5_hunvx"]
-[ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="6_rgud8"]
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="7_ag5ul"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="7_flrxs"]
+[ext_resource type="Resource" uid="uid://g6am2v5ifsx1" path="res://resources/generators/map_generator_base.tres" id="7_rgud8"]
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="8_nlk32"]
 [ext_resource type="Script" uid="uid://cyjfintjqebld" path="res://scripts/gui/battle.gd" id="9_j0ndl"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="10_h11qe"]
@@ -61,6 +61,7 @@ fill_to = Vector2(1, 1)
 [node name="EndlessGameModeManager" type="Node2D" groups=["GameModeManager"]]
 script = ExtResource("1_br5b8")
 level_info = SubResource("Resource_e5u5o")
+map_generator = ExtResource("7_rgud8")
 
 [node name="CameraController" type="Camera2D" parent="."]
 script = ExtResource("7_flrxs")
@@ -79,9 +80,6 @@ tile_set = ExtResource("5_flrxs")
 
 [node name="Cells" type="TileMapLayer" parent="Map"]
 tile_set = ExtResource("5_flrxs")
-
-[node name="MapGenerator" type="Node2D" parent="."]
-script = ExtResource("6_rgud8")
 
 [node name="BattleTimer" type="Timer" parent="."]
 

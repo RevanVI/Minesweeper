@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func start_mode() -> void:
 	generate_level()
-	battle_manager.prepare_battle(level_info, character)
+	battle_manager.prepare_battle(level_info, map_generator, character)
 
 
 func generate_level() -> void:
@@ -31,7 +31,7 @@ func prepare_next_level() -> void:
 	print("prepare_next_level")
 	_current_level += 1
 	generate_level()
-	battle_manager.prepare_battle(level_info, character)
+	battle_manager.prepare_battle(level_info, map_generator, character)
 
 
 func restart_mode() -> void:
@@ -40,4 +40,4 @@ func restart_mode() -> void:
 	_current_level = 0
 	generate_level()
 	character.reset()
-	battle_manager.prepare_battle(level_info, character)
+	battle_manager.prepare_battle(level_info, map_generator, character)

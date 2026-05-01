@@ -1,7 +1,6 @@
 class_name GameManager
 extends Node2D
 
-
 signal mark_count_changed(mark_count: int)
 signal undo_count_changed(undo_count: int)
 signal undo_status_changed(available: bool)
@@ -14,7 +13,6 @@ signal level_lost(undo_count: int)
 signal paused()
 signal unpaused()
 
-
 enum GameState {
 	INIT = 0,
 	START = 1,
@@ -24,22 +22,20 @@ enum GameState {
 	PAUSE = 5,
 }
 
-
 var enemies_count: int = 0
 var mark_count: int = 10
 var battle_time: int = 0
 var game_state: GameState
+var map_generator: MapGenerator
 var _prev_game_state: GameState
 var _game_state_changing: bool = false
 var _modifier_list: ModifiersList
-
+var _character: Character
 
 @onready var map: Map = $"../Map"
-@onready var map_generator: MapGenerator = $"../MapGenerator"
 @onready var battle_timer: Timer = $"../BattleTimer"
 @onready var turn_queue: TurnQueue = $TurnQueue
 @onready var camera_controller: CameraController = $"../CameraController"
-var _character: Character
 
 
 func _ready():
@@ -51,12 +47,12 @@ func _ready():
 
 func _unhandled_input(event: InputEvent) -> void:
 	if game_state == GameState.GAME_OVER \
-		|| game_state == GameState.GAME_WIN \
-		|| game_state == GameState.PAUSE \
-		|| game_state == GameState.INIT \
-		|| turn_queue.is_turn_processing:
+	|| game_state == GameState.GAME_WIN \
+	|| game_state == GameState.PAUSE \
+	|| game_state == GameState.INIT \
+	|| turn_queue.is_turn_processing:
 		return
-	
+
 	if event.is_action_pressed("LeftMouseButton"):
 		var global_pos: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
 		if game_state == GameState.START:
@@ -65,7 +61,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			map_generator.populate_map(map, cell_pos)
 			change_game_state(GameState.BATTLE)
 			battle_timer.start()
-		
+
 		if map.open_cell_at_global_position(global_pos):
 			var command = EndTurnCommand.new()
 			turn_queue.add_command(command)
@@ -87,7 +83,7 @@ func prepare_level(level_info: LevelInfo) -> void:
 	mark_count_changed.emit(mark_count)
 
 
-func prepare_battle(level_info: LevelInfo, character: Character) -> void:
+func prepare_battle(level_info: LevelInfo, mode_map_generator: MapGenerator, character: Character) -> void:
 	_character = character
 	if _character.is_connected("died", _on_character_died) == false:
 		_character.died.connect(_on_character_died)
@@ -103,6 +99,7 @@ func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 		undo_status_changed.emit(false)
 
 	undo_count_changed.emit(_character.get_undo_count())
+	map_generator = mode_map_generator
 	prepare_level(level_info)
 	change_game_state(GameState.START)
 
@@ -111,11 +108,11 @@ func change_game_state(new_state: GameState) -> void:
 	if game_state == new_state:
 		print("Already in state " + str(new_state))
 		return
-	
+
 	if _game_state_changing:
 		print("Try to break game state change")
 		return
-	
+
 	_game_state_changing = true
 	exit_state(game_state)
 	enter_state(new_state)
@@ -155,15 +152,40 @@ func check_board_cleared() -> void:
 	var closed_cells: Array[Vector2i] = map.get_closed_cells()
 	if closed_cells.size() > enemies_count:
 		return
-	
+
 	var enemies_cells = map.get_enemis_cells()
 	for i in closed_cells:
 		if i not in enemies_cells:
 			return
-	
+
 	print("GameManager: Level completed")
 	change_game_state(GameState.GAME_WIN)
 	level_completed.emit()
+
+
+func pause() -> void:
+	if game_state == GameState.PAUSE:
+		change_game_state(_prev_game_state)
+	else:
+		change_game_state(GameState.PAUSE)
+
+
+func undo() -> void:
+	var undo_count = _character.get_undo_count()
+	if (game_state == GameState.BATTLE \
+		|| game_state == GameState.GAME_OVER ) \
+	&& undo_count > 0 && turn_queue.is_undo_possible():
+		undo_count -= 1
+		undo_count_changed.emit(undo_count)
+		_character.set_undo_count(undo_count)
+		turn_queue.undo(1)
+
+
+func get_undo_status() -> bool:
+	if _character.get_undo_count() <= 0 or \
+	_modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.UNDO_BLOCKED):
+		return false
+	return true
 
 
 func _on_battle_timer_timeout() -> void:
@@ -197,28 +219,3 @@ func _on_character_died():
 	command.undo_callback = Callable(self, "revert_game_over")
 	turn_queue.add_command(command)
 	level_lost.emit()
-
-
-func pause() -> void:
-	if game_state == GameState.PAUSE:
-		change_game_state(_prev_game_state)
-	else:
-		change_game_state(GameState.PAUSE)
-
-
-func undo() -> void:
-	var undo_count = _character.get_undo_count()
-	if (game_state == GameState.BATTLE \
-		|| game_state == GameState.GAME_OVER) \
-		&& undo_count > 0 && turn_queue.is_undo_possible():
-		undo_count -= 1
-		undo_count_changed.emit(undo_count)
-		_character.set_undo_count(undo_count)
-		turn_queue.undo(1)
-
-
-func get_undo_status() -> bool:
-	if _character.get_undo_count() <= 0 or \
-		_modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.UNDO_BLOCKED):
-		return false
-	return true

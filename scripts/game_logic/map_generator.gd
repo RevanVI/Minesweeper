@@ -1,33 +1,32 @@
 class_name MapGenerator
-extends Node2D
+extends Resource
 
-var map_size: Vector2i = Vector2i(10, 10)
+@export var generator_name: String = "Base"
+
 var map: Map
-# enemy scene: enemies count
+# dict. key - enemy scene, value - enemies count
 var enemies_info: Dictionary[PackedScene, int] = { }
+# constraints
+# how many empty cells should be around new enemy at least
+var valid_empty_cells_required: int = 2
+# how many empty cells should be around neighbouring empty cells at least (including processed cell)
+var near_empty_cells_required: int = 3
+# how many empty cells should be around neighbouring enemy cells at least (including processed cell)
+var enemy_near_empty_cells_required: int = 3
 var _modifier_list: ModifiersList
-
-
-func set_enemies_info(data: Dictionary[PackedScene, int]) -> void:
-	enemies_info = data
-
-
-func set_map_data(map_x: int, map_y: int) -> void:
-	map_size = Vector2i(map_x, map_y)
 
 
 func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList) -> void:
 	map = map_ref
 	map.reset_map()
-	map_size = size
-	map.size = map_size
+	map.size = size
 	enemies_info = enemies_data
 	_modifier_list = modifiers
 
 	var map_data: Array[Array] = []
-	for x in range(map_size.x):
+	for x in range(size.x):
 		map_data.append([])
-		for y in range(map_size.y):
+		for y in range(size.y):
 			var tile_data: Map.MapTileData = Map.MapTileData.new()
 			map_data[x].append(tile_data)
 
@@ -41,20 +40,17 @@ func populate_map(map_ref: Map, start_pos: Vector2i) -> bool:
 		return false
 
 	map.create_enemy_collection(enemies_info.keys())
-	var success: bool = spawn_enemies(start_pos)
+
+	var success: bool = false
+	var max_generation_attempts: int = 5
+	var iter: int = 0
+	while iter < max_generation_attempts and success == false:
+		success = spawn_enemies(start_pos)
 
 	return success
 
 
 func spawn_enemies(start_pos: Vector2i) -> bool:
-	# constraints
-	# how many empty cells should be around new enemy at least
-	const VALID_EMPTY_CELLS_REQUIRED: int = 2
-	# how many empty cells should be around neighbouring empty cells at least (including processed cell)
-	const NEAR_EMPTY_CELLS_REQUIRED: int = 3
-	# how many empty cells should be around neighbouring enemy cells at least (including processed cell)
-	const ENEMY_NEAR_EMPTY_CELLS_REQUIRED: int = 3
-
 	var possible_cells = map.get_empty_cells()
 
 	# exclude 3x3 zone on start position from any enemies spawn
@@ -86,16 +82,16 @@ func spawn_enemies(start_pos: Vector2i) -> bool:
 			for cell in neighbours:
 				# empty cells around possible enemy position have enough empty space
 				if map.is_cell_empty(cell):
-					if map.get_empty_neighbour_cells(cell).size() >= NEAR_EMPTY_CELLS_REQUIRED:
+					if map.get_empty_neighbour_cells(cell).size() >= near_empty_cells_required:
 						valid_empty_cells += 1
 
 				# enemy cells around possible enemy position still valid
 				else:
 					neighbour_enemies_count += 1
-					if map.get_empty_neighbour_cells(cell).size() >= ENEMY_NEAR_EMPTY_CELLS_REQUIRED:
+					if map.get_empty_neighbour_cells(cell).size() >= enemy_near_empty_cells_required:
 						valid_enemy_cells += 1
 
-			if valid_empty_cells < VALID_EMPTY_CELLS_REQUIRED or valid_enemy_cells < neighbour_enemies_count:
+			if valid_empty_cells < valid_empty_cells_required or valid_enemy_cells < neighbour_enemies_count:
 				continue
 
 			map.add_enemy(random_pos, enemy_scene)

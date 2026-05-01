@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bmrjfadtrir3f"
-path="res://.godot/imported/minsweeper_tiles_starter.png-4c0da4817433547bd2776c94d2da1ed2.ctex"
+path="res://.godot/imported/minsweeper_tiles_starter.png-528cc654430f225a8f3d7eda8c1e4c00.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://content/textures/minsweeper_tiles_starter.png"
-dest_files=["res://.godot/imported/minsweeper_tiles_starter.png-4c0da4817433547bd2776c94d2da1ed2.ctex"]
+source_file="res://resources/textures/minsweeper_tiles_starter.png"
+dest_files=["res://.godot/imported/minsweeper_tiles_starter.png-528cc654430f225a8f3d7eda8c1e4c00.ctex"]
 
 [params]
 

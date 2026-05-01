@@ -6,6 +6,7 @@ signal init_done()
 
 
 @export var level_info: LevelInfo
+@export var map_generator: MapGenerator
 
 var character: Character
 var battle_manager: GameManager
