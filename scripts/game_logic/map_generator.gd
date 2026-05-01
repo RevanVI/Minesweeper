@@ -14,9 +14,16 @@ var near_empty_cells_required: int = 3
 # how many empty cells should be around neighbouring enemy cells at least (including processed cell)
 var enemy_near_empty_cells_required: int = 3
 var _modifier_list: ModifiersList
+var _rng: RandomNumberGenerator
 
 
-func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList) -> void:
+func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList, gen_seed: int = -1) -> void:
+	_rng = RandomNumberGenerator.new()
+	if gen_seed != -1:
+		_rng.seed = gen_seed
+	else:
+		_rng.seed = randi()
+
 	map = map_ref
 	map.reset_map()
 	map.size = size
@@ -69,8 +76,8 @@ func spawn_enemies(start_pos: Vector2i) -> bool:
 	for enemy_scene in enemies_info:
 		var enemies_to_place = enemies_info[enemy_scene]
 		while enemies_to_place > 0 and possible_cells.size() >= (total_enemy_count - enemies_placed):
-			# TODO: change random here
-			var random_pos = possible_cells.pick_random()
+			var ind: int = _rng.randi_range(0, possible_cells.size() - 1)
+			var random_pos = possible_cells[ind]
 			possible_cells.erase(random_pos)
 
 			var neighbours: Array[Vector2i] = map.get_neighbour_cells(random_pos)
