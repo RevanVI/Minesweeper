@@ -53,7 +53,9 @@ func update_visual_map() -> void:
 			if tile_data.marked:
 				cells.set_cell(pos, 0, mark_tile)
 			if tile_data.playable:
-				var hide_modifier: ModifierHiddenCells = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
+				var hide_modifier: ModifierHiddenCells = null
+				if _modifier_list:
+					hide_modifier = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
 				if hide_modifier and tile_data.enemies_count in hide_modifier.hidden_values:
 					board.set_cell(pos, 0, hidden_tile)
 				else:
@@ -99,6 +101,25 @@ func get_neighbour_cells(pos: Vector2i, filter_cell: Array[Vector2i] = []) -> Ar
 
 		var cell_type = cells.get_cell_atlas_coords(new_pos)
 		if filter_cell.is_empty() == true || cell_type in filter_cell:
+			neighbours.append(new_pos)
+
+	return neighbours
+
+
+func get_empty_neighbour_cells(pos: Vector2i) -> Array[Vector2i]:
+	var neighbours: Array[Vector2i] = []
+	for dir in _directions:
+		var new_pos = pos + dir
+
+		#outside map borders
+		if new_pos.x < 0 || new_pos.x >= size.x || \
+		new_pos.y < 0 || new_pos.y >= size.y:
+			continue
+
+		if _map_data[new_pos.x][new_pos.y].playable == false:
+			continue
+
+		if _map_data[new_pos.x][new_pos.y].type == CellType.EMPTY:
 			neighbours.append(new_pos)
 
 	return neighbours
@@ -315,7 +336,9 @@ func add_enemy(pos: Vector2i, enemy_scene: PackedScene) -> void:
 			data.enemies_count += 1
 
 			# TODO: should it be here?
-			var hide_modifier: ModifierHiddenCells = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
+			var hide_modifier: ModifierHiddenCells = null
+			if _modifier_list:
+				hide_modifier = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
 			if hide_modifier and data.enemies_count in hide_modifier.hidden_values:
 				board.set_cell(neighbour, 0, hidden_tile)
 			else:
@@ -326,17 +349,9 @@ func set_modifiers(modifiers: ModifiersList) -> void:
 	_modifier_list = modifiers
 
 
-func _build_directions() -> void:
-	_directions.clear()
-	for x in range(-1, 2):
-		for y in range(-1, 2):
-			if x != 0 || y != 0:
-				_directions.append(Vector2i(x, y))
-
-
 func get_limits() -> Rect2:
 	var tile_limits: Rect2i = board.get_used_rect()
-	
+
 	var start_pos: Vector2 = board.map_to_local(tile_limits.position)
 	start_pos = to_global(start_pos) - Vector2(board.tile_set.tile_size)
 	var end_pos: Vector2 = board.map_to_local(tile_limits.end)
@@ -344,6 +359,14 @@ func get_limits() -> Rect2:
 	var limit_size: Vector2 = Vector2(end_pos - start_pos)
 	var global_limits: Rect2 = Rect2(start_pos, limit_size)
 	return global_limits
+
+
+func _build_directions() -> void:
+	_directions.clear()
+	for x in range(-1, 2):
+		for y in range(-1, 2):
+			if x != 0 || y != 0:
+				_directions.append(Vector2i(x, y))
 
 
 class MapTileData:

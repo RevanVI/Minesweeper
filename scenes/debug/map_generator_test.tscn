@@ -1,0 +1,165 @@
+[gd_scene load_steps=10 format=4 uid="uid://c1thwrud0uqny"]
+
+[ext_resource type="Script" uid="uid://h8uky87fn6jx" path="res://scripts/debug/map_generator_test.gd" id="1_n3fcj"]
+[ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="2_4bswj"]
+[ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="2_h52y7"]
+[ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="2_oh383"]
+[ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://content/tilesets/minesweeper_starter.tres" id="3_h52y7"]
+[ext_resource type="Script" uid="uid://d24yha5t4vm1g" path="res://scripts/game_logic/modifiers/modifier_base.gd" id="3_rtwxe"]
+[ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="4_2fx62"]
+[ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="4_img2u"]
+
+[sub_resource type="Resource" id="Resource_rjwph"]
+script = ExtResource("4_2fx62")
+enemies = Dictionary[PackedScene, Vector2i]({
+ExtResource("2_oh383"): Vector2i(25, 25)
+})
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
+[node name="MapGeneratorTest" type="Node2D" node_paths=PackedStringArray("map", "map_generator", "camera_controller", "map_size_x_edit", "map_size_y_edit", "enemies_count_edit", "maps_count_edit", "errors_count_label")]
+script = ExtResource("1_n3fcj")
+map = NodePath("Map")
+map_generator = NodePath("MapGenerator")
+level_info = SubResource("Resource_rjwph")
+camera_controller = NodePath("CameraController")
+map_size_x_edit = NodePath("CanvasLayer/Control/Panel/MapSizeXLineEdit")
+map_size_y_edit = NodePath("CanvasLayer/Control/Panel/MapSizeYLineEdit")
+enemies_count_edit = NodePath("CanvasLayer/Control/Panel/EnemiesCountLineEdit")
+maps_count_edit = NodePath("CanvasLayer/Control/Panel/MapsCountLineEdit")
+errors_count_label = NodePath("CanvasLayer/Control/Panel/ErrorCountLabel")
+
+[node name="CameraController" type="Camera2D" parent="."]
+limit_left = -2000
+limit_top = -2000
+limit_right = 3000
+limit_bottom = 3000
+script = ExtResource("2_h52y7")
+zoom_limits = Vector2(0.75, 2)
+speed = 200.0
+metadata/_custom_type_script = "uid://cqh3xxrgi3ncc"
+
+[node name="Map" type="Node2D" parent="."]
+script = ExtResource("2_4bswj")
+cell_tile = Vector2i(0, 1)
+mark_tile = Vector2i(1, 1)
+empty_tiles = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0)])
+
+[node name="Board" type="TileMapLayer" parent="Map"]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAFAAkAAAAAAAAAAAAEAAkAAAAAAAAAAAADAAkAAAAAAAAAAAACAAkAAAAAAAAAAAABAAkAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAGAAEAAAAAAAAAAAAHAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAADAAgAAAAAAAAAAAACAAgAAAAAAAAAAAABAAgAAAAAAAAAAAABAAYAAAAAAAAAAAABAAUAAAAAAAAAAAABAAQAAAAAAAAAAAACAAMAAAAAAAAAAAACAAIAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAcAAAAAAAAAAAACAAUAAAAAAAAAAAACAAQAAAAAAAAAAAACAAcAAAAAAAAAAAACAAYAAAAAAAAAAAADAAQAAAAAAAAAAAADAAMAAAAAAAAAAAADAAIAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAIAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAEAAAAAAAAAAAA=")
+tile_set = ExtResource("3_h52y7")
+
+[node name="Cells" type="TileMapLayer" parent="Map"]
+tile_set = ExtResource("3_h52y7")
+
+[node name="MapGenerator" type="Node2D" parent="."]
+script = ExtResource("4_img2u")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = 0.65
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.1521
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0400391
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MapSizeXLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 17.960022
+offset_top = 17.0
+offset_right = 106.96002
+offset_bottom = 49.0
+text = "Map size X:"
+
+[node name="MapSizeXLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 217.20001
+offset_top = 11.0
+offset_right = 285.7625
+offset_bottom = 42.0
+text = "10"
+
+[node name="MapSizeYLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 19.200012
+offset_top = 58.0
+offset_right = 108.20001
+offset_bottom = 90.0
+text = "Map size Y:"
+
+[node name="MapSizeYLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 217.20001
+offset_top = 54.0
+offset_right = 285.7625
+offset_bottom = 85.0
+text = "10"
+
+[node name="EnemiesCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 18.19999
+offset_top = 96.0
+offset_right = 107.19999
+offset_bottom = 128.0
+text = "Enemies count: "
+
+[node name="EnemiesCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 216.20001
+offset_top = 93.0
+offset_right = 284.7625
+offset_bottom = 124.0
+text = "20"
+
+[node name="MapsCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 19.23999
+offset_top = 151.0
+offset_right = 70.23999
+offset_bottom = 186.0
+text = "Maps count: "
+
+[node name="MapsCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 212.20001
+offset_top = 148.0
+offset_right = 280.7625
+offset_bottom = 179.0
+text = "5"
+
+[node name="ErrorCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 23.19999
+offset_top = 206.0
+offset_right = 80.19999
+offset_bottom = 229.0
+text = "Failed maps count: "
+
+[node name="GenerateButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 36.200012
+offset_top = 502.0
+offset_right = 164.20001
+offset_bottom = 541.0
+text = "Genereate map"
+
+[node name="GenerateRangeButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 39.200012
+offset_top = 558.0
+offset_right = 234.20001
+offset_bottom = 589.0
+text = "Generate range of maps"
+
+[connection signal="pressed" from="CanvasLayer/Control/Panel/GenerateButton" to="." method="_on_generate_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/GenerateRangeButton" to="CanvasLayer/Control" method="_on_button_pressed"]
