@@ -12,10 +12,7 @@ extends Node2D
 @export var errors_count_label: Label
 @export var generator_options: OptionButton
 
-
 var map_generators_list: Array[MapGenerator] = [MapGenerator.new()]
-
-
 var _map_size: Vector2i
 var _enemies_count: int
 var _maps_count: int
