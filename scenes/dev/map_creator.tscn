@@ -1,0 +1,96 @@
+[gd_scene load_steps=3 format=4 uid="uid://crrixauhmg4hd"]
+
+[ext_resource type="Script" uid="uid://dmo2nx0jghtec" path="res://scripts/dev/map_creator.gd" id="1_ivi6f"]
+[ext_resource type="TileSet" uid="uid://c6bvrnes5s05r" path="res://resources/tilesets/map_creator.tres" id="2_y8xqn"]
+
+[node name="MapCreator" type="Node2D" node_paths=PackedStringArray("map", "map_name_edit", "map_size_label", "playable_cells_label")]
+script = ExtResource("1_ivi6f")
+map = NodePath("Map/Board")
+map_name_edit = NodePath("CanvasLayer/Control/Panel/SeedLineEdit")
+map_size_label = NodePath("CanvasLayer/Control/Panel/MapSizeLabel")
+playable_cells_label = NodePath("CanvasLayer/Control/Panel/PlayableCellsLabel")
+tile_type_dict = Dictionary[Vector2i, int]({
+Vector2i(0, 0): 0,
+Vector2i(0, 1): 2,
+Vector2i(1, 0): 1
+})
+type_tile_dict = Dictionary[int, Vector2i]({
+0: Vector2i(0, 0),
+1: Vector2i(1, 0),
+2: Vector2i(0, 1)
+})
+map_dir = "res://resources/maps"
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="Board" type="TileMapLayer" parent="Map"]
+tile_map_data = PackedByteArray("AAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAABAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAACAAAAAAABAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAABAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAABAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAABAAAAAAAFAAIAAAABAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAAIAAAABAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAA=")
+tile_set = ExtResource("2_y8xqn")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = 0.65
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.1521
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0400391
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SeedLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 26.200012
+offset_top = 78.0
+offset_right = 125.20001
+offset_bottom = 113.0
+text = "Map name:"
+metadata/_edit_use_anchors_ = true
+
+[node name="SeedLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 186.20001
+offset_top = 70.0
+offset_right = 345.2
+offset_bottom = 110.0
+text = "testmap"
+metadata/_edit_use_anchors_ = true
+
+[node name="MapSizeLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.015480468
+anchor_top = -0.08012327
+anchor_right = 0.044059888
+anchor_bottom = -0.08012327
+offset_left = 30.440002
+offset_top = 179.0
+offset_right = 119.44
+offset_bottom = 211.0
+text = "Map size: (6, 6)"
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayableCellsLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.015480468
+anchor_top = -0.078582436
+anchor_right = -0.015480468
+anchor_bottom = -0.078582436
+offset_left = 29.43998
+offset_top = 217.0
+offset_right = 152.43997
+offset_bottom = 249.0
+text = "Playable cells: 8"
+metadata/_edit_use_anchors_ = true

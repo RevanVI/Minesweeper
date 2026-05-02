@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=4 uid="uid://c1thwrud0uqny"]
 
-[ext_resource type="Script" uid="uid://h8uky87fn6jx" path="res://scripts/debug/map_generator_test.gd" id="1_n3fcj"]
+[ext_resource type="Script" uid="uid://h8uky87fn6jx" path="res://scripts/dev/map_generator_test.gd" id="1_n3fcj"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="2_4bswj"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="2_h52y7"]
 [ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="2_oh383"]
