@@ -48,18 +48,22 @@ func update_visual_map() -> void:
 			var tile_data: MapTileData = _map_data[x][y]
 			var pos: Vector2i = Vector2i(x, y)
 
+			if not tile_data.playable:
+				#TODO place some non playable tiles?
+				continue
+
 			if not tile_data.opened:
 				cells.set_cell(pos, 0, cell_tile)
 			if tile_data.marked:
 				cells.set_cell(pos, 0, mark_tile)
-			if tile_data.playable:
-				var hide_modifier: ModifierHiddenCells = null
-				if _modifier_list:
-					hide_modifier = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
-				if hide_modifier and tile_data.enemies_count in hide_modifier.hidden_values:
-					board.set_cell(pos, 0, hidden_tile)
-				else:
-					board.set_cell(pos, 0, empty_tiles[tile_data.enemies_count])
+
+			var hide_modifier: ModifierHiddenCells = null
+			if _modifier_list:
+				hide_modifier = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
+			if hide_modifier and tile_data.enemies_count in hide_modifier.hidden_values:
+				board.set_cell(pos, 0, hidden_tile)
+			else:
+				board.set_cell(pos, 0, empty_tiles[tile_data.enemies_count])
 
 
 func reset_cells() -> void:

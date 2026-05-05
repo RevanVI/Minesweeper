@@ -9,9 +9,9 @@ enum CellData {
 
 @export var map_name: String
 @export var map_size: Vector2i
-@export var enemies_position_stored: bool
 @export var playable_cells_count: int
 @export var map_data: Array[Array]
+@export var enemies_position_stored: bool
 
 
 func _init(mname: String = "map", data: Array[Array] = [[]]):

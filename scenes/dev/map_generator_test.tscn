@@ -1,13 +1,22 @@
-[gd_scene load_steps=10 format=4 uid="uid://c1thwrud0uqny"]
+[gd_scene load_steps=14 format=4 uid="uid://c1thwrud0uqny"]
 
 [ext_resource type="Script" uid="uid://h8uky87fn6jx" path="res://scripts/dev/map_generator_test.gd" id="1_n3fcj"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="2_4bswj"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="2_h52y7"]
 [ext_resource type="PackedScene" uid="uid://c705yxfwgmkyv" path="res://scenes/enemies/bomb_1.tscn" id="2_oh383"]
-[ext_resource type="Resource" uid="uid://g6am2v5ifsx1" path="res://resources/generators/map_generator_base.tres" id="2_rtwxe"]
+[ext_resource type="Script" uid="uid://bctbapix3ccsm" path="res://scripts/game_logic/map_resource.gd" id="2_vscoa"]
+[ext_resource type="Script" uid="uid://bwpbrtdbm8ht7" path="res://scripts/game_logic/map_generator_premade.gd" id="3_5o26m"]
+[ext_resource type="Resource" uid="uid://nor3vb7x6cnh" path="res://resources/maps/test_map_1.tres" id="3_80o6b"]
 [ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://resources/tilesets/minesweeper_starter.tres" id="3_h52y7"]
 [ext_resource type="Script" uid="uid://d24yha5t4vm1g" path="res://scripts/game_logic/modifiers/modifier_base.gd" id="3_rtwxe"]
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="4_2fx62"]
+[ext_resource type="Resource" uid="uid://bt61xlm4hsmpr" path="res://resources/maps/test_map_2.tres" id="4_80o6b"]
+
+[sub_resource type="Resource" id="Resource_80o6b"]
+script = ExtResource("3_5o26m")
+premade_maps = Array[ExtResource("2_vscoa")]([ExtResource("3_80o6b"), ExtResource("4_80o6b")])
+use_stored_enemy_position = true
+metadata/_custom_type_script = "uid://bwpbrtdbm8ht7"
 
 [sub_resource type="Resource" id="Resource_rjwph"]
 script = ExtResource("4_2fx62")
@@ -18,7 +27,7 @@ metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [node name="MapGeneratorTest" type="Node2D" node_paths=PackedStringArray("map", "camera_controller", "seed_edit", "map_size_x_edit", "map_size_y_edit", "enemies_count_edit", "maps_count_edit", "errors_count_label", "generator_options")]
 script = ExtResource("1_n3fcj")
-map_generator = ExtResource("2_rtwxe")
+map_generator = SubResource("Resource_80o6b")
 level_info = SubResource("Resource_rjwph")
 map = NodePath("Map")
 camera_controller = NodePath("CameraController")
@@ -141,7 +150,7 @@ offset_left = 227.44
 offset_top = 214.0
 offset_right = 296.0025
 offset_bottom = 245.0
-text = "20"
+text = "10"
 
 [node name="MapSizeXLabel2" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
