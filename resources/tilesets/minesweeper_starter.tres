@@ -1,9 +1,9 @@
 [gd_resource type="TileSet" load_steps=4 format=3 uid="uid://c3bm3pwixplyp"]
 
-[ext_resource type="Texture2D" uid="uid://bmrjfadtrir3f" path="res://content/textures/minsweeper_tiles_starter.png" id="1_3x0vr"]
+[ext_resource type="Texture2D" uid="uid://bmrjfadtrir3f" path="res://resources/textures/minsweeper_tiles_starter.png" id="1_ew7pa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wck3q"]
-texture = ExtResource("1_3x0vr")
+texture = ExtResource("1_ew7pa")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 1:0/0 = 0

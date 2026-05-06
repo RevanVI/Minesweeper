@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MapResource" load_steps=2 format=3 uid="uid://nor3vb7x6cnh"]
+
+[ext_resource type="Script" uid="uid://bctbapix3ccsm" path="res://scripts/game_logic/map_resource.gd" id="1_aji2j"]
+
+[resource]
+script = ExtResource("1_aji2j")
+map_name = "testmap"
+map_size = Vector2i(10, 10)
+playable_cells_count = 84
+map_data = Array[Array]([Array[int]([0, 1, 1, 0, 0, 0, 0, 1, 1, 0]), Array[int]([1, 1, 1, 1, 0, 0, 1, 1, 1, 1]), Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), Array[int]([1, 1, 1, 1, 0, 0, 1, 1, 1, 1]), Array[int]([0, 1, 1, 0, 0, 0, 0, 1, 1, 0])])

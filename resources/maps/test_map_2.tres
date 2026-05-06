@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MapResource" load_steps=2 format=3 uid="uid://bt61xlm4hsmpr"]
+
+[ext_resource type="Script" uid="uid://bctbapix3ccsm" path="res://scripts/game_logic/map_resource.gd" id="1_wiouc"]
+
+[resource]
+script = ExtResource("1_wiouc")
+map_name = "testmap"
+map_size = Vector2i(12, 10)
+playable_cells_count = 72
+map_data = Array[Array]([Array[int]([2, 1, 1, 0, 0, 0, 0, 1, 1, 2]), Array[int]([1, 1, 2, 0, 0, 0, 0, 2, 1, 1]), Array[int]([1, 1, 1, 0, 0, 0, 0, 1, 1, 1]), Array[int]([2, 1, 1, 0, 0, 0, 0, 1, 1, 2]), Array[int]([1, 1, 2, 0, 0, 0, 0, 2, 1, 1]), Array[int]([1, 1, 1, 0, 2, 2, 0, 1, 1, 1]), Array[int]([2, 1, 1, 2, 1, 1, 2, 1, 1, 2]), Array[int]([2, 1, 1, 1, 1, 1, 1, 1, 1, 2]), Array[int]([0, 0, 0, 1, 1, 1, 1, 0, 0, 0]), Array[int]([0, 0, 0, 1, 1, 1, 1, 0, 0, 0]), Array[int]([0, 0, 0, 2, 1, 1, 2, 0, 0, 0]), Array[int]([0, 0, 0, 0, 2, 2, 0, 0, 0, 0])])
+enemies_position_stored = true

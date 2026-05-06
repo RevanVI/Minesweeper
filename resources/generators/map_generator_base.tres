@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="MapGenerator" load_steps=2 format=3 uid="uid://g6am2v5ifsx1"]
+
+[ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generator.gd" id="1_l0syu"]
+
+[resource]
+script = ExtResource("1_l0syu")
+metadata/_custom_type_script = "uid://dacfmm368sqhq"
