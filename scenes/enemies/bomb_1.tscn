@@ -9,6 +9,7 @@ damage = Vector2i(1, 4)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.210738, 0.215611, 1, 1)
+texture_filter = 1
 texture = ExtResource("2_crwf0")
 region_enabled = true
-region_rect = Rect2(128, 64, 64, 64)
+region_rect = Rect2(64, 32, 32, 32)
