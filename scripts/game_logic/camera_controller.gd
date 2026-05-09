@@ -65,11 +65,12 @@ func _get_speed_modif() -> float:
 
 
 func calc_start_position() -> void:
-	# TODO rethink it later. different viewport for ui and gameplay seems too much. 
+	# TODO rethink it later. different viewports for ui and gameplay seems too much. 
 	# Global constant? manual setup in generator?
 	var ui_size: float = 0.65 # X anchor of ui control
 	if pos_limits:
-		var cam_offset: Vector2 = get_viewport().size * 1.0 * Vector2(0.5 - ui_size / 2, 0.0)
+		var viewport_size = Vector2(get_viewport().size) / get_viewport().get_stretch_transform().get_scale()
+		var cam_offset: Vector2 = viewport_size * 1.0 * Vector2(0.5 - ui_size / 2, 0.0)
 		position = pos_limits.get_center() + cam_offset
 	else:
 		position = Vector2(0, 0)
