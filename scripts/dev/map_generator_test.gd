@@ -32,7 +32,7 @@ func generate_map() -> void:
 	enemies_data[enemies_data.keys()[0]] = _enemies_count
 	map_generator.generate_empty_map(map, _map_size, enemies_data, modifier_list, _seed)
 	var success: bool = map_generator.populate_map(map, level_info.map_size / 2)
-	map.cells.hide()
+	map.top_board.hide()
 	camera_controller.pos_limits = map.get_limits()
 	camera_controller.calc_start_position()
 
