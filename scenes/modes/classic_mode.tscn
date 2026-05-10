@@ -148,6 +148,14 @@ offset_right = 89.0
 offset_bottom = 250.0
 text = "Pause"
 
+[node name="MainMenuButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 290.0
+offset_right = 111.0
+offset_bottom = 325.0
+text = "Main menu"
+
 [node name="Control2" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchor_right = 0.645
@@ -311,6 +319,7 @@ text = "exit to menu"
 [connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/RestartButton" to="CanvasLayer/Control" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/PauseButton" to="CanvasLayer/Control" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/MainMenuButton" to="CanvasLayer/Control" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/WinPanel/next_level_btn" to="CanvasLayer/GameLoop" method="_on_next_level_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/WinPanel/menu_btn" to="CanvasLayer/GameLoop" method="_on_menu_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/restart_btn" to="CanvasLayer/GameLoop" method="_on_restart_btn_pressed"]
