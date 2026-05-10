@@ -192,7 +192,10 @@ func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
 
 func mark_cell(pos: Vector2i) -> void:
 	var cell_data: MapTileData = _map_data[pos.x][pos.y]
-	if cell_data.opened == false:
+	if cell_data.opened == true:
+		return
+
+	if cell_data.marked == false:
 		print("Cell marked: " + str(pos))
 		cell_data.marked = true
 		cells.set_cell(pos, 0, mark_tile)
@@ -206,7 +209,7 @@ func mark_cell(pos: Vector2i) -> void:
 
 func mark_cell_global_position(global_pos: Vector2) -> void:
 	var coords = cells.local_to_map(cells.to_local(global_pos))
-	if is_pos_valid(coords) == false:
+	if is_pos_valid(coords) == false or _map_data[coords.x][coords.y].opened == true:
 		return
 
 	var command: MarkCellCommand = MarkCellCommand.new(self, coords)
