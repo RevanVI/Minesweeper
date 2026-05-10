@@ -313,7 +313,8 @@ func start_hide() -> void:
 	var final_color = modulate
 	final_color.a = 0
 	var tween = create_tween()
-	tween.tween_property(self, "modulate", final_color, 0.2)
+	tween.tween_property(board, "modulate", final_color, 0.1)
+	tween.tween_property(top_board, "modulate", final_color, 0.2)
 	tween.play()
 
 
@@ -321,7 +322,8 @@ func start_show() -> void:
 	var final_color = modulate
 	final_color.a = 1
 	var tween = create_tween()
-	tween.tween_property(self, "modulate", final_color, 0.2)
+	tween.tween_property(top_board, "modulate", final_color, 0.1)
+	tween.tween_property(board, "modulate", final_color, 0.2)
 	tween.play()
 
 

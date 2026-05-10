@@ -98,7 +98,7 @@ func prepare_level(level_info: LevelInfo) -> void:
 	turn_queue.reset()
 	map.set_modifiers(_modifier_list)
 	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data(), _modifier_list)
-	camera_controller.pos_limits = map.get_limits()
+	camera_controller.pos_limits = map.get_limits_global()
 	camera_controller.calc_start_position()
 	enemies_count = level_info.get_enemy_count()
 	mark_count = enemies_count
