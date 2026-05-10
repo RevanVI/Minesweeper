@@ -11,4 +11,4 @@ damage = Vector2i(1, 1)
 texture_filter = 1
 texture = ExtResource("1_qmkdi")
 region_enabled = true
-region_rect = Rect2(128, 64, 64, 64)
+region_rect = Rect2(64, 32, 32, 32)

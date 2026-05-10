@@ -69,16 +69,18 @@ metadata/_custom_type_script = "uid://cqh3xxrgi3ncc"
 
 [node name="Map" type="Node2D" parent="."]
 script = ExtResource("4_hunvx")
-cell_tile = Vector2i(0, 1)
+closed_tile = Vector2i(0, 1)
 mark_tile = Vector2i(1, 1)
 empty_tiles = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0)])
 hidden_tile = Vector2i(3, 1)
 
 [node name="Board" type="TileMapLayer" parent="Map"]
+texture_filter = 1
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAFAAkAAAAAAAAAAAAEAAkAAAAAAAAAAAADAAkAAAAAAAAAAAACAAkAAAAAAAAAAAABAAkAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAGAAEAAAAAAAAAAAAHAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAADAAgAAAAAAAAAAAACAAgAAAAAAAAAAAABAAgAAAAAAAAAAAABAAYAAAAAAAAAAAABAAUAAAAAAAAAAAABAAQAAAAAAAAAAAACAAMAAAAAAAAAAAACAAIAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAcAAAAAAAAAAAACAAUAAAAAAAAAAAACAAQAAAAAAAAAAAACAAcAAAAAAAAAAAACAAYAAAAAAAAAAAADAAQAAAAAAAAAAAADAAMAAAAAAAAAAAADAAIAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAIAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAEAAAAAAAAAAAA=")
 tile_set = ExtResource("5_flrxs")
 
 [node name="Cells" type="TileMapLayer" parent="Map"]
+texture_filter = 1
 tile_set = ExtResource("5_flrxs")
 
 [node name="BattleTimer" type="Timer" parent="."]
@@ -114,75 +116,83 @@ grow_vertical = 2
 
 [node name="LevelLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 17.96
+offset_left = 15.0
 offset_top = 17.0
-offset_right = 106.96
-offset_bottom = 49.0
+offset_right = 104.0
+offset_bottom = 41.0
 text = "Level  "
 
 [node name="TimeLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 16.96
-offset_top = 58.0
-offset_right = 105.96
-offset_bottom = 90.0
+offset_left = 15.0
+offset_top = 40.0
+offset_right = 104.0
+offset_bottom = 63.0
 text = "Time: "
 
 [node name="TurnLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 18.0
-offset_top = 98.0
-offset_right = 69.0
-offset_bottom = 133.0
+offset_left = 15.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 86.0
 text = "Turn: "
 
 [node name="MarkLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 16.96
-offset_top = 140.0
-offset_right = 73.96
-offset_bottom = 163.0
+offset_left = 15.0
+offset_top = 86.0
+offset_right = 72.0
+offset_bottom = 109.0
 text = "Marks: "
 
-[node name="RestartButton" type="Button" parent="CanvasLayer/Control/Panel"]
+[node name="HpLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 266.96
-offset_top = 550.0
-offset_right = 350.96
-offset_bottom = 581.0
-text = "Restart"
+offset_left = 15.0
+offset_top = 109.0
+offset_right = 55.0
+offset_bottom = 132.0
+text = "HP: "
 
 [node name="UndoLabel" type="Label" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 35.96
-offset_top = 406.0
-offset_right = 116.96
-offset_bottom = 429.0
+offset_left = 15.0
+offset_top = 132.0
+offset_right = 96.0
+offset_bottom = 155.0
 text = "Undo left: "
 
 [node name="UndoButton" type="Button" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 35.96
-offset_top = 475.0
-offset_right = 109.96
-offset_bottom = 514.0
+offset_left = 15.0
+offset_top = 187.0
+offset_right = 90.0
+offset_bottom = 222.0
 text = "Undo"
-
-[node name="HpLabel" type="Label" parent="CanvasLayer/Control/Panel"]
-layout_mode = 0
-offset_left = 18.96
-offset_top = 184.0
-offset_right = 58.96
-offset_bottom = 207.0
-text = "HP: "
 
 [node name="PauseButton" type="Button" parent="CanvasLayer/Control/Panel"]
 layout_mode = 0
-offset_left = 36.96
-offset_top = 543.0
-offset_right = 110.96
-offset_bottom = 582.0
+offset_left = 15.0
+offset_top = 250.0
+offset_right = 90.0
+offset_bottom = 285.0
 text = "Pause"
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 250.0
+offset_right = 210.0
+offset_bottom = 285.0
+text = "Restart"
+
+[node name="MainMenuButton" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 310.0
+offset_right = 100.0
+offset_bottom = 345.0
+text = "Main menu"
 
 [node name="Control2" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -259,10 +269,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -42.5
-offset_top = 84.5
-offset_right = 42.5
-offset_bottom = 115.5
+offset_left = -53.440002
+offset_top = 60.0
+offset_right = 56.559998
+offset_bottom = 91.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Next level"
@@ -274,10 +284,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -41.792023
-offset_top = 143.0
-offset_right = 43.207977
-offset_bottom = 174.0
+offset_left = -53.440002
+offset_top = 120.0
+offset_right = 56.559998
+offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Exit to menu"
@@ -317,10 +327,10 @@ anchor_left = 0.4
 anchor_top = 0.5
 anchor_right = 0.4
 anchor_bottom = 0.5
-offset_left = -42.5
-offset_top = 84.5
-offset_right = 42.5
-offset_bottom = 115.5
+offset_left = -44.352005
+offset_top = 60.0
+offset_right = 40.647995
+offset_bottom = 91.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "restart"
@@ -332,10 +342,10 @@ anchor_left = 0.6
 anchor_top = 0.5
 anchor_right = 0.6
 anchor_bottom = 0.5
-offset_left = -42.5
-offset_top = 84.5
-offset_right = 42.5
-offset_bottom = 115.5
+offset_left = -36.528015
+offset_top = 60.0
+offset_right = 48.471985
+offset_bottom = 91.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "undo"
@@ -347,10 +357,10 @@ anchor_left = 0.6
 anchor_top = 0.5
 anchor_right = 0.6
 anchor_bottom = 0.5
-offset_left = -52.750458
-offset_top = 153.0
-offset_right = 54.249542
-offset_bottom = 184.0
+offset_left = -96.528015
+offset_top = 120.0
+offset_right = 10.471985
+offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "exit to menu"
@@ -360,9 +370,10 @@ text = "exit to menu"
 [connection signal="unpaused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_unpaused"]
 [connection signal="undo_ended" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="stop_anim"]
 [connection signal="undo_started" from="GameManager/TurnQueue" to="CanvasLayer/Control2/UndoTex" method="start_anim"]
-[connection signal="pressed" from="CanvasLayer/Control/Panel/RestartButton" to="CanvasLayer/Control" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/UndoButton" to="CanvasLayer/Control" method="_on_undo_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/PauseButton" to="CanvasLayer/Control" method="_on_pause_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/RestartButton" to="CanvasLayer/Control" method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/MainMenuButton" to="CanvasLayer/Control" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/WinPanel/next_level_btn" to="CanvasLayer/GameLoop" method="_on_next_level_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/WinPanel/menu_btn" to="CanvasLayer/GameLoop" method="_on_menu_btn_pressed"]
 [connection signal="pressed" from="CanvasLayer/GameLoop/LoosePanel/restart_btn" to="CanvasLayer/GameLoop" method="_on_restart_btn_pressed"]

@@ -63,24 +63,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			battle_timer.start()
 
 		if map.open_cell_at_global_position(global_pos):
+			# TODO: define some way to mark commands as turn-enders
 			var command = EndTurnCommand.new()
 			turn_queue.add_command(command)
 	elif event.is_action_pressed("RightMouseButton"):
 		if game_state == GameState.BATTLE:
 			var global_pos: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
 			map.mark_cell_global_position(global_pos)
-
-
-func prepare_level(level_info: LevelInfo) -> void:
-	level_changed.emit(level_info.title)
-	turn_queue.reset()
-	map.set_modifiers(_modifier_list)
-	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data(), _modifier_list)
-	camera_controller.pos_limits = map.get_limits()
-	camera_controller.calc_start_position()
-	enemies_count = level_info.get_enemy_count()
-	mark_count = enemies_count
-	mark_count_changed.emit(mark_count)
 
 
 func prepare_battle(level_info: LevelInfo, mode_map_generator: MapGenerator, character: Character) -> void:
@@ -104,6 +93,18 @@ func prepare_battle(level_info: LevelInfo, mode_map_generator: MapGenerator, cha
 	change_game_state(GameState.START)
 
 
+func prepare_level(level_info: LevelInfo) -> void:
+	level_changed.emit(level_info.title)
+	turn_queue.reset()
+	map.set_modifiers(_modifier_list)
+	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data(), _modifier_list)
+	camera_controller.pos_limits = map.get_limits_global()
+	camera_controller.calc_start_position()
+	enemies_count = level_info.get_enemy_count()
+	mark_count = enemies_count
+	mark_count_changed.emit(mark_count)
+
+
 func change_game_state(new_state: GameState) -> void:
 	if game_state == new_state:
 		print("Already in state " + str(new_state))
@@ -119,26 +120,26 @@ func change_game_state(new_state: GameState) -> void:
 	_prev_game_state = game_state
 	game_state = new_state
 	game_state_changed.emit(game_state)
-	print("State changed. " + str(_prev_game_state) + "->" + str(new_state))
+	print("State changed. " + str(_prev_game_state) + " -> " + str(new_state))
 	_game_state_changing = false
 
 
-func exit_state(state: GameState) -> void:
-	if game_state == GameState.PAUSE:
+func exit_state(state_exited: GameState) -> void:
+	if state_exited == GameState.PAUSE:
 		map.start_show()
 		await get_tree().create_timer(0.2).timeout
 		battle_timer.paused = false
 		unpaused.emit()
-	elif state == GameState.GAME_OVER || state == GameState.GAME_WIN:
+	elif state_exited == GameState.GAME_OVER || state_exited == GameState.GAME_WIN:
 		battle_timer.paused = false
 
 
-func enter_state(state: GameState) -> void:
-	if state == GameState.PAUSE:
+func enter_state(new_state: GameState) -> void:
+	if new_state == GameState.PAUSE:
 		battle_timer.paused = true
 		map.start_hide()
 		paused.emit()
-	elif state == GameState.GAME_OVER || state == GameState.GAME_WIN:
+	elif new_state == GameState.GAME_OVER || new_state == GameState.GAME_WIN:
 		battle_timer.paused = true
 
 

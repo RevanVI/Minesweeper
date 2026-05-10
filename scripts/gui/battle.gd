@@ -108,3 +108,7 @@ func _on_game_state_changed(game_state: GameManager.GameState) -> void:
 		undo_button.disabled = !game_manager.get_undo_status()
 		pause_button.disabled = false
 		restart_button.disabled = false
+
+
+func _on_main_menu_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/gui/main_menu.tscn")

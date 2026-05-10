@@ -70,3 +70,7 @@ func _on_game_state_changed(game_state: GameManager.GameState) -> void:
 	if game_state == GameManager.GameState.START:
 		pause_button.disabled = false
 		restart_button.disabled = false
+
+
+func _on_main_menu_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/gui/main_menu.tscn")

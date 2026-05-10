@@ -107,7 +107,7 @@ func validate_enemy_placement(pos: Vector2i) -> bool:
 				valid_empty_cells += 1
 
 		# enemy cells around possible enemy position still valid
-		else:
+		elif map.get_cell_type(cell) == Map.CellType.ENEMY:
 			neighbour_enemies_count += 1
 			if map.get_empty_neighbour_cells(cell).size() >= enemy_near_empty_cells_required:
 				valid_enemy_cells += 1
