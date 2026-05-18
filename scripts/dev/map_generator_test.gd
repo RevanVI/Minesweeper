@@ -27,11 +27,14 @@ func generate_map() -> void:
 	_get_test_params()
 	level_info.generate_level(0)
 	var modifier_list = ModifiersList.new()
-	modifier_list.add_modifiers(level_info.modifiers)
+	modifier_list.add_modifiers(level_info.random_modifiers)
 	var enemies_data: Dictionary[PackedScene, int] = level_info.get_enemies_data()
 	enemies_data[enemies_data.keys()[0]] = _enemies_count
-	map_generator.generate_empty_map(map, _map_size, enemies_data, modifier_list, _seed)
-	var success: bool = map_generator.populate_map(map, level_info.map_size / 2)
+	map_generator.map_size_x = Vector2i(_map_size.x, _map_size.x)
+	map_generator.map_size_y = Vector2i(_map_size.y, _map_size.y)
+	map_generator.generate_empty_map(map, enemies_data, modifier_list, _seed)
+	# TODO: change start pos here
+	var success: bool = map_generator.populate_map(map, _map_size / 2)
 	map.top_board.hide()
 	camera_controller.pos_limits = map.get_limits_global()
 	camera_controller.calc_start_position()

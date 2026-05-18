@@ -7,7 +7,7 @@ extends MapGenerator
 var chosen_map: int = -1
 
 
-func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList, gen_seed: int = -1) -> void:
+func generate_empty_map(map_ref: Map, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList, gen_seed: int = -1) -> void:
 	_rng = RandomNumberGenerator.new()
 	if gen_seed != -1:
 		_rng.seed = gen_seed
