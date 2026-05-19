@@ -5,7 +5,7 @@ extends Node2D
 signal init_done()
 
 
-@export var level_info: LevelInfo
+@export var levels_data: Dictionary[int, LevelInfo]
 
 var character: Character
 var battle_manager: GameManager

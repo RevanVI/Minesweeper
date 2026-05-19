@@ -53,6 +53,7 @@ func generate_level(index: int, gen_seed: int = -1) -> void:
 
 	# randomize enemies
 	_enemies.clear()
+	enemies_count = 0
 	for enemy in enemies:
 		var count = _rng.randi_range(enemies[enemy][0], enemies[enemy][1])
 		_enemies[enemy] = count

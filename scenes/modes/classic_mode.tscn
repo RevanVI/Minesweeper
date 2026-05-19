@@ -15,13 +15,12 @@
 [ext_resource type="Script" uid="uid://c0b0dy1yg1am8" path="res://scripts/gui/end_game_classic.gd" id="12_lgmfj"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="14_qgemu"]
 
-[sub_resource type="Resource" id="Resource_ygwmg"]
+[sub_resource type="Resource" id="Resource_qgemu"]
 script = ExtResource("3_qgemu")
-base_title = "Stage "
-title = "Stage 1"
+base_title = "Level "
 map_generator = ExtResource("5_qgemu")
 enemies = Dictionary[PackedScene, Vector2i]({
-ExtResource("2_p4m7m"): Vector2i(5, 5)
+ExtResource("2_p4m7m"): Vector2i(10, 10)
 })
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
@@ -44,7 +43,9 @@ fill_to = Vector2(1, 1)
 
 [node name="ClassicGameModeManager" type="Node2D" groups=["GameModeManager"]]
 script = ExtResource("1_xmsgg")
-level_info = SubResource("Resource_ygwmg")
+levels_data = Dictionary[int, ExtResource("3_qgemu")]({
+0: SubResource("Resource_qgemu")
+})
 
 [node name="CameraController" type="Camera2D" parent="."]
 limit_left = -886
