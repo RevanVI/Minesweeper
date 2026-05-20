@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://ccosysrpa6d3f"]
+[gd_scene load_steps=28 format=4 uid="uid://ccosysrpa6d3f"]
 
 [ext_resource type="Script" uid="uid://b6ge135t4j6uf" path="res://scripts/game_logic/game_modes/endless_game_mode_manager.gd" id="1_br5b8"]
 [ext_resource type="PackedScene" uid="uid://mxcgjh4wuoq2" path="res://scenes/enemies/bomb.tscn" id="2_4do5o"]
@@ -17,28 +17,57 @@
 [ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="11_vq6p2"]
 [ext_resource type="Script" uid="uid://bdeo4vni1gdc" path="res://scripts/gui/end_game.gd" id="12_kfc2u"]
 
+[sub_resource type="Resource" id="Resource_flrxs"]
+script = ExtResource("3_vgc74")
+base_title = "Easy "
+map_generator = ExtResource("7_rgud8")
+enemies = Dictionary[PackedScene, Vector2i]({
+ExtResource("2_4do5o"): Vector2i(5, 5)
+})
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
 [sub_resource type="Resource" id="Resource_rgud8"]
 script = ExtResource("4_flrxs")
 hidden_values = Array[int]([2])
 tags = Array[int]([1])
 metadata/_custom_type_script = "uid://bctw4kxi4vc55"
 
-[sub_resource type="Resource" id="Resource_flrxs"]
+[sub_resource type="Resource" id="Resource_ag5ul"]
 script = ExtResource("5_hunvx")
 tags = Array[int]([2])
 metadata/_custom_type_script = "uid://cs1vbc21bgmff"
 
-[sub_resource type="Resource" id="Resource_e5u5o"]
+[sub_resource type="Resource" id="Resource_nlk32"]
 script = ExtResource("3_vgc74")
-base_title = "Stage "
-title = "Stage 1"
-level_range = Vector2i(0, 4)
+base_title = "Medium "
+map_generator = ExtResource("7_rgud8")
 enemies = Dictionary[PackedScene, Vector2i]({
-ExtResource("2_4do5o"): Vector2i(3, 3)
+ExtResource("2_4do5o"): Vector2i(7, 7)
 })
-map_x = Vector2i(5, 5)
-map_y = Vector2i(5, 5)
-modifiers = Array[ExtResource("3_hunvx")]([SubResource("Resource_rgud8"), SubResource("Resource_flrxs")])
+random_modifiers = Array[ExtResource("3_hunvx")]([SubResource("Resource_rgud8"), SubResource("Resource_ag5ul")])
+modifiers_count = 1
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
+[sub_resource type="Resource" id="Resource_j0ndl"]
+script = ExtResource("4_flrxs")
+hidden_values = Array[int]([2, 5])
+tags = Array[int]([1])
+metadata/_custom_type_script = "uid://bctw4kxi4vc55"
+
+[sub_resource type="Resource" id="Resource_h11qe"]
+script = ExtResource("5_hunvx")
+tags = Array[int]([2])
+metadata/_custom_type_script = "uid://cs1vbc21bgmff"
+
+[sub_resource type="Resource" id="Resource_vq6p2"]
+script = ExtResource("3_vgc74")
+base_title = "Hard "
+map_generator = ExtResource("7_rgud8")
+enemies = Dictionary[PackedScene, Vector2i]({
+ExtResource("2_4do5o"): Vector2i(15, 15)
+})
+random_modifiers = Array[ExtResource("3_hunvx")]([SubResource("Resource_j0ndl"), SubResource("Resource_h11qe")])
+modifiers_count = 2
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
@@ -60,8 +89,12 @@ fill_to = Vector2(1, 1)
 
 [node name="EndlessGameModeManager" type="Node2D" groups=["GameModeManager"]]
 script = ExtResource("1_br5b8")
-level_info = SubResource("Resource_e5u5o")
-map_generator = ExtResource("7_rgud8")
+current_level = 2
+levels_data = Dictionary[int, ExtResource("3_vgc74")]({
+0: SubResource("Resource_flrxs"),
+1: SubResource("Resource_nlk32"),
+2: SubResource("Resource_vq6p2")
+})
 
 [node name="CameraController" type="Camera2D" parent="."]
 script = ExtResource("7_flrxs")

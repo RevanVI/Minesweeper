@@ -72,37 +72,34 @@ func _unhandled_input(event: InputEvent) -> void:
 			map.mark_cell_global_position(global_pos)
 
 
-func prepare_battle(level_info: LevelInfo, mode_map_generator: MapGenerator, character: Character) -> void:
+func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 	_character = character
 	if _character.is_connected("died", _on_character_died) == false:
 		_character.died.connect(_on_character_died)
-	battle_timer.stop()
-	battle_time = 0
-	battle_time_changed.emit(battle_time)
 
 	# TODO collect modifiers from all sources
 	_modifier_list = ModifiersList.new()
-	_modifier_list.add_modifiers(level_info.modifiers)
-
+	_modifier_list.add_modifiers(level_info.get_modifiers_data())
 	if _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.UNDO_BLOCKED):
 		undo_status_changed.emit(false)
 
-	undo_count_changed.emit(_character.get_undo_count())
-	map_generator = mode_map_generator
-	prepare_level(level_info)
-	change_game_state(GameState.START)
-
-
-func prepare_level(level_info: LevelInfo) -> void:
-	level_changed.emit(level_info.title)
-	turn_queue.reset()
-	map.set_modifiers(_modifier_list)
-	map_generator.generate_empty_map(map, level_info.map_size, level_info.get_enemies_data(), _modifier_list)
-	camera_controller.pos_limits = map.get_limits_global()
-	camera_controller.calc_start_position()
 	enemies_count = level_info.get_enemy_count()
 	mark_count = enemies_count
 	mark_count_changed.emit(mark_count)
+
+	map_generator = level_info.map_generator
+	map.set_modifiers(_modifier_list)
+	map_generator.generate_empty_map(map, level_info.get_enemies_data(), _modifier_list, level_info.get_generation_seed())
+	camera_controller.pos_limits = map.get_limits_global()
+	camera_controller.calc_start_position()
+
+	battle_timer.stop()
+	battle_time = 0
+	battle_time_changed.emit(battle_time)
+	undo_count_changed.emit(_character.get_undo_count())
+	turn_queue.reset()
+	level_changed.emit(level_info.title)
+	change_game_state(GameState.START)
 
 
 func change_game_state(new_state: GameState) -> void:

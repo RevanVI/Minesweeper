@@ -2,6 +2,8 @@ class_name MapGenerator
 extends Resource
 
 @export var generator_name: String = "Base"
+@export var map_size_x: Vector2i
+@export var map_size_y: Vector2i
 
 var map: Map
 # dict. key - enemy scene, value - enemies count
@@ -17,23 +19,27 @@ var _modifier_list: ModifiersList
 var _rng: RandomNumberGenerator
 
 
-func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList, gen_seed: int = -1) -> void:
+func generate_empty_map(map_ref: Map, enemies_data: Dictionary[PackedScene, int], modifiers: ModifiersList, gen_seed: int = -1) -> void:
 	_rng = RandomNumberGenerator.new()
 	if gen_seed != -1:
 		_rng.seed = gen_seed
 	else:
 		_rng.seed = randi()
 
-	map = map_ref
-	map.reset_map()
-	map.size = size
 	enemies_info = enemies_data
 	_modifier_list = modifiers
 
+	map = map_ref
+	map.reset_map()
+	var map_size: Vector2i = Vector2i(0, 0)
+	map_size.x = _rng.randi_range(map_size_x[0], map_size_x[1])
+	map_size.y = _rng.randi_range(map_size_y[0], map_size_y[1])
+	map.size = map_size
+	
 	var map_data: Array[Array] = []
-	for x in range(size.x):
+	for x in range(map_size.x):
 		map_data.append([])
-		for y in range(size.y):
+		for y in range(map_size.y):
 			var tile_data: Map.MapTileData = Map.MapTileData.new()
 			map_data[x].append(tile_data)
 
@@ -44,6 +50,7 @@ func generate_empty_map(map_ref: Map, size: Vector2i, enemies_data: Dictionary[P
 func populate_map(map_ref: Map, start_pos: Vector2i) -> bool:
 	map = map_ref
 	if map.is_pos_valid(start_pos) == false:
+		print("MapGenerator.populate_map(): start position " + str(start_pos) + " is not valid")
 		return false
 
 	map.create_enemy_collection(enemies_info.keys())
