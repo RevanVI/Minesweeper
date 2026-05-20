@@ -24,6 +24,7 @@ func start_mode() -> void:
 	assert(current_level in levels_data.keys())
 	generate_level()
 	battle_manager.prepare_battle(levels_data[current_level], character)
+	battle_manager.change_game_state(GameManager.GameState.START)
 
 
 func generate_level() -> void:
