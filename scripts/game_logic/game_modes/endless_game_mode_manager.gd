@@ -1,13 +1,11 @@
 class_name EndlessGameModeManager
 extends GameModeManager
 
-
 enum Diffuculty {
 	EASY = 0,
 	MEDIUM = 1,
 	HARD = 2,
 }
-
 
 @export var current_level: int = Diffuculty.EASY
 
@@ -21,9 +19,16 @@ func _ready() -> void:
 
 
 func start_mode() -> void:
+	var data: Dictionary = SceneSwitcherGlobal.get_data("endless_mode_settings", true)
+	if data.is_empty():
+		current_level = Diffuculty.EASY
+	else:
+		current_level = data["difficulty_level"]
+
 	assert(current_level in levels_data.keys())
 	generate_level()
 	battle_manager.prepare_battle(levels_data[current_level], character)
+	battle_manager.change_game_state(GameManager.GameState.START)
 
 
 func generate_level() -> void:
@@ -36,13 +41,13 @@ func is_undo_supported() -> bool:
 
 
 func prepare_next_level() -> void:
-	print("prepare_next_level")
+	print("EndlessGameModeManager.prepare_next_level")
 	generate_level()
 	battle_manager.prepare_battle(levels_data[current_level], character)
 
 
 func restart_mode() -> void:
-	print("restart mode")
+	print("EndlessGameModeManager.restart_mode")
 	# TODO some animations here?
 	generate_level()
 	character.reset()

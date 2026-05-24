@@ -73,4 +73,4 @@ func _on_game_state_changed(game_state: GameManager.GameState) -> void:
 
 
 func _on_main_menu_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/gui/main_menu.tscn")
+	game_mode_manager.exit_to_menu()

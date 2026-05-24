@@ -1,12 +1,12 @@
-[gd_scene load_steps=20 format=4 uid="uid://c2ojfj15jwr4"]
+[gd_scene load_steps=25 format=4 uid="uid://c2ojfj15jwr4"]
 
 [ext_resource type="Script" uid="uid://daheqlmjupwww" path="res://scripts/game_logic/game_modes/classic_game_mode_manager.gd" id="1_xmsgg"]
 [ext_resource type="PackedScene" uid="uid://mxcgjh4wuoq2" path="res://scenes/enemies/bomb.tscn" id="2_p4m7m"]
 [ext_resource type="Script" uid="uid://d24yha5t4vm1g" path="res://scripts/game_logic/modifiers/modifier_base.gd" id="3_p4m7m"]
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="3_qgemu"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="4_8ivtb"]
+[ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generators/map_generator.gd" id="4_b5xbl"]
 [ext_resource type="TileSet" uid="uid://c3bm3pwixplyp" path="res://resources/tilesets/minesweeper_starter.tres" id="5_b5xbl"]
-[ext_resource type="Resource" uid="uid://g6am2v5ifsx1" path="res://resources/generators/map_generator_base.tres" id="5_qgemu"]
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="7_dhm3e"]
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="8_0nf2j"]
 [ext_resource type="Script" uid="uid://erghs5cplvbn" path="res://scripts/gui/battle_classic.gd" id="9_lgmfj"]
@@ -15,12 +15,48 @@
 [ext_resource type="Script" uid="uid://c0b0dy1yg1am8" path="res://scripts/gui/end_game_classic.gd" id="12_lgmfj"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="14_qgemu"]
 
+[sub_resource type="Resource" id="Resource_dwcyu"]
+script = ExtResource("4_b5xbl")
+map_size_x = Vector2i(10, 10)
+map_size_y = Vector2i(10, 10)
+metadata/_custom_type_script = "uid://dacfmm368sqhq"
+
 [sub_resource type="Resource" id="Resource_qgemu"]
 script = ExtResource("3_qgemu")
-base_title = "Level "
-map_generator = ExtResource("5_qgemu")
+base_title = "Easy"
+map_generator = SubResource("Resource_dwcyu")
 enemies = Dictionary[PackedScene, Vector2i]({
 ExtResource("2_p4m7m"): Vector2i(10, 10)
+})
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
+[sub_resource type="Resource" id="Resource_dhm3e"]
+script = ExtResource("4_b5xbl")
+map_size_x = Vector2i(16, 16)
+map_size_y = Vector2i(16, 16)
+metadata/_custom_type_script = "uid://dacfmm368sqhq"
+
+[sub_resource type="Resource" id="Resource_8ivtb"]
+script = ExtResource("3_qgemu")
+base_title = "Medium"
+map_generator = SubResource("Resource_dhm3e")
+enemies = Dictionary[PackedScene, Vector2i]({
+ExtResource("2_p4m7m"): Vector2i(40, 40)
+})
+metadata/_custom_type_script = "uid://diqmvisuttd5h"
+
+[sub_resource type="Resource" id="Resource_0nf2j"]
+script = ExtResource("4_b5xbl")
+map_size_x = Vector2i(30, 30)
+map_size_y = Vector2i(16, 16)
+metadata/_custom_type_script = "uid://dacfmm368sqhq"
+
+[sub_resource type="Resource" id="Resource_b5xbl"]
+script = ExtResource("3_qgemu")
+base_title = "Hard"
+map_generator = SubResource("Resource_0nf2j")
+enemies = Dictionary[PackedScene, Vector2i]({
+ExtResource("2_p4m7m"): Vector2i(99, 99)
 })
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
@@ -44,7 +80,9 @@ fill_to = Vector2(1, 1)
 [node name="ClassicGameModeManager" type="Node2D" groups=["GameModeManager"]]
 script = ExtResource("1_xmsgg")
 levels_data = Dictionary[int, ExtResource("3_qgemu")]({
-0: SubResource("Resource_qgemu")
+0: SubResource("Resource_qgemu"),
+1: SubResource("Resource_8ivtb"),
+2: SubResource("Resource_b5xbl")
 })
 
 [node name="CameraController" type="Camera2D" parent="."]

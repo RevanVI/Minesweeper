@@ -1,9 +1,7 @@
 class_name GameModeManager
 extends Node2D
 
-
 signal init_done()
-
 
 @export var levels_data: Dictionary[int, LevelInfo]
 
@@ -32,4 +30,9 @@ func restart_mode() -> void:
 
 
 func exit_to_menu() -> void:
-	get_tree().change_scene_to_file("res://scenes/gui/main_menu.tscn")
+	SceneSwitcherGlobal.switch_scene("res://scenes/gui/main_menu.tscn")
+
+
+func cleanup() -> void:
+	visible = false
+	queue_free()

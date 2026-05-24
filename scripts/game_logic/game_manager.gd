@@ -99,7 +99,6 @@ func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 	undo_count_changed.emit(_character.get_undo_count())
 	turn_queue.reset()
 	level_changed.emit(level_info.title)
-	change_game_state(GameState.START)
 
 
 func change_game_state(new_state: GameState) -> void:
