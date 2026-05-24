@@ -3,15 +3,14 @@ extends Node
 
 var _current_scene: Node = null
 var _next_level_string: String = ""
-
-var _scenes_data: Dictionary[String, Dictionary] = {}
+var _scenes_data: Dictionary[String, Dictionary] = { }
 
 
 func _ready() -> void:
 	_current_scene = get_tree().current_scene
 
 
-func switch_scene(new_scene: String, data_key: String = "", data: Dictionary = {}) -> void:
+func switch_scene(new_scene: String, data_key: String = "", data: Dictionary = { }) -> void:
 	print("SceneSwitcher.switch_scene: switch to " + new_scene)
 	_next_level_string = new_scene
 
@@ -24,7 +23,6 @@ func on_anim_fade_in_ended() -> void:
 	assert(_current_scene.has_method("cleanup"))
 	_current_scene.cleanup()
 
-	
 	Transition.play_loading_screen_anim()
 	await get_tree().create_timer(2.0).timeout
 	# TODO load async
@@ -46,8 +44,8 @@ func set_data(data_key: String, data: Dictionary) -> void:
 
 func get_data(data_key: String, remove: bool = false) -> Dictionary:
 	if data_key not in _scenes_data.keys():
-		return {}
-	
+		return { }
+
 	var data: Dictionary = _scenes_data[data_key]
 	if remove:
 		_scenes_data.erase(data_key)

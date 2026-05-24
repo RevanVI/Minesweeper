@@ -1,9 +1,7 @@
 class_name GameModeManager
 extends Node2D
 
-
 signal init_done()
-
 
 @export var levels_data: Dictionary[int, LevelInfo]
 

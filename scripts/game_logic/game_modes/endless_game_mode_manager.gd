@@ -1,13 +1,11 @@
 class_name EndlessGameModeManager
 extends GameModeManager
 
-
 enum Diffuculty {
 	EASY = 0,
 	MEDIUM = 1,
 	HARD = 2,
 }
-
 
 @export var current_level: int = Diffuculty.EASY
 

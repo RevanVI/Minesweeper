@@ -1,7 +1,6 @@
 class_name ClassicGameModeManager
 extends GameModeManager
 
-
 enum Diffuculty {
 	EASY = 0,
 	MEDIUM = 1,
@@ -9,6 +8,7 @@ enum Diffuculty {
 }
 
 @export var current_level: int = Diffuculty.EASY
+
 
 func _ready() -> void:
 	battle_manager = $"GameManager"
