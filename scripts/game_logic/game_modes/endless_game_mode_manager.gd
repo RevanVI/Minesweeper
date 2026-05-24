@@ -23,7 +23,7 @@ func _ready() -> void:
 func start_mode() -> void:
 	var data: Dictionary = SceneSwitcherGlobal.get_data("endless_mode_settings", true)
 	if data.is_empty():
-		current_level = 2
+		current_level = Diffuculty.EASY
 	else:
 		current_level = data["difficulty_level"]
 
