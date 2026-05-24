@@ -19,6 +19,12 @@ func _ready() -> void:
 
 
 func start_mode() -> void:
+	var data: Dictionary = SceneSwitcherGlobal.get_data("classic_mode_settings", true)
+	if data.is_empty():
+		current_level = 2
+	else:
+		current_level = data["difficulty_level"]
+
 	assert(current_level in levels_data.keys())
 	generate_level()
 	battle_manager.prepare_battle(levels_data[current_level], character)
@@ -30,12 +36,12 @@ func generate_level() -> void:
 
 
 func prepare_next_level() -> void:
-	print("prepare_next_level")
+	print("ClassicGameModeManager.prepare_next_level")
 	restart_mode()
 
 
 func restart_mode() -> void:
-	print("restart mode")
+	print("ClassicGameModeManager.restart_mode")
 	# TODO some animations here?
 	generate_level()
 	character.reset()
