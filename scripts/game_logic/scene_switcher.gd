@@ -19,7 +19,10 @@ func on_anim_fade_in_ended() -> void:
 	assert(_current_scene.has_method("cleanup"))
 	_current_scene.cleanup()
 
-	# TODO load async and play some loading screen animation
+	
+	Transition.play_loading_screen_anim()
+	await get_tree().create_timer(2.0).timeout
+	# TODO load async
 	var new_scene = load(_next_level_string).instantiate()
 	_current_scene = new_scene
 	_current_scene.init_done.connect(on_init_done)

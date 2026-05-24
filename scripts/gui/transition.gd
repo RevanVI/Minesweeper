@@ -26,3 +26,8 @@ func play_transition_out() -> void:
 	await animation_player.animation_finished
 	control_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	fade_out_completed.emit()
+
+
+func play_loading_screen_anim() -> void:
+	print("TransitionAnim.play_loading_screen_anim")
+	animation_player.play('loading')
