@@ -87,6 +87,7 @@ func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 	if modifier_dark_scene != null:
 		var cursor_scene: CursorLight = modifier_dark_scene.cursor_scene.instantiate()
 		add_child(cursor_scene)
+		cursor_scene.light_size = modifier_dark_scene.light_size
 
 	enemies_count = level_info.get_enemy_count()
 	mark_count = enemies_count

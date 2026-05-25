@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://hf0way6q2owg"]
 
 [ext_resource type="Texture2D" uid="uid://cmbwd4ii7vuqe" path="res://resources/textures/light_source/light_source_128_1.png" id="1_75gu2"]
-[ext_resource type="Script" uid="uid://dpldaf7hha13j" path="res://scenes/dev/cursor_light.gd" id="2_g1n0x"]
+[ext_resource type="Script" uid="uid://dpldaf7hha13j" path="res://scripts/game_logic/cursor_light.gd" id="2_g1n0x"]
 [ext_resource type="Texture2D" uid="uid://ca3cokn8rmftu" path="res://resources/textures/light_source/light_source_192_1.png" id="3_npx27"]
 [ext_resource type="Texture2D" uid="uid://bcctpdd3363kk" path="res://resources/textures/light_source/light_source_256_2.png" id="4_qeskf"]
 [ext_resource type="Texture2D" uid="uid://ckh0b01o4tkl2" path="res://resources/textures/light_source/light_source_256_3.png" id="5_coiap"]
