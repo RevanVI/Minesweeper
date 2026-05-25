@@ -1,0 +1,144 @@
+[gd_scene load_steps=12 format=3 uid="uid://hf0way6q2owg"]
+
+[ext_resource type="Texture2D" uid="uid://cmbwd4ii7vuqe" path="res://resources/textures/light_source/light_source_128_1.png" id="1_75gu2"]
+[ext_resource type="Script" uid="uid://dpldaf7hha13j" path="res://scenes/dev/cursor_light.gd" id="2_g1n0x"]
+[ext_resource type="Texture2D" uid="uid://ca3cokn8rmftu" path="res://resources/textures/light_source/light_source_192_1.png" id="3_npx27"]
+[ext_resource type="Texture2D" uid="uid://bcctpdd3363kk" path="res://resources/textures/light_source/light_source_256_2.png" id="4_qeskf"]
+[ext_resource type="Texture2D" uid="uid://ckh0b01o4tkl2" path="res://resources/textures/light_source/light_source_256_3.png" id="5_coiap"]
+[ext_resource type="Texture2D" uid="uid://j5i2uoereiwk" path="res://resources/textures/light_source/light_source_256_1.png" id="6_ewfcs"]
+
+[sub_resource type="Animation" id="Animation_dbveo"]
+resource_name = "L128"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_75gu2")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0, 0),
+"update": 0,
+"values": [2.4, 2.0]
+}
+
+[sub_resource type="Animation" id="Animation_gbrff"]
+resource_name = "L192"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_npx27")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0, 0),
+"update": 0,
+"values": [2.4, 2.0]
+}
+
+[sub_resource type="Animation" id="Animation_1osqk"]
+resource_name = "new_animation"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("4_qeskf"), ExtResource("5_coiap")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0, 0),
+"update": 0,
+"values": [2.4, 1.6]
+}
+
+[sub_resource type="Animation" id="Animation_yoaqh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_ewfcs")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0xggp"]
+_data = {
+&"L128": SubResource("Animation_dbveo"),
+&"L192": SubResource("Animation_gbrff"),
+&"L256": SubResource("Animation_1osqk"),
+&"RESET": SubResource("Animation_yoaqh")
+}
+
+[node name="CursorLight" type="PointLight2D"]
+energy = 2.4
+texture = ExtResource("1_75gu2")
+script = ExtResource("2_g1n0x")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_0xggp")
+}
+autoplay = "L256"
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.03534624, 0.035346247, 0.03534623, 1)

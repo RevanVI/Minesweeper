@@ -83,6 +83,11 @@ func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 	if _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.UNDO_BLOCKED):
 		undo_status_changed.emit(false)
 
+	var modifier_dark_scene: ModifierDarkScene = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.DARK_SCENE)
+	if modifier_dark_scene != null:
+		var cursor_scene: CursorLight = modifier_dark_scene.cursor_scene.instantiate()
+		add_child(cursor_scene)
+
 	enemies_count = level_info.get_enemy_count()
 	mark_count = enemies_count
 	mark_count_changed.emit(mark_count)
