@@ -5,6 +5,7 @@ enum ModifierTag {
 	BASE = 0,
     HIDE_CELLS = 1,
     UNDO_BLOCKED = 2,
+    DARK_SCENE = 3,
 }
 
 
