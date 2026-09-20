@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://c3bm3pwixplyp"]
+[gd_resource type="TileSet" format=3 uid="uid://c3bm3pwixplyp"]
 
 [ext_resource type="Texture2D" uid="uid://bmrjfadtrir3f" path="res://resources/textures/minsweeper_tiles_starter.png" id="1_ew7pa"]
 
