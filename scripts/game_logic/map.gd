@@ -147,26 +147,25 @@ func get_enemis_cells() -> Array[Vector2i]:
 	return enemies_cells
 
 
-func get_cell_pos(global_pos: Vector2) -> Vector2i:
+func get_cell_pos_from_global(global_pos: Vector2) -> Vector2i:
 	var cell_pos = top_board.local_to_map(top_board.to_local(global_pos))
-	if is_pos_valid(cell_pos):
+	if is_pos_playable(cell_pos):
 		return cell_pos
 	return Vector2i(-1, -1)
 
 
 func get_cell_type(pos: Vector2i) -> CellType:
-	if is_pos_valid(pos):
+	if is_pos_playable(pos):
 		return _map_data[pos.x][pos.y].type
 	return CellType.ERROR
 
 
 func get_neighbour_cells(pos: Vector2i, filter_cell: Array[Vector2i] = []) -> Array[Vector2i]:
-	# TODO: refactor to remove reading tile texture for filter
+	#TODO: refactor to remove reading tile texture for filter
 	var neighbours: Array[Vector2i] = []
 	for dir in _directions:
 		var new_pos = pos + dir
 
-		#outside map borders
 		if new_pos.x < 0 || new_pos.x >= size.x || \
 		new_pos.y < 0 || new_pos.y >= size.y:
 			continue
@@ -186,7 +185,6 @@ func get_empty_neighbour_cells(pos: Vector2i) -> Array[Vector2i]:
 	for dir in _directions:
 		var new_pos = pos + dir
 
-		#outside map borders
 		if new_pos.x < 0 || new_pos.x >= size.x || \
 		new_pos.y < 0 || new_pos.y >= size.y:
 			continue
@@ -200,7 +198,7 @@ func get_empty_neighbour_cells(pos: Vector2i) -> Array[Vector2i]:
 	return neighbours
 
 
-func is_pos_valid(pos: Vector2i) -> bool:
+func is_pos_playable(pos: Vector2i) -> bool:
 	if pos.x < 0 || pos.x >= size.x || \
 	pos.y < 0 || pos.y >= size.y:
 		return false
@@ -209,13 +207,13 @@ func is_pos_valid(pos: Vector2i) -> bool:
 
 
 func is_cell_empty(pos: Vector2i) -> bool:
-	if is_pos_valid(pos):
+	if is_pos_playable(pos):
 		return _map_data[pos.x][pos.y].type == CellType.EMPTY
 	return false
 
 
 func is_cell_marked(pos: Vector2i) -> bool:
-	if is_pos_valid(pos) == false:
+	if is_pos_playable(pos) == false:
 		return false
 
 	var cell_data: MapTileData = _map_data[pos.x][pos.y]
@@ -224,12 +222,12 @@ func is_cell_marked(pos: Vector2i) -> bool:
 
 func open_cell_at_global_position(global_pos: Vector2) -> bool:
 	var cell_pos = top_board.local_to_map(top_board.to_local(global_pos))
-	if is_pos_valid(cell_pos) == false:
+	if is_pos_playable(cell_pos) == false:
 		return false
 	if _map_data[cell_pos.x][cell_pos.y].opened == false and \
 	_map_data[cell_pos.x][cell_pos.y].marked == false:
 		var command = OpenCellsCommand.new(self, cell_pos)
-		# TODO: some other way to send commands
+		#TODO: some other way to send commands
 		get_tree().get_first_node_in_group("GameManager").turn_queue.add_command(command)
 		return true
 	return false
@@ -258,7 +256,7 @@ func open_cell(pos: Vector2i) -> Array[Vector2i]:
 func close_cell(pos: Vector2i) -> void:
 	print("Map: close cell: " + str(pos))
 
-	# TODO: check valid position?
+	#TODO: check valid position?
 	var cell_data: MapTileData = _map_data[pos.x][pos.y]
 	cell_data.opened = false
 	top_board.set_cell(pos, 0, closed_tile)
@@ -285,7 +283,7 @@ func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
 
 func mark_cell_global_position(global_pos: Vector2) -> void:
 	var cell_pos = top_board.local_to_map(top_board.to_local(global_pos))
-	if is_pos_valid(cell_pos) == false or _map_data[cell_pos.x][cell_pos.y].opened == true:
+	if is_pos_playable(cell_pos) == false or _map_data[cell_pos.x][cell_pos.y].opened == true:
 		return
 
 	var command: MarkCellCommand = MarkCellCommand.new(self, cell_pos)
@@ -337,17 +335,16 @@ func create_enemy_collection(enemies: Array[PackedScene]) -> void:
 
 
 func add_enemy(pos: Vector2i, enemy_scene: PackedScene) -> void:
-	#print("set cell here")
 	var enemy_collection_id = _enemies[enemy_scene]
 	_map_data[pos.x][pos.y].type = CellType.ENEMY
 
-	# TODO: should it be here?
+	#TODO: should it be here?
 	board.set_cell(pos, ENEMY_COLLECTION_ID, Vector2i(0, 0), enemy_collection_id)
 
 	# tilemap updates at the end of the frame
 	# this means that _ready() on spawned scene will be called only then
 	# we need to store ref to spawned scene so force tilemap update with update_internals()
-	# TODO: can be heavy on perf. check on big map, make it better and frame independent?
+	#TODO: can be heavy on perf. check on big map, make it better and frame independent?
 	board.update_internals()
 
 	var last_ind = board.get_child_count()
@@ -360,7 +357,7 @@ func add_enemy(pos: Vector2i, enemy_scene: PackedScene) -> void:
 		if data.type == CellType.EMPTY:
 			data.enemies_count += 1
 
-			# TODO: should it be here?
+			#TODO: should it be here?
 			var hide_modifier: ModifierHiddenCells = null
 			if _modifier_list:
 				hide_modifier = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)

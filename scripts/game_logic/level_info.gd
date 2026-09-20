@@ -13,7 +13,7 @@ extends Resource
 @export var random_modifiers: Array[ModifierBase]
 # count of random_modifiers to choose
 @export var modifiers_count: int
-# not used for now. POtentially will be used for text and art selections
+# not used for now. Potentially will be used for text and art selections
 @export var mine_type: int 
 
 
@@ -40,7 +40,6 @@ func get_generation_seed() -> int:
 	return -1
 
 
-
 func generate_level(index: int, gen_seed: int = -1) -> void:
 	print("LevelInfo: Generate level")
 	_rng = RandomNumberGenerator.new()
@@ -58,7 +57,6 @@ func generate_level(index: int, gen_seed: int = -1) -> void:
 		var count = _rng.randi_range(enemies[enemy][0], enemies[enemy][1])
 		_enemies[enemy] = count
 		enemies_count += count
-		assert(count != 0)
 
 	# randomize modifiers
 	_modifiers.clear()

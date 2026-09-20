@@ -35,7 +35,7 @@ func calc_playable_cells() -> void:
 				playable_cells_count += 1
 
 
-func check_if_enemies_stored() -> void:
+func is_enemies_stored() -> void:
 	for x in range(0, map_data.size()):
 		var res: int = map_data[x].find(CellData.ENEMY)
 		if res != -1:
@@ -46,5 +46,5 @@ func check_if_enemies_stored() -> void:
 
 func update_map_data() -> void:
 	calc_map_size()
-	check_if_enemies_stored()
+	is_enemies_stored()
 	calc_playable_cells()

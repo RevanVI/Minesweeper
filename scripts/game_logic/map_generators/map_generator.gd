@@ -49,7 +49,7 @@ func generate_empty_map(map_ref: Map, enemies_data: Dictionary[PackedScene, int]
 
 func populate_map(map_ref: Map, start_pos: Vector2i) -> bool:
 	map = map_ref
-	if map.is_pos_valid(start_pos) == false:
+	if map.is_pos_playable(start_pos) == false:
 		print("MapGenerator.populate_map(): start position " + str(start_pos) + " is not valid")
 		return false
 

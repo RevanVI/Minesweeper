@@ -7,7 +7,7 @@ var _modifiers: Array[ModifierBase]
 func add_modifier(modifier: ModifierBase) -> void:
 	if _check_modifier_match(modifier):
 		_modifiers.append(modifier)
-	# TODO print errors or assert if failed?
+	#TODO print errors or assert if failed?
 
 
 func add_modifiers(modifiers: Array[ModifierBase]) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://c1thwrud0uqny"]
+[gd_scene format=4 uid="uid://c1thwrud0uqny"]
 
 [ext_resource type="Script" uid="uid://h8uky87fn6jx" path="res://scripts/dev/map_generator_test.gd" id="1_n3fcj"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="2_4bswj"]
@@ -25,7 +25,7 @@ ExtResource("2_oh383"): Vector2i(25, 25)
 })
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
-[node name="MapGeneratorTest" type="Node2D" node_paths=PackedStringArray("map", "camera_controller", "seed_edit", "map_size_x_edit", "map_size_y_edit", "enemies_count_edit", "maps_count_edit", "errors_count_label", "generator_options")]
+[node name="MapGeneratorTest" type="Node2D" unique_id=604585365 node_paths=PackedStringArray("map", "camera_controller", "seed_edit", "map_size_x_edit", "map_size_y_edit", "enemies_count_edit", "maps_count_edit", "errors_count_label", "generator_options")]
 script = ExtResource("1_n3fcj")
 map_generator = SubResource("Resource_80o6b")
 level_info = SubResource("Resource_rjwph")
@@ -39,7 +39,7 @@ maps_count_edit = NodePath("CanvasLayer/Control/Panel/MapsCountLineEdit")
 errors_count_label = NodePath("CanvasLayer/Control/Panel/ErrorCountLabel")
 generator_options = NodePath("CanvasLayer/Control/Panel/GeneratorOptionButton")
 
-[node name="CameraController" type="Camera2D" parent="."]
+[node name="CameraController" type="Camera2D" parent="." unique_id=1114169585]
 limit_left = -2000
 limit_top = -2000
 limit_right = 3000
@@ -49,30 +49,30 @@ zoom_limits = Vector2(0.75, 2)
 speed = 200.0
 metadata/_custom_type_script = "uid://cqh3xxrgi3ncc"
 
-[node name="Map" type="Node2D" parent="."]
+[node name="Map" type="Node2D" parent="." unique_id=1288257063]
 script = ExtResource("2_4bswj")
 mark_tile = Vector2i(1, 1)
 empty_tiles = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0)])
 
-[node name="Board" type="TileMapLayer" parent="Map"]
+[node name="Board" type="TileMapLayer" parent="Map" unique_id=1769686225]
 texture_filter = 1
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAFAAkAAAAAAAAAAAAEAAkAAAAAAAAAAAADAAkAAAAAAAAAAAACAAkAAAAAAAAAAAABAAkAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAGAAEAAAAAAAAAAAAHAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAADAAgAAAAAAAAAAAACAAgAAAAAAAAAAAABAAgAAAAAAAAAAAABAAYAAAAAAAAAAAABAAUAAAAAAAAAAAABAAQAAAAAAAAAAAACAAMAAAAAAAAAAAACAAIAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAcAAAAAAAAAAAACAAUAAAAAAAAAAAACAAQAAAAAAAAAAAACAAcAAAAAAAAAAAACAAYAAAAAAAAAAAADAAQAAAAAAAAAAAADAAMAAAAAAAAAAAADAAIAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAUAAAACAAEAAAAFAAQAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAIAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAEAAAAAAAAAAAA=")
 tile_set = ExtResource("3_h52y7")
 
-[node name="Cells" type="TileMapLayer" parent="Map"]
+[node name="Cells" type="TileMapLayer" parent="Map" unique_id=477260856]
 texture_filter = 1
 tile_set = ExtResource("3_h52y7")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1440279106]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=608987802]
 layout_mode = 3
 anchor_left = 0.65
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -0.1521
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Control" unique_id=1715497517]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -82,14 +82,14 @@ offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GeneratorOptionButton" type="OptionButton" parent="CanvasLayer/Control/Panel"]
+[node name="GeneratorOptionButton" type="OptionButton" parent="CanvasLayer/Control/Panel" unique_id=992946073]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 10.0
 offset_right = 60.0
 offset_bottom = 30.0
 
-[node name="SeedLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+[node name="SeedLabel" type="Label" parent="CanvasLayer/Control/Panel" unique_id=171918386]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 41.0
@@ -97,7 +97,7 @@ offset_right = 117.0
 offset_bottom = 76.0
 text = "Seed: "
 
-[node name="SeedLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+[node name="SeedLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel" unique_id=2094201494]
 layout_mode = 0
 offset_left = 141.0
 offset_top = 38.0
@@ -105,7 +105,7 @@ offset_right = 209.5625
 offset_bottom = 69.0
 text = "-1"
 
-[node name="MapSizeXLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+[node name="MapSizeXLabel" type="Label" parent="CanvasLayer/Control/Panel" unique_id=910081968]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 81.0
@@ -113,7 +113,7 @@ offset_right = 107.0
 offset_bottom = 113.0
 text = "Map size X:"
 
-[node name="MapSizeXLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+[node name="MapSizeXLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel" unique_id=1207298937]
 layout_mode = 0
 offset_left = 141.0
 offset_top = 77.0
@@ -121,7 +121,7 @@ offset_right = 209.5625
 offset_bottom = 108.0
 text = "10"
 
-[node name="MapSizeYLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+[node name="MapSizeYLabel" type="Label" parent="CanvasLayer/Control/Panel" unique_id=433475598]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 125.0
@@ -129,7 +129,7 @@ offset_right = 107.0
 offset_bottom = 157.0
 text = "Map size Y:"
 
-[node name="MapSizeYLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+[node name="MapSizeYLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel" unique_id=1449056935]
 layout_mode = 0
 offset_left = 140.0
 offset_top = 117.0
@@ -137,7 +137,7 @@ offset_right = 208.5625
 offset_bottom = 148.0
 text = "10"
 
-[node name="EnemiesCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+[node name="EnemiesCountLabel" type="Label" parent="CanvasLayer/Control/Panel" unique_id=99829769]
 layout_mode = 0
 offset_left = 18.000008
 offset_top = 169.0
@@ -145,7 +145,7 @@ offset_right = 141.0
 offset_bottom = 201.0
 text = "Enemies count: "
 
-[node name="EnemiesCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+[node name="EnemiesCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel" unique_id=456166358]
 layout_mode = 0
 offset_left = 142.0
 offset_top = 164.0
@@ -153,7 +153,7 @@ offset_right = 210.5625
 offset_bottom = 195.0
 text = "10"
 
-[node name="MapSizeXLabel2" type="Label" parent="CanvasLayer/Control/Panel"]
+[node name="MapSizeXLabel2" type="Label" parent="CanvasLayer/Control/Panel" unique_id=540464131]
 layout_mode = 0
 offset_left = 19.0
 offset_top = 210.0
@@ -161,7 +161,7 @@ offset_right = 114.0
 offset_bottom = 242.0
 text = "Maps count:"
 
-[node name="MapsCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel"]
+[node name="MapsCountLineEdit" type="LineEdit" parent="CanvasLayer/Control/Panel" unique_id=803591893]
 layout_mode = 0
 offset_left = 141.0
 offset_top = 206.0
@@ -169,7 +169,7 @@ offset_right = 209.5625
 offset_bottom = 237.0
 text = "5"
 
-[node name="ErrorCountLabel" type="Label" parent="CanvasLayer/Control/Panel"]
+[node name="ErrorCountLabel" type="Label" parent="CanvasLayer/Control/Panel" unique_id=2142545170]
 layout_mode = 0
 offset_left = 19.000008
 offset_top = 253.0
@@ -177,7 +177,7 @@ offset_right = 169.0
 offset_bottom = 276.0
 text = "Failed maps count: "
 
-[node name="GenerateButton" type="Button" parent="CanvasLayer/Control/Panel"]
+[node name="GenerateButton" type="Button" parent="CanvasLayer/Control/Panel" unique_id=2014528852]
 layout_mode = 0
 offset_left = 25.0
 offset_top = 285.0
@@ -185,7 +185,7 @@ offset_right = 153.0
 offset_bottom = 324.0
 text = "Genereate map"
 
-[node name="GenerateRangeButton" type="Button" parent="CanvasLayer/Control/Panel"]
+[node name="GenerateRangeButton" type="Button" parent="CanvasLayer/Control/Panel" unique_id=1296080371]
 layout_mode = 0
 offset_left = 21.0
 offset_top = 326.0

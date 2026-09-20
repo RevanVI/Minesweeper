@@ -46,24 +46,18 @@ func _ready():
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if game_state == GameState.GAME_OVER \
-	|| game_state == GameState.GAME_WIN \
-	|| game_state == GameState.PAUSE \
-	|| game_state == GameState.INIT \
-	|| turn_queue.is_turn_processing:
+	if _is_input_available() == false:
 		return
 
 	if event.is_action_pressed("LeftMouseButton"):
 		var global_pos: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
 		if game_state == GameState.START:
-			print("GameManager: first turn")
-			var cell_pos = map.get_cell_pos(global_pos)
+			var cell_pos = map.get_cell_pos_from_global(global_pos)
 			map_generator.populate_map(map, cell_pos)
 			change_game_state(GameState.BATTLE)
-			battle_timer.start()
-
+			
 		if map.open_cell_at_global_position(global_pos):
-			# TODO: define some way to mark commands as turn-enders
+			#TODO: define some way to mark commands as turn-enders
 			var command = EndTurnCommand.new()
 			turn_queue.add_command(command)
 	elif event.is_action_pressed("RightMouseButton"):
@@ -77,7 +71,7 @@ func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 	if _character.is_connected("died", _on_character_died) == false:
 		_character.died.connect(_on_character_died)
 
-	# TODO collect modifiers from all sources
+	#TODO collect modifiers from all sources
 	_modifier_list = ModifiersList.new()
 	_modifier_list.add_modifiers(level_info.get_modifiers_data())
 	if _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.UNDO_BLOCKED):
@@ -122,17 +116,20 @@ func change_game_state(new_state: GameState) -> void:
 	_prev_game_state = game_state
 	game_state = new_state
 	game_state_changed.emit(game_state)
-	print("State changed. " + str(_prev_game_state) + " -> " + str(new_state))
+	print("State changed: " + str(_prev_game_state) + " -> " + str(new_state))
 	_game_state_changing = false
 
 
 func exit_state(state_exited: GameState) -> void:
+	if state_exited == GameState.START:
+		print("GameManager: first turn")
+		battle_timer.start()
 	if state_exited == GameState.PAUSE:
 		map.start_show()
 		await get_tree().create_timer(0.2).timeout
 		battle_timer.paused = false
 		unpaused.emit()
-	elif state_exited == GameState.GAME_OVER || state_exited == GameState.GAME_WIN:
+	if state_exited == GameState.GAME_OVER || state_exited == GameState.GAME_WIN:
 		battle_timer.paused = false
 
 
@@ -141,8 +138,17 @@ func enter_state(new_state: GameState) -> void:
 		battle_timer.paused = true
 		map.start_hide()
 		paused.emit()
-	elif new_state == GameState.GAME_OVER || new_state == GameState.GAME_WIN:
+	if new_state == GameState.GAME_OVER: 
 		battle_timer.paused = true
+		var command = GameOverCommand.new()
+		command.undo_callback = Callable(self, "revert_game_over")
+		turn_queue.add_command(command)
+		print("GameManager: Level lost")
+		level_lost.emit()
+	if new_state == GameState.GAME_WIN:
+		battle_timer.paused = true
+		print("GameManager: Level completed")
+		level_completed.emit()
 
 
 func revert_game_over() -> void:
@@ -160,10 +166,7 @@ func check_board_cleared() -> void:
 	for i in closed_cells:
 		if i not in enemies_cells:
 			return
-
-	print("GameManager: Level completed")
 	change_game_state(GameState.GAME_WIN)
-	level_completed.emit()
 
 
 func pause() -> void:
@@ -216,9 +219,16 @@ func _on_turn_end(turn: int) -> void:
 	turn_changed.emit(turn)
 
 
-func _on_character_died():
+func _on_character_died() -> void:
 	change_game_state(GameState.GAME_OVER)
-	var command = GameOverCommand.new()
-	command.undo_callback = Callable(self, "revert_game_over")
-	turn_queue.add_command(command)
-	level_lost.emit()
+
+
+func _is_input_available() -> bool:
+	if game_state == GameState.GAME_OVER \
+	|| game_state == GameState.GAME_WIN \
+	|| game_state == GameState.PAUSE \
+	|| game_state == GameState.INIT \
+	|| turn_queue.is_turn_processing:
+		return false
+	
+	return true

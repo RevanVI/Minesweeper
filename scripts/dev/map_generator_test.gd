@@ -33,7 +33,7 @@ func generate_map() -> void:
 	map_generator.map_size_x = Vector2i(_map_size.x, _map_size.x)
 	map_generator.map_size_y = Vector2i(_map_size.y, _map_size.y)
 	map_generator.generate_empty_map(map, enemies_data, modifier_list, _seed)
-	# TODO: change start pos here
+	#TODO: change start pos here
 	var success: bool = map_generator.populate_map(map, _map_size / 2)
 	map.top_board.hide()
 	camera_controller.pos_limits = map.get_limits_global()
