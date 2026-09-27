@@ -140,8 +140,8 @@ metadata/_custom_type_script = "uid://b8ri86hixsvvn"
 
 [node name="Control" type="Control" parent="CanvasLayer" unique_id=1078690424]
 layout_mode = 3
-anchor_left = 0.645
-anchor_right = 1.001
+anchor_left = 0.65
+anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -0.1521
 script = ExtResource("9_j0ndl")
@@ -273,7 +273,7 @@ script = ExtResource("11_vq6p2")
 
 [node name="GameLoop" type="Control" parent="CanvasLayer" unique_id=2006405263]
 layout_mode = 3
-anchor_right = 0.642
+anchor_right = 0.65
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("12_kfc2u")
@@ -282,7 +282,8 @@ script = ExtResource("12_kfc2u")
 visible = false
 modulate = Color(0.0627451, 0.729412, 0, 1)
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
+anchor_top = 0.65
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -291,47 +292,36 @@ mouse_filter = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/GameLoop/WinPanel" unique_id=1834735668]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
 offset_left = -63.5
-offset_top = -30.0
+offset_top = 10.0
 offset_right = 63.5
-offset_bottom = 30.0
+offset_bottom = 50.0
 grow_horizontal = 2
-grow_vertical = 2
 text = "Level completed"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="next_level_btn" type="Button" parent="CanvasLayer/GameLoop/WinPanel" unique_id=893619848]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -53.440002
-offset_top = 60.0
-offset_right = 56.559998
-offset_bottom = 91.0
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.6
+anchor_right = 0.3
+anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
-text = "Next level"
+text = "New game"
 
 [node name="menu_btn" type="Button" parent="CanvasLayer/GameLoop/WinPanel" unique_id=1889185490]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -53.440002
-offset_top = 120.0
-offset_right = 56.559998
-offset_bottom = 151.0
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 0.6
+anchor_right = 0.7
+anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
 text = "Exit to menu"
@@ -340,7 +330,8 @@ text = "Exit to menu"
 visible = false
 modulate = Color(0.721583, 0, 0.142064, 1)
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
+anchor_top = 0.65
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -349,17 +340,14 @@ mouse_filter = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/GameLoop/LoosePanel" unique_id=557256987]
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.4
 anchor_right = 0.5
-anchor_bottom = 0.4
 offset_left = -63.5
-offset_top = -28.0
+offset_top = 10.0
 offset_right = 63.5
-offset_bottom = 32.0
+offset_bottom = 50.0
 grow_horizontal = 2
-grow_vertical = 2
 text = "Level failed"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -367,47 +355,35 @@ vertical_alignment = 1
 [node name="restart_btn" type="Button" parent="CanvasLayer/GameLoop/LoosePanel" unique_id=1247264024]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 0.5
-anchor_right = 0.4
-anchor_bottom = 0.5
-offset_left = -44.352005
-offset_top = 60.0
-offset_right = 40.647995
-offset_bottom = 91.0
+anchor_left = 0.2
+anchor_top = 0.6
+anchor_right = 0.2
+anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
-text = "restart"
+text = "Restart"
 
 [node name="undo_btn" type="Button" parent="CanvasLayer/GameLoop/LoosePanel" unique_id=1970302906]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.6
-anchor_top = 0.5
-anchor_right = 0.6
-anchor_bottom = 0.5
-offset_left = -36.528015
-offset_top = 60.0
-offset_right = 48.471985
-offset_bottom = 91.0
+anchor_left = 0.5
+anchor_top = 0.6
+anchor_right = 0.5
+anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
-text = "undo"
+text = "Undo"
 
 [node name="menu_btn" type="Button" parent="CanvasLayer/GameLoop/LoosePanel" unique_id=1785483898]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.6
-anchor_top = 0.5
-anchor_right = 0.6
-anchor_bottom = 0.5
-offset_left = -96.528015
-offset_top = 120.0
-offset_right = 10.471985
-offset_bottom = 151.0
+anchor_left = 0.8
+anchor_top = 0.6
+anchor_right = 0.8
+anchor_bottom = 0.6
 grow_horizontal = 2
 grow_vertical = 2
-text = "exit to menu"
+text = "Exit to menu"
 
 [connection signal="timeout" from="BattleTimer" to="GameManager" method="_on_battle_timer_timeout"]
 [connection signal="paused" from="GameManager" to="CanvasLayer/Control" method="_on_game_manager_paused"]

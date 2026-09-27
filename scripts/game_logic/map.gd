@@ -47,6 +47,8 @@ func reset_map() -> void:
 	board.clear()
 	_enemies = { }
 	_enemies_on_map = { }
+	top_board.modulate.a = 1
+	board.modulate.a = 1
 
 
 func update_visual_map() -> void:
@@ -314,6 +316,13 @@ func start_hide() -> void:
 	tween.tween_property(board, "modulate", final_color, 0.1)
 	tween.tween_property(top_board, "modulate", final_color, 0.2)
 	tween.play()
+
+
+func hide_top_board(anim_time: float = 0) -> void:
+	var final_color = modulate
+	final_color.a = 0
+	var tween = create_tween()
+	tween.tween_property(top_board, "modulate", final_color, anim_time)
 
 
 func start_show() -> void:

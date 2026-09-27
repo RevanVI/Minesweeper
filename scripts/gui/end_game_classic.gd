@@ -23,8 +23,6 @@ func _on_level_completed() -> void:
 func _on_level_lost() -> void:
 	loose_panel.visible = true
 	loose_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	if game_mode_manager.is_undo_supported() == false:
-		return
 
 
 func _on_next_level_btn_pressed() -> void:

@@ -144,10 +144,13 @@ func enter_state(new_state: GameState) -> void:
 		command.undo_callback = Callable(self, "revert_game_over")
 		turn_queue.add_command(command)
 		print("GameManager: Level lost")
+		if get_undo_status() == false:
+			map.hide_top_board(0.2)
 		level_lost.emit()
 	if new_state == GameState.GAME_WIN:
 		battle_timer.paused = true
 		print("GameManager: Level completed")
+		map.hide_top_board(0.2)
 		level_completed.emit()
 
 
