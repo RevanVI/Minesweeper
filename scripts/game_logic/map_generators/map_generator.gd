@@ -44,7 +44,7 @@ func generate_empty_map(map_ref: Map, enemies_data: Dictionary[PackedScene, int]
 			map_data[x].append(tile_data)
 
 	map.set_map_data(map_data)
-	map.update_visual_map()
+	map.update_visual_map(gen_seed)
 
 
 func populate_map(map_ref: Map, start_pos: Vector2i) -> bool:
@@ -60,7 +60,7 @@ func populate_map(map_ref: Map, start_pos: Vector2i) -> bool:
 	var iter: int = 0
 	while iter < max_generation_attempts and success == false:
 		success = spawn_enemies(start_pos)
-
+	assert(success)
 	return success
 
 

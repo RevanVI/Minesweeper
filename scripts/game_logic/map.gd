@@ -12,12 +12,19 @@ enum CellType {
 	ERROR = 99,
 }
 
+
+#Tileset data
+#TODO: potentially move it somewhere?
 const ENEMY_COLLECTION_ID = 1
 
-@export var closed_tile: Vector2i
-@export var mark_tile: Vector2i
-@export var empty_tiles: Array[Vector2i]
-@export var hidden_tile: Vector2i
+var _empty_cell_row: int = 0
+var _empty_cell_tiles: Array[Vector2i]
+var _empty_tiles_weights: Array[float]
+var _numbered_tiles_row: int = 1
+var _numbered_tiles: Array[Vector2i]
+var _closed_tile: Vector2i = Vector2i(0, 2)
+var _mark_tile: Vector2i = Vector2i(1, 2)
+var _hidden_tile: Vector2i = Vector2i(3, 2)
 
 var size: Vector2i = Vector2i(0, 0)
 var _directions: Array[Vector2i] = []
@@ -25,6 +32,8 @@ var _enemies: Dictionary[PackedScene, int] = { }
 var _enemies_on_map: Dictionary[Vector2i, Enemy] = { }
 var _map_data: Array[Array]
 var _modifier_list: ModifiersList
+var _rng: RandomNumberGenerator
+
 
 @onready var board: TileMapLayer = $Board
 @onready var top_board: TileMapLayer = $Cells
@@ -32,6 +41,7 @@ var _modifier_list: ModifiersList
 
 func _ready() -> void:
 	_build_directions()
+	_build_tileset_coords()
 
 
 func set_map_data(map_data: Array[Array]) -> void:
@@ -51,7 +61,13 @@ func reset_map() -> void:
 	board.modulate.a = 1
 
 
-func update_visual_map() -> void:
+func update_visual_map(gen_seed: int = -1) -> void:
+	_rng = RandomNumberGenerator.new()
+	if gen_seed != -1:
+		_rng.seed = gen_seed
+	else:
+		_rng.seed = randi()
+
 	top_board.clear()
 	board.clear()
 	for x in range(size.x):
@@ -64,17 +80,22 @@ func update_visual_map() -> void:
 				continue
 
 			if not tile_data.opened:
-				top_board.set_cell(pos, 0, closed_tile)
+				top_board.set_cell(pos, 0, _closed_tile)
 			if tile_data.marked:
-				top_board.set_cell(pos, 0, mark_tile)
+				top_board.set_cell(pos, 0, _mark_tile)
 
 			var hide_modifier: ModifierHiddenCells = null
 			if _modifier_list:
 				hide_modifier = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
 			if hide_modifier and tile_data.enemies_count in hide_modifier.hidden_values:
-				board.set_cell(pos, 0, hidden_tile)
+				board.set_cell(pos, 0, _hidden_tile)
 			else:
-				board.set_cell(pos, 0, empty_tiles[tile_data.enemies_count])
+				var tile_coords: Vector2i
+				if tile_data.enemies_count == 0:
+					tile_coords = _empty_cell_tiles[_rng.rand_weighted(_empty_tiles_weights)]
+				else:
+					tile_coords = _numbered_tiles[tile_data.enemies_count - 1]
+				board.set_cell(pos, 0, tile_coords)
 
 
 func reset_top_board() -> void:
@@ -85,7 +106,7 @@ func reset_top_board() -> void:
 			if _map_data[x][y].playable:
 				_map_data[x][y].opened = false
 				_map_data[x][y].marked = false
-				top_board.set_cell(Vector2i(x, y), 0, closed_tile)
+				top_board.set_cell(Vector2i(x, y), 0, _closed_tile)
 
 
 func reset_board() -> void:
@@ -96,7 +117,7 @@ func reset_board() -> void:
 			if _map_data[x][y].playable:
 				_map_data[x][y].enemies_count = 0
 				_map_data[x][y].type = CellType.EMPTY
-				board.set_cell(Vector2i(x, y), 0, empty_tiles[0])
+				board.set_cell(Vector2i(x, y), 0, _empty_cell_tiles[0])
 	_enemies_on_map.clear()
 
 
@@ -162,8 +183,7 @@ func get_cell_type(pos: Vector2i) -> CellType:
 	return CellType.ERROR
 
 
-func get_neighbour_cells(pos: Vector2i, filter_cell: Array[Vector2i] = []) -> Array[Vector2i]:
-	#TODO: refactor to remove reading tile texture for filter
+func get_neighbour_cells(pos: Vector2i, filter_closed: bool = false) -> Array[Vector2i]:
 	var neighbours: Array[Vector2i] = []
 	for dir in _directions:
 		var new_pos = pos + dir
@@ -175,8 +195,10 @@ func get_neighbour_cells(pos: Vector2i, filter_cell: Array[Vector2i] = []) -> Ar
 		if _map_data[new_pos.x][new_pos.y].playable == false:
 			continue
 
-		var cell_type = top_board.get_cell_atlas_coords(new_pos)
-		if filter_cell.is_empty() == true || cell_type in filter_cell:
+		if filter_closed:
+			if _map_data[new_pos.x][new_pos.y].opened == false:
+				neighbours.append(new_pos)
+		else:
 			neighbours.append(new_pos)
 
 	return neighbours
@@ -261,14 +283,14 @@ func close_cell(pos: Vector2i) -> void:
 	#TODO: check valid position?
 	var cell_data: MapTileData = _map_data[pos.x][pos.y]
 	cell_data.opened = false
-	top_board.set_cell(pos, 0, closed_tile)
+	top_board.set_cell(pos, 0, _closed_tile)
 	cell_closed.emit(pos)
 
 
 func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
 	var opened_cells: Array[Vector2i] = []
 	var stack: Array[Vector2i] = []
-	stack.append_array(get_neighbour_cells(pos, [closed_tile]))
+	stack.append_array(get_neighbour_cells(pos, true))
 
 	while stack.is_empty() == false:
 		var cur_cell = stack.pop_back()
@@ -277,7 +299,7 @@ func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
 		top_board.erase_cell(cur_cell)
 		opened_cells.append(cur_cell)
 		if cell_data.enemies_count == 0:
-			var neighbour_cells = get_neighbour_cells(cur_cell, [closed_tile])
+			var neighbour_cells = get_neighbour_cells(cur_cell, true)
 			stack.append_array(neighbour_cells)
 
 	return opened_cells
@@ -300,12 +322,12 @@ func mark_cell(pos: Vector2i) -> void:
 	if cell_data.marked == false:
 		print("Cell marked: " + str(pos))
 		cell_data.marked = true
-		top_board.set_cell(pos, 0, mark_tile)
+		top_board.set_cell(pos, 0, _mark_tile)
 		cell_marked.emit(true)
 	elif cell_data.marked == true:
 		print("Cell unmarked: " + str(pos))
 		cell_data.marked = false
-		top_board.set_cell(pos, 0, closed_tile)
+		top_board.set_cell(pos, 0, _closed_tile)
 		cell_marked.emit(false)
 
 
@@ -371,9 +393,9 @@ func add_enemy(pos: Vector2i, enemy_scene: PackedScene) -> void:
 			if _modifier_list:
 				hide_modifier = _modifier_list.get_modifier_by_tag(ModifierBase.ModifierTag.HIDE_CELLS)
 			if hide_modifier and data.enemies_count in hide_modifier.hidden_values:
-				board.set_cell(neighbour, 0, hidden_tile)
+				board.set_cell(neighbour, 0, _hidden_tile)
 			else:
-				board.set_cell(neighbour, 0, empty_tiles[data.enemies_count])
+				board.set_cell(neighbour, 0, _numbered_tiles[data.enemies_count - 1])
 
 
 func _build_directions() -> void:
@@ -382,6 +404,27 @@ func _build_directions() -> void:
 		for y in range(-1, 2):
 			if x != 0 || y != 0:
 				_directions.append(Vector2i(x, y))
+
+
+func _build_tileset_coords() -> void:
+	var atlas_source: TileSetAtlasSource = board.tile_set.get_source(0)
+
+	var ind: int = 0
+	var has_tile: bool = atlas_source.has_tile(Vector2i(ind, _empty_cell_row))
+	assert(has_tile)
+	
+	while has_tile:
+		_empty_cell_tiles.append(Vector2i(ind, _empty_cell_row))
+		var tile_data: TileData = atlas_source.get_tile_data(Vector2i(ind, _empty_cell_row), 0)
+		var prob_value: float = tile_data.get_custom_data("probability")
+		assert(prob_value > 0)
+		_empty_tiles_weights.append(prob_value)
+		ind += 1
+		has_tile = atlas_source.has_tile(Vector2i(ind, _empty_cell_row))
+
+	for i in range(0, 7):
+		assert(atlas_source.has_tile(Vector2i(i, _numbered_tiles_row)))
+		_numbered_tiles.append(Vector2i(i, _numbered_tiles_row))
 
 
 class MapTileData:

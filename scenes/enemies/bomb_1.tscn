@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c705yxfwgmkyv"]
 
 [ext_resource type="Script" uid="uid://cyhf3wf32xvqc" path="res://scripts/game_logic/enemies/enemy.gd" id="1_rnll6"]
-[ext_resource type="Texture2D" uid="uid://bwgm63lnu5ad3" path="res://resources/textures/bright_pixel.png" id="2_rnll6"]
+[ext_resource type="Texture2D" uid="uid://mevi2bxp2q5e" path="res://resources/textures/bright_pixel.png" id="2_rnll6"]
 
 [node name="Bomb" type="Node2D" unique_id=1068591395]
 script = ExtResource("1_rnll6")
@@ -12,4 +12,4 @@ modulate = Color(0.4230056, 0.04685366, 0, 1)
 texture_filter = 1
 texture = ExtResource("2_rnll6")
 region_enabled = true
-region_rect = Rect2(32, 16, 16, 16)
+region_rect = Rect2(32, 32, 16, 16)

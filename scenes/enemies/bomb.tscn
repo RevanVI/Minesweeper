@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://mxcgjh4wuoq2"]
 
 [ext_resource type="Script" uid="uid://cyhf3wf32xvqc" path="res://scripts/game_logic/enemies/enemy.gd" id="1_fsxe1"]
-[ext_resource type="Texture2D" uid="uid://bwgm63lnu5ad3" path="res://resources/textures/bright_pixel.png" id="2_fsxe1"]
+[ext_resource type="Texture2D" uid="uid://mevi2bxp2q5e" path="res://resources/textures/bright_pixel.png" id="2_fsxe1"]
 
 [node name="Bomb" type="Node2D" unique_id=1773325164]
 script = ExtResource("1_fsxe1")
@@ -11,4 +11,4 @@ damage = Vector2i(1, 1)
 texture_filter = 1
 texture = ExtResource("2_fsxe1")
 region_enabled = true
-region_rect = Rect2(32, 16, 16, 16)
+region_rect = Rect2(32, 32, 16, 16)
