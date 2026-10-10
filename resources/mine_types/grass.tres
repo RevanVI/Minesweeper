@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MineType" format=3 uid="uid://tt7336ogom4b"]
+
+[ext_resource type="Script" uid="uid://dkhu1ccasfo6v" path="res://scripts/game_logic/mine_type.gd" id="1_ihdbn"]
+[ext_resource type="TileSet" uid="uid://b0r61l4q1ahw4" path="res://resources/tilesets/bright_pixelart_grass.tres" id="2_jf6to"]
+
+[resource]
+script = ExtResource("1_ihdbn")
+map_name = "Grassland"
+tile_set = ExtResource("2_jf6to")
+metadata/_custom_type_script = "uid://dkhu1ccasfo6v"

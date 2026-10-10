@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="3_qgemu"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="4_8ivtb"]
 [ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generators/map_generator.gd" id="4_b5xbl"]
+[ext_resource type="Resource" uid="uid://bdagpmm7wtj4" path="res://resources/mine_types/cave.tres" id="5_8ivtb"]
+[ext_resource type="Resource" uid="uid://tt7336ogom4b" path="res://resources/mine_types/grass.tres" id="5_b5xbl"]
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="7_dhm3e"]
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="8_0nf2j"]
 [ext_resource type="TileSet" uid="uid://brqm3brao22wp" path="res://resources/tilesets/bright_pixelart.tres" id="8_qgemu"]
@@ -28,6 +30,7 @@ map_generator = SubResource("Resource_dwcyu")
 enemies = Dictionary[PackedScene, Vector2i]({
 ExtResource("2_p4m7m"): Vector2i(10, 10)
 })
+mine_type = ExtResource("5_b5xbl")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_dhm3e"]
@@ -43,6 +46,7 @@ map_generator = SubResource("Resource_dhm3e")
 enemies = Dictionary[PackedScene, Vector2i]({
 ExtResource("2_p4m7m"): Vector2i(40, 40)
 })
+mine_type = ExtResource("5_8ivtb")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_0nf2j"]
@@ -58,6 +62,7 @@ map_generator = SubResource("Resource_0nf2j")
 enemies = Dictionary[PackedScene, Vector2i]({
 ExtResource("2_p4m7m"): Vector2i(99, 99)
 })
+mine_type = ExtResource("5_8ivtb")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qgemu"]

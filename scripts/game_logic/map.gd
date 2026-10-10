@@ -52,6 +52,12 @@ func set_modifiers(modifiers: ModifiersList) -> void:
 	_modifier_list = modifiers
 
 
+func set_mine_type(mine_type: MineType) -> void:
+	board.tile_set = mine_type.tile_set
+	top_board.tile_set = mine_type.tile_set
+	_build_tileset_coords()
+
+
 func reset_map() -> void:
 	top_board.clear()
 	board.clear()

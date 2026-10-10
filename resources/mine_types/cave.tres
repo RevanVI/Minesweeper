@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MineType" format=3 uid="uid://bdagpmm7wtj4"]
+
+[ext_resource type="Script" uid="uid://dkhu1ccasfo6v" path="res://scripts/game_logic/mine_type.gd" id="1_8pk2c"]
+[ext_resource type="TileSet" uid="uid://brqm3brao22wp" path="res://resources/tilesets/bright_pixelart.tres" id="2_tr4c1"]
+
+[resource]
+script = ExtResource("1_8pk2c")
+map_name = "Cave"
+tile_set = ExtResource("2_tr4c1")
+metadata/_custom_type_script = "uid://dkhu1ccasfo6v"

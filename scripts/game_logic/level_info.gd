@@ -14,7 +14,7 @@ extends Resource
 # count of random_modifiers to choose
 @export var modifiers_count: int
 # not used for now. Potentially will be used for text and art selections
-@export var mine_type: int 
+@export var mine_type: MineType 
 
 
 var _enemies: Dictionary[PackedScene, int]

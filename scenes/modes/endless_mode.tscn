@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://diqmvisuttd5h" path="res://scripts/game_logic/level_info.gd" id="3_vgc74"]
 [ext_resource type="Script" uid="uid://bctw4kxi4vc55" path="res://scripts/game_logic/modifiers/modifier_hidden_cells.gd" id="4_flrxs"]
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="4_hunvx"]
+[ext_resource type="Resource" uid="uid://bdagpmm7wtj4" path="res://resources/mine_types/cave.tres" id="5_ag5ul"]
 [ext_resource type="Script" uid="uid://cs1vbc21bgmff" path="res://scripts/game_logic/modifiers/modifier_undo_blocked.gd" id="5_hunvx"]
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="7_ag5ul"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="7_flrxs"]
@@ -25,6 +26,7 @@ map_generator = ExtResource("7_rgud8")
 enemies = Dictionary[PackedScene, Vector2i]({
 ExtResource("2_4do5o"): Vector2i(5, 5)
 })
+mine_type = ExtResource("5_ag5ul")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_rgud8"]
@@ -52,6 +54,7 @@ ExtResource("2_4do5o"): Vector2i(7, 7)
 })
 random_modifiers = Array[ExtResource("3_hunvx")]([SubResource("Resource_rgud8"), SubResource("Resource_ag5ul"), SubResource("Resource_kfc2u")])
 modifiers_count = 1
+mine_type = ExtResource("5_ag5ul")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_j0ndl"]
@@ -79,6 +82,7 @@ ExtResource("2_4do5o"): Vector2i(15, 15)
 })
 random_modifiers = Array[ExtResource("3_hunvx")]([SubResource("Resource_j0ndl"), SubResource("Resource_h11qe"), SubResource("Resource_uskt0")])
 modifiers_count = 2
+mine_type = ExtResource("5_ag5ul")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
@@ -113,10 +117,6 @@ metadata/_custom_type_script = "uid://cqh3xxrgi3ncc"
 
 [node name="Map" type="Node2D" parent="." unique_id=931742534]
 script = ExtResource("4_hunvx")
-closed_tile = Vector2i(0, 1)
-mark_tile = Vector2i(1, 1)
-empty_tiles = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0)])
-hidden_tile = Vector2i(3, 1)
 
 [node name="Board" type="TileMapLayer" parent="Map" unique_id=465984437]
 texture_filter = 1
