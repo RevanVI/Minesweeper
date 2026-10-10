@@ -1,0 +1,28 @@
+[gd_resource type="TileSet" format=3 uid="uid://cmmcqeeve44l2"]
+
+[ext_resource type="Texture2D" uid="uid://cpfgftxysmto0" path="res://resources/textures/art_style_search/hand_tiles.png" id="1_tvquq"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tvquq"]
+texture = ExtResource("1_tvquq")
+texture_region_size = Vector2i(256, 256)
+0:0/next_alternative_id = 2
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_lw0k6"]
+
+[resource]
+tile_size = Vector2i(256, 256)
+sources/1 = SubResource("TileSetScenesCollectionSource_lw0k6")
+sources/0 = SubResource("TileSetAtlasSource_tvquq")
+tile_proxies/coords_level = [[0, Vector2i(0, 0)], [3, Vector2i(0, 0)], [2, Vector2i(0, 0)], [3, Vector2i(1, 0)]]

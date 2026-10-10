@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://c705yxfwgmkyv"]
+[gd_scene format=3 uid="uid://c705yxfwgmkyv"]
 
 [ext_resource type="Script" uid="uid://cyhf3wf32xvqc" path="res://scripts/game_logic/enemies/enemy.gd" id="1_rnll6"]
-[ext_resource type="Texture2D" uid="uid://bmrjfadtrir3f" path="res://resources/textures/minsweeper_tiles_starter.png" id="2_crwf0"]
+[ext_resource type="Texture2D" uid="uid://bwgm63lnu5ad3" path="res://resources/textures/bright_pixel.png" id="2_rnll6"]
 
-[node name="Bomb" type="Node2D"]
+[node name="Bomb" type="Node2D" unique_id=1068591395]
 script = ExtResource("1_rnll6")
 damage = Vector2i(1, 4)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.210738, 0.215611, 1, 1)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2066709240]
+modulate = Color(0.4230056, 0.04685366, 0, 1)
 texture_filter = 1
-texture = ExtResource("2_crwf0")
+texture = ExtResource("2_rnll6")
 region_enabled = true
-region_rect = Rect2(64, 32, 32, 32)
+region_rect = Rect2(32, 16, 16, 16)

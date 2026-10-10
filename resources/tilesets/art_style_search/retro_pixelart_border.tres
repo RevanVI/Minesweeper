@@ -1,0 +1,24 @@
+[gd_resource type="TileSet" format=3 uid="uid://dov2bqehcjx5g"]
+
+[ext_resource type="Texture2D" uid="uid://xpqowvc4f7gr" path="res://resources/textures/art_style_search/floor_tile_border.png" id="1_ohp1u"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_shnbq"]
+texture = ExtResource("1_ohp1u")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_lw0k6"]
+
+[resource]
+sources/1 = SubResource("TileSetScenesCollectionSource_lw0k6")
+sources/0 = SubResource("TileSetAtlasSource_shnbq")
