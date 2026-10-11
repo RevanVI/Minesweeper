@@ -36,7 +36,7 @@ var _rng: RandomNumberGenerator
 
 
 @onready var board: TileMapLayer = $Board
-@onready var top_board: TileMapLayer = $Cells
+@onready var top_board: TopLayer = $Cells
 
 
 func _ready() -> void:
@@ -74,6 +74,7 @@ func update_visual_map(gen_seed: int = -1) -> void:
 	else:
 		_rng.seed = randi()
 
+	top_board.reset_layer()
 	top_board.clear()
 	board.clear()
 	for x in range(size.x):
@@ -105,6 +106,7 @@ func update_visual_map(gen_seed: int = -1) -> void:
 
 
 func reset_top_board() -> void:
+	top_board.reset_layer()
 	top_board.clear()
 	assert(size.x != 0 && size.y != 0)
 	for x in range(size.x):
@@ -270,7 +272,7 @@ func open_cell(pos: Vector2i) -> Array[Vector2i]:
 	var cell_data: MapTileData = _map_data[pos.x][pos.y]
 	if cell_data.opened == false:
 		cell_data.opened = true
-		top_board.erase_cell(pos)
+		top_board.add_cells_to_fade_out([pos])
 		opened_cells.append(pos)
 		#print("Map: top_board opened: " + str(opened_cells))
 		if cell_data.type == CellType.ENEMY:
@@ -301,9 +303,10 @@ func reveal_empty_neighbours(pos: Vector2i) -> Array[Vector2i]:
 	while stack.is_empty() == false:
 		var cur_cell = stack.pop_back()
 		var cell_data: MapTileData = _map_data[cur_cell.x][cur_cell.y]
-		cell_data.opened = true
-		top_board.erase_cell(cur_cell)
-		opened_cells.append(cur_cell)
+		if cell_data.opened == false:
+			cell_data.opened = true
+			top_board.add_cells_to_fade_out([cur_cell])
+			opened_cells.append(cur_cell)
 		if cell_data.enemies_count == 0:
 			var neighbour_cells = get_neighbour_cells(cur_cell, true)
 			stack.append_array(neighbour_cells)
