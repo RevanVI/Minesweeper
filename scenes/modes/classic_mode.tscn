@@ -13,8 +13,10 @@
 [ext_resource type="TileSet" uid="uid://brqm3brao22wp" path="res://resources/tilesets/bright_pixelart.tres" id="8_qgemu"]
 [ext_resource type="Script" uid="uid://erghs5cplvbn" path="res://scripts/gui/battle_classic.gd" id="9_lgmfj"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="10_kfal4"]
+[ext_resource type="TileSet" uid="uid://b0r61l4q1ahw4" path="res://resources/tilesets/bright_pixelart_grass.tres" id="11_dwcyu"]
 [ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="11_ejyf8"]
 [ext_resource type="Script" uid="uid://c0b0dy1yg1am8" path="res://scripts/gui/end_game_classic.gd" id="12_lgmfj"]
+[ext_resource type="Script" uid="uid://t1t7di223ex7" path="res://scripts/game_logic/cursor_map.gd" id="14_dhm3e"]
 [ext_resource type="Script" uid="uid://cqh3xxrgi3ncc" path="res://scripts/game_logic/camera_controller.gd" id="14_qgemu"]
 
 [sub_resource type="Resource" id="Resource_dwcyu"]
@@ -111,7 +113,7 @@ tile_set = ExtResource("8_qgemu")
 
 [node name="Cells" type="TileMapLayer" parent="Map" unique_id=272718825]
 texture_filter = 1
-tile_set = ExtResource("8_qgemu")
+tile_set = ExtResource("11_dwcyu")
 
 [node name="BattleTimer" type="Timer" parent="." unique_id=1807135371]
 
@@ -121,6 +123,14 @@ script = ExtResource("7_dhm3e")
 [node name="TurnQueue" type="Node" parent="GameManager" unique_id=4592612]
 script = ExtResource("8_0nf2j")
 metadata/_custom_type_script = "uid://b8ri86hixsvvn"
+
+[node name="CursorMap" type="Node2D" parent="." unique_id=671240042]
+script = ExtResource("14_dhm3e")
+metadata/_custom_type_script = "uid://t1t7di223ex7"
+
+[node name="Cursor" type="TileMapLayer" parent="CursorMap" unique_id=415927816]
+texture_filter = 1
+tile_set = ExtResource("8_qgemu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1837177857]
 

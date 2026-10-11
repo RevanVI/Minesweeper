@@ -36,6 +36,7 @@ var _character: Character
 @onready var battle_timer: Timer = $"../BattleTimer"
 @onready var turn_queue: TurnQueue = $TurnQueue
 @onready var camera_controller: CameraController = $"../CameraController"
+@onready var cursor: CursorMap = $"../CursorMap"
 
 
 func _ready():
@@ -93,6 +94,9 @@ func prepare_battle(level_info: LevelInfo, character: Character) -> void:
 	map_generator.generate_empty_map(map, level_info.get_enemies_data(), _modifier_list, level_info.get_generation_seed())
 	camera_controller.pos_limits = map.get_limits_global()
 	camera_controller.calc_start_position()
+
+	cursor.set_mine_type(level_info.mine_type)
+	cursor.set_map(map)
 
 	battle_timer.stop()
 	battle_time = 0

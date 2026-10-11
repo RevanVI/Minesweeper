@@ -25,6 +25,12 @@ texture = ExtResource("1_7gxdq")
 1:2/0 = 0
 2:2/0 = 0
 3:2/0 = 0
+0:3/animation_columns = 4
+0:3/animation_frame_0/duration = 0.25
+0:3/animation_frame_1/duration = 0.25
+0:3/animation_frame_2/duration = 0.25
+0:3/animation_frame_3/duration = 0.25
+0:3/0 = 0
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_lw0k6"]
 
