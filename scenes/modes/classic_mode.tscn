@@ -7,13 +7,12 @@
 [ext_resource type="Script" uid="uid://dcqrwipyxpal8" path="res://scripts/game_logic/map.gd" id="4_8ivtb"]
 [ext_resource type="Script" uid="uid://dacfmm368sqhq" path="res://scripts/game_logic/map_generators/map_generator.gd" id="4_b5xbl"]
 [ext_resource type="Resource" uid="uid://bdagpmm7wtj4" path="res://resources/mine_types/cave.tres" id="5_8ivtb"]
-[ext_resource type="Resource" uid="uid://tt7336ogom4b" path="res://resources/mine_types/grass.tres" id="5_b5xbl"]
+[ext_resource type="Resource" uid="uid://tt7336ogom4b" path="res://resources/mine_types/grass.tres" id="5_dhm3e"]
 [ext_resource type="Script" uid="uid://bw7brsh2ne4no" path="res://scripts/game_logic/game_manager.gd" id="7_dhm3e"]
 [ext_resource type="Script" uid="uid://b8ri86hixsvvn" path="res://scripts/game_logic/commands/turn_queue.gd" id="8_0nf2j"]
 [ext_resource type="TileSet" uid="uid://brqm3brao22wp" path="res://resources/tilesets/bright_pixelart.tres" id="8_qgemu"]
 [ext_resource type="Script" uid="uid://erghs5cplvbn" path="res://scripts/gui/battle_classic.gd" id="9_lgmfj"]
 [ext_resource type="Script" uid="uid://c3yjrgdrsgkf" path="res://scripts/gui/undo_gui_anim.gd" id="10_kfal4"]
-[ext_resource type="TileSet" uid="uid://b0r61l4q1ahw4" path="res://resources/tilesets/bright_pixelart_grass.tres" id="11_dwcyu"]
 [ext_resource type="Script" uid="uid://dke2kkyjjw8yj" path="res://scripts/gui/damage_gui_anim.gd" id="11_ejyf8"]
 [ext_resource type="Script" uid="uid://b2456eic7704s" path="res://scripts/game_logic/top_layer.gd" id="12_0nf2j"]
 [ext_resource type="Script" uid="uid://c0b0dy1yg1am8" path="res://scripts/gui/end_game_classic.gd" id="12_lgmfj"]
@@ -33,7 +32,7 @@ map_generator = SubResource("Resource_dwcyu")
 enemies = Dictionary[PackedScene, Vector2i]({
 ExtResource("2_p4m7m"): Vector2i(10, 10)
 })
-mine_type = ExtResource("5_b5xbl")
+mine_type = ExtResource("5_dhm3e")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
 [sub_resource type="Resource" id="Resource_dhm3e"]
@@ -114,7 +113,7 @@ tile_set = ExtResource("8_qgemu")
 
 [node name="Cells" type="TileMapLayer" parent="Map" unique_id=495432804]
 texture_filter = 1
-tile_set = ExtResource("11_dwcyu")
+tile_set = ExtResource("8_qgemu")
 script = ExtResource("12_0nf2j")
 fade_out_ease = -2.0
 metadata/_custom_type_script = "uid://b2456eic7704s"

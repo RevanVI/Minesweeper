@@ -30,7 +30,7 @@ func reset_layer() -> void:
 func add_cells_to_fade_out(cells: Array[Vector2i]) -> void:
 	for i in cells:
 		assert(i not in _cells_to_fade_out.keys())
-		_cells_to_fade_out[i] = [1.0, _rng.randf_range(-1.5, -3), _rng.randf_range(0.8, 1.5)]
+		_cells_to_fade_out[i] = [0.75, _rng.randf_range(-1.5, -3), _rng.randf_range(0.8, 1.5)]
 
 
 func _use_tile_data_runtime_update(coords: Vector2i) -> bool:

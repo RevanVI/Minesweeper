@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cd5ysc87cqvn1"]
+
+[ext_resource type="Shader" uid="uid://bpawwfkelaaj6" path="res://shaders/fog_research_2.gdshader" id="1_7vlms"]
+[ext_resource type="Texture2D" uid="uid://b0avtlku7myhi" path="res://resources/textures/fog_mask.png" id="2_8xhkt"]
+[ext_resource type="Texture2D" uid="uid://c11tvugls86w4" path="res://resources/textures/fog_sil.png" id="3_2k411"]
+
+[resource]
+shader = ExtResource("1_7vlms")
+shader_parameter/enable_pixelation = true
+shader_parameter/pixelation_amount = 16
+shader_parameter/color = Color(0.24258709, 0.2154333, 0.23263943, 1)
+shader_parameter/strenght = 1.15
+shader_parameter/OCTAVES = 4
+shader_parameter/fog_direction = Vector2(1, 1)
+shader_parameter/fog_sil = ExtResource("3_2k411")
+shader_parameter/use_mask = true
+shader_parameter/fog_mask = ExtResource("2_8xhkt")
+shader_parameter/mask_strenght = 0.995

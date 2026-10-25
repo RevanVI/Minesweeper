@@ -1,0 +1,32 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://civcfpxlklxio"]
+
+[ext_resource type="Shader" uid="uid://bnu6iqia7pdmi" path="res://shaders/fog.gdshader" id="1_3fh6k"]
+[ext_resource type="Texture2D" uid="uid://de355x0nkd0ra" path="res://resources/textures/fog_256.png" id="2_k6pp3"]
+[ext_resource type="Texture2D" uid="uid://dfu36smecb2w3" path="res://resources/textures/tile_mask_black.png" id="3_wsuxe"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cd65p"]
+noise_type = 0
+frequency = 0.0308
+fractal_octaves = 3
+fractal_lacunarity = 3.5
+fractal_gain = 0.3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pt1ih"]
+noise = SubResource("FastNoiseLite_cd65p")
+seamless = true
+
+[resource]
+shader = ExtResource("1_3fh6k")
+shader_parameter/enable_pixelation = true
+shader_parameter/pixelation_amount = 1
+shader_parameter/OCTAVES = 4
+shader_parameter/tile_mask = ExtResource("3_wsuxe")
+shader_parameter/base_color = Color(0.08261364, 0.056373782, 0.06621529, 1)
+shader_parameter/noise_tex = ExtResource("2_k6pp3")
+shader_parameter/noise_tex_size = 512.0
+shader_parameter/fog_color = Color(0.20439202, 0.14699084, 0.18209106, 1)
+shader_parameter/strenght = 3.0
+shader_parameter/use_2 = true
+shader_parameter/noise_tex_2 = SubResource("NoiseTexture2D_pt1ih")
+shader_parameter/show_no_color = false
+shader_parameter/show_only_noise_2 = false

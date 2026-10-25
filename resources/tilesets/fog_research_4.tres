@@ -1,0 +1,46 @@
+[gd_resource type="TileSet" format=3 uid="uid://dkqo84y3dbt2t"]
+
+[ext_resource type="Material" uid="uid://civcfpxlklxio" path="res://materials/fog_base.tres" id="1_k4jl6"]
+[ext_resource type="Texture2D" uid="uid://mevi2bxp2q5e" path="res://resources/textures/bright_pixel.png" id="2_k4jl6"]
+[ext_resource type="Material" uid="uid://cwj6ixgq867we" path="res://materials/fog_mark.tres" id="2_yt1nj"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wk8lb"]
+texture = ExtResource("2_k4jl6")
+use_texture_padding = false
+0:0/next_alternative_id = 4
+0:0/0 = 0
+0:0/0/custom_data_0 = 0.5
+1:0/0 = 0
+1:0/0/custom_data_0 = 0.2
+2:0/0 = 0
+2:0/0/custom_data_0 = 0.2
+3:0/0 = 0
+3:0/0/custom_data_0 = 0.1
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+1:2/0 = 0
+1:2/0/material = ExtResource("2_yt1nj")
+2:2/0 = 0
+3:2/0 = 0
+0:3/animation_columns = 4
+0:3/animation_frame_0/duration = 0.25
+0:3/animation_frame_1/duration = 0.25
+0:3/animation_frame_2/duration = 0.25
+0:3/animation_frame_3/duration = 0.25
+0:3/0 = 0
+0:2/0 = 0
+0:2/0/material = ExtResource("1_k4jl6")
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_f6w2o"]
+
+[resource]
+custom_data_layer_0/name = "probability"
+custom_data_layer_0/type = 3
+sources/1 = SubResource("TileSetScenesCollectionSource_f6w2o")
+sources/0 = SubResource("TileSetAtlasSource_wk8lb")
