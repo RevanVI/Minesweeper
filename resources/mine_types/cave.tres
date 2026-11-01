@@ -7,4 +7,5 @@
 script = ExtResource("1_8pk2c")
 map_name = "Cave"
 tile_set = ExtResource("2_tr4c1")
+background_color = Color(0.15518737, 0.09196878, 0.1194857, 1)
 metadata/_custom_type_script = "uid://dkhu1ccasfo6v"

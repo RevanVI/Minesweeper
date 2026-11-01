@@ -87,6 +87,14 @@ modifiers_count = 2
 mine_type = ExtResource("5_ag5ul")
 metadata/_custom_type_script = "uid://diqmvisuttd5h"
 
+[sub_resource type="Gradient" id="Gradient_j0ndl"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7ae3m"]
+gradient = SubResource("Gradient_j0ndl")
+width = 1600
+height = 1200
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xgl0c"]
 frequency = 0.252
 fractal_type = 3
@@ -116,6 +124,10 @@ levels_data = Dictionary[int, ExtResource("3_vgc74")]({
 [node name="CameraController" type="Camera2D" parent="." unique_id=1040619130]
 script = ExtResource("7_flrxs")
 metadata/_custom_type_script = "uid://cqh3xxrgi3ncc"
+
+[node name="Background" type="Sprite2D" parent="CameraController" unique_id=1839216904]
+self_modulate = Color(0.41215247, 0.41215247, 0.41215247, 1)
+texture = SubResource("GradientTexture2D_7ae3m")
 
 [node name="Map" type="Node2D" parent="." unique_id=931742534]
 script = ExtResource("4_hunvx")
