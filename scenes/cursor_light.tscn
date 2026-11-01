@@ -1,13 +1,21 @@
-[gd_scene load_steps=12 format=3 uid="uid://hf0way6q2owg"]
+[gd_scene format=3 uid="uid://hf0way6q2owg"]
 
-[ext_resource type="Texture2D" uid="uid://cmbwd4ii7vuqe" path="res://resources/textures/light_source/light_source_128_1.png" id="1_75gu2"]
 [ext_resource type="Script" uid="uid://dpldaf7hha13j" path="res://scripts/game_logic/cursor_light.gd" id="2_g1n0x"]
-[ext_resource type="Texture2D" uid="uid://ca3cokn8rmftu" path="res://resources/textures/light_source/light_source_192_1.png" id="3_npx27"]
-[ext_resource type="Texture2D" uid="uid://bcctpdd3363kk" path="res://resources/textures/light_source/light_source_256_2.png" id="4_qeskf"]
-[ext_resource type="Texture2D" uid="uid://ckh0b01o4tkl2" path="res://resources/textures/light_source/light_source_256_3.png" id="5_coiap"]
 [ext_resource type="Texture2D" uid="uid://j5i2uoereiwk" path="res://resources/textures/light_source/light_source_256_1.png" id="6_ewfcs"]
 
-[sub_resource type="Animation" id="Animation_dbveo"]
+[sub_resource type="Gradient" id="Gradient_crwiw"]
+offsets = PackedFloat32Array(0, 0.4034091, 0.7234849, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.52378094, 0.52378047, 0.52378047, 1, 0.29672903, 0.29672885, 0.2967288, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dfrt2"]
+gradient = SubResource("Gradient_crwiw")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.86, 0.86)
+
+[sub_resource type="Animation" id="Animation_1osqk"]
 resource_name = "L128"
 length = 2.0
 loop_mode = 1
@@ -21,7 +29,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_75gu2")]
+"values": [SubResource("GradientTexture2D_dfrt2")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -30,14 +38,24 @@ tracks/1/path = NodePath(".:energy")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0, 0),
+"times": PackedFloat32Array(0, 0.5, 1.1166666, 1.6833332),
+"transitions": PackedFloat32Array(-2, -0.35355344, -5.6568775, -4.9245744),
 "update": 0,
-"values": [2.4, 2.0]
+"values": [2.4, 1.72, 2.0, 2.55]
 }
 
-[sub_resource type="Animation" id="Animation_gbrff"]
-resource_name = "L192"
+[sub_resource type="Gradient" id="Gradient_75gu2"]
+offsets = PackedFloat32Array(0, 0.38257575, 0.6909449, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.52378094, 0.52378047, 0.52378047, 1, 0.2799668, 0.27996668, 0.2799666, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pt1ih"]
+gradient = SubResource("Gradient_75gu2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.86, 0.86)
+
+[sub_resource type="Animation" id="Animation_dbveo"]
+resource_name = "L64"
 length = 2.0
 loop_mode = 1
 tracks/0/type = "value"
@@ -50,7 +68,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("3_npx27")]
+"values": [SubResource("GradientTexture2D_pt1ih")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -59,14 +77,26 @@ tracks/1/path = NodePath(".:energy")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0, 0),
+"times": PackedFloat32Array(0, 0.475, 1.0916667, 1.6583333),
+"transitions": PackedFloat32Array(-2, -0.35355344, -5.6568775, -4.9245744),
 "update": 0,
-"values": [2.4, 2.0]
+"values": [2.4, 1.72, 2.0, 2.55]
 }
 
-[sub_resource type="Animation" id="Animation_1osqk"]
-resource_name = "new_animation"
+[sub_resource type="Gradient" id="Gradient_q0kmt"]
+offsets = PackedFloat32Array(0, 0.40719697, 0.6837121, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.52378094, 0.52378047, 0.52378047, 1, 0.2799668, 0.27996668, 0.2799666, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8pfud"]
+gradient = SubResource("Gradient_q0kmt")
+width = 96
+height = 96
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.86609685, 0.8689459)
+
+[sub_resource type="Animation" id="Animation_gbrff"]
+resource_name = "L96"
 length = 2.0
 loop_mode = 1
 tracks/0/type = "value"
@@ -76,10 +106,10 @@ tracks/0/path = NodePath(".:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.0333333),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("4_qeskf"), ExtResource("5_coiap")]
+"values": [SubResource("GradientTexture2D_8pfud")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -88,10 +118,10 @@ tracks/1/path = NodePath(".:energy")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0, 0),
+"times": PackedFloat32Array(0.008333273, 0.4833333, 1.1, 1.6666666),
+"transitions": PackedFloat32Array(-2, -0.35355344, -5.6568775, -4.9245744),
 "update": 0,
-"values": [2.4, 1.6]
+"values": [2.4, 1.72, 2.0, 2.55]
 }
 
 [sub_resource type="Animation" id="Animation_yoaqh"]
@@ -123,22 +153,31 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0xggp"]
 _data = {
-&"L128": SubResource("Animation_dbveo"),
-&"L192": SubResource("Animation_gbrff"),
-&"L256": SubResource("Animation_1osqk"),
+&"L128": SubResource("Animation_1osqk"),
+&"L64": SubResource("Animation_dbveo"),
+&"L96": SubResource("Animation_gbrff"),
 &"RESET": SubResource("Animation_yoaqh")
 }
 
-[node name="CursorLight" type="PointLight2D"]
-energy = 2.4
-texture = ExtResource("1_75gu2")
+[sub_resource type="Gradient" id="Gradient_8pfud"]
+offsets = PackedFloat32Array(0, 0.52755904, 1)
+colors = PackedColorArray(0.4609949, 0.4609949, 0.4609949, 1, 0.36023623, 0.36023623, 0.36023623, 1, 0.36408392, 0.36408395, 0.36408392, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xrivr"]
+gradient = SubResource("Gradient_8pfud")
+
+[node name="CursorLight" type="PointLight2D" unique_id=235873977]
+energy = 2.0
+texture = ExtResource("6_ewfcs")
 script = ExtResource("2_g1n0x")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_0xggp")
-}
-autoplay = "L256"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=276973866]
+libraries/ = SubResource("AnimationLibrary_0xggp")
+autoplay = &"L64"
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1401497375]
 color = Color(0.03534624, 0.035346247, 0.03534623, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1571213273]
+visible = false
+texture = SubResource("GradientTexture2D_xrivr")

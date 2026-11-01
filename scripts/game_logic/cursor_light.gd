@@ -3,9 +3,9 @@ class_name CursorLight
 extends PointLight2D
 
 enum LightSize {
-	L128 = 0,
-	L192 = 1,
-	L256 = 2,
+	L64 = 0,
+	L96 = 1,
+	L128 = 2,
 }
 
 @export var light_size: LightSize:
