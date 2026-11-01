@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bw2jic8twcf70"]
+
+[ext_resource type="Shader" uid="uid://ckymhbi1uas2q" path="res://shaders/water_tiled.gdshader" id="1_4lgl7"]
+[ext_resource type="Texture2D" uid="uid://btg0lkiah3rsd" path="res://resources/textures/cave_water_mask.png" id="2_6tan1"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5ap8l"]
+frequency = 0.0163
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u3xvr"]
+noise = SubResource("FastNoiseLite_5ap8l")
+seamless = true
+seamless_blend_skirt = 1.0
+
+[resource]
+shader = ExtResource("1_4lgl7")
+shader_parameter/water_color_intensity = 1.8
+shader_parameter/waves_strenght = 0.2
+shader_parameter/water_mask = ExtResource("2_6tan1")
+shader_parameter/noise = SubResource("NoiseTexture2D_u3xvr")
+shader_parameter/noise_strenght = 0.01
