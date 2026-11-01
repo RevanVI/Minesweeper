@@ -36,7 +36,6 @@ use_texture_padding = false
 0:3/0 = 0
 0:2/0 = 0
 0:2/0/material = ExtResource("1_lpwol")
-0:2/0/z_index = 4
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_lw0k6"]
 
